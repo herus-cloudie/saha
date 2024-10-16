@@ -4,39 +4,39 @@ import { VerticalNavItemsType } from 'src/@core/layouts/types'
 const navigation = (): VerticalNavItemsType => {
   return [
     {
-      title: 'Analytics',
+      title: 'داشبورد',
       icon: 'mdi:view-dashboard-outline',
       path: '/dashboards/main'
     },
     {
-      title: 'CRM',
+      title: 'ژونال روزانه',
       icon: 'mdi:book-outline',
       path: '/dashboards/dailyJournal'
     },
 
     {
-      title: 'eCommerce',
+      title: 'معاملات',
       icon: "lucide:chart-candlestick",
       path: '/dashboards/trades'
     },
     {
       sectionTitle: 'Rules and Reports'
     },
-    {
-      title: 'Playbook',
-      icon: 'mdi:notebook-outline',
-      path: '/rules/playbook/'
-    }, 
-    {
-      title: 'Reports',
-      icon:'tabler:report-search',
-      path: '/rules/reports/'
-    },
-    {
-      title: 'Insight',
-      icon:'mdi:lightbulb-outline',
-      path: '/rules/Insight/'
-    },
+    // {
+    //   title: 'Playbook',
+    //   icon: 'mdi:notebook-outline',
+    //   path: '/rules/playbook/'
+    // }, 
+    // {
+    //   title: 'Reports',
+    //   icon:'tabler:report-search',
+    //   path: '/rules/reports/'
+    // },
+    // {
+    //   title: 'Insight',
+    //   icon:'mdi:lightbulb-outline',
+    //   path: '/rules/Insight/'
+    // },
     
     // {
     //   title: 'Email',

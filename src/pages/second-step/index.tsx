@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, ReactNode, MouseEvent } from 'react'
+import { useState, ReactNode, MouseEvent, useEffect } from 'react'
 
 // ** Next Imports
 import Link from 'next/link'
@@ -33,7 +33,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useSettings } from 'src/@core/hooks/useSettings'
 
 // ** Configs
-import themeConfig from 'src/configs/themeConfig'
+import ParseJwt from 'src/utils/ParseJwt'
 // ** Layout Import
 import BlankLayout from 'src/@core/layouts/BlankLayout'
 
@@ -43,8 +43,17 @@ import { useRouter } from 'next/navigation'
 import Loader from 'src/@core/components/spinner/loader'
 import { loginCredentialSchema } from 'src/constant'
 import DatePickerFunc from 'src/components/datePicker'
-import { Autocomplete } from '@mui/material'
+import { Autocomplete, Card } from '@mui/material'
 
+interface IdentiType {
+  firstName: String,
+  fatherName: String,
+  isDead: String,
+  lastName: String,
+  matched: String,
+  alive: String,
+  nationalCode: String
+}
 // ** Styled Components
 const LoginIllustrationWrapper = styled(Box)<BoxProps>(({ theme }) => ({
   padding: theme.spacing(20),
@@ -97,7 +106,7 @@ const secondStep = () => {
   
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState('');
-
+  const [isDataValid , setIsDataValid] = useState(false);
   // ** Hooks
   const router = useRouter()
   const theme = useTheme()
@@ -107,13 +116,38 @@ const secondStep = () => {
   // ** Vars
   const { skin } = settings;
 
-  const [subgroupOptions , setSubgroupOptions] = useState<string[]>([]);
+  function parseCookieString(cookieString : any) {
+    return cookieString.split(';').reduce((acc : any, cookie: any) => {
+      const [key, value] = cookie.trim().split('=');
+      acc[key] = decodeURIComponent(value);
+      return acc;
+    }, {});
+  }
+
+  const [subgroupOptions , setSubgroupOptions] = useState<string[]>(['کشور' , 'استان' , 'شهر' , 'اتحادیه' , 'واحد صنفی']);
+  const [additionalData , setAdditionalData] = useState<IdentiType>({
+    firstName: '',
+    fatherName: '',
+    isDead: '',
+    lastName: '',
+    matched: '',
+    alive: '',
+    nationalCode: ''
+  });
   const [state , setState] = useState({
     category : 'اصناف',
     role : 'کارمند',
     subgroup : ''
   }) 
 
+ 
+
+  useEffect(() => {
+    setAdditionalData(parseCookieString(document.cookie))
+  }, []);
+
+  
+  
   const {
     handleSubmit,
     control,
@@ -124,18 +158,19 @@ const secondStep = () => {
     resolver: yupResolver(loginCredentialSchema)
   })
 
-  const sendReq = async () => { 
+ 
+  const sendReq = async () => {
+    if(!state.category || !state.role || !state.subgroup) return setError('لطفا تمامی گزینه ها را انتخاب کنید')
     setLoading(true);
-    const result = await fetch('xxxxxxx xxxxxxxxx xxxxxxxxx xxxxxxxxx xxxxxxxxxx xxxxxxxxxxxxx' , {
+    const result = await fetch('https://api.cns365.ir/backend/api/addUser.php' , {
       method: 'POST',
-      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-      body: new URLSearchParams({additionalData : document.cookie.split(';') as any , secondForm : state as any})
+      body: JSON.stringify({...additionalData as any , ...state}),
+      headers: {'Content-Type': 'application/json'}
     })
     const Data = await result.json();
-
+    setLoading(false);
+    document.cookie = `jwt = ${Data.jwt}; SameSite=None; Secure; Path=/`
   }
-  
-
   return (
     <div dir="ltr">
       <Box className='content-right'>
@@ -192,53 +227,75 @@ const secondStep = () => {
               : null
             }
             </div>
-            <Box sx={{ mb: 6 }} dir="rtl">
-              <TypographyStyled variant='h5'>سامانه مدیریت هویت افراد</TypographyStyled>
-              <Typography variant='body2'>لطفا با کمال صداقت موارد زیر را انتخاب کنید</Typography>
-            </Box>
+            {isDataValid ?
+             <>
+              <Box sx={{ mb: 6 }} dir="rtl">
+                <TypographyStyled variant='h5'>سامانه مدیریت هویت افراد</TypographyStyled>
+                <Typography variant='body2'>لطفا با کمال صداقت موارد زیر را انتخاب کنید</Typography>
+              </Box>    
+                <form onSubmit={handleSubmit(sendReq)}>
+                <Autocomplete
+                  options={['حمل و نقل' , 'اصناف' , 'وزارت کشور']}
+                  getOptionLabel={(option: any) => option}
+                  value={state.category}
+                  className='comboAcc'
+                  onChange={(e, newValue) => {
+                    console.log('fdsa')
+                    setState({...state , category : newValue as string})
+                    if(newValue == 'اصناف') setSubgroupOptions(['کشور' , 'استان' , 'شهر' , 'اتحادیه' , 'واحد صنفی'])
+                    if(newValue == 'وزارت کشور') setSubgroupOptions([ 'واحد صنفی'])
+                    if(newValue == 'حمل و نقل') setSubgroupOptions(['کشور' , 'واحد صنفی'])
+                  }}
+                  renderInput={(params) => <TextField {...params} label={'دسته بندی'} variant="standard" />}
+                />
+                <Autocomplete
+                  options={subgroupOptions}
+                  getOptionLabel={(option: any) => option}
+                  value={state.subgroup}
+                  className='comboAcc'
+                  onChange={(e, newValue) => setState({...state , subgroup : newValue as string})}
+                  renderInput={(params) => <TextField {...params} label={'گروه بندی'} variant="standard" />}
+                />
+                <Autocomplete
+                  options={['کارمند' , 'مدیر']}
+                  getOptionLabel={(option: any) => option}
+                  value={state.role}
+                  className='comboAcc'
+                  onChange={(e, newValue) => setState({...state , role : newValue as string})}
+                  renderInput={(params) => <TextField {...params} label={'سمت'} variant="standard" />}
+                />
+                
+                  {error && <p style={{color : '#ff3d3d' , textAlign : 'center'}}>{error}</p>} 
+                  {loading ? 
+                      <div style={{textAlign : 'center' , display : 'flex' , justifyContent : 'center' , margin : '-35px 0px 35px'}}>
+                        <Loader />
+                      </div>
+                      : <Button onClick={sendReq} fullWidth size='large' type='submit' variant='contained' sx={{ mb: 7 }}>
+                      برو به مرحله بعد
+                      </Button>
+                  }
+                </form>
+              </>
+              : <div dir='rtl'>
+                  <Box sx={{ mb: 6 }} dir="rtl">
+                    <TypographyStyled variant='h5'>تایید اطلاعات هویتی</TypographyStyled>
+                    <Typography variant='body2'>
+                        آقای <span>{additionalData.lastName} اطلاعات زیر را تایید میکنید؟</span>
+                      <Button style={{marginRight : '10px !important'}} variant='outlined' color='error' size='small'>مغایرت</Button>
+                    </Typography>
+                  </Box>
+                  <Card style={{padding : '5px 20px'}} >
+                    <p>نام : <span>{additionalData.firstName}</span></p>
+                    <p>نام خانوادگی : <span>{additionalData.lastName}</span></p>
+                    <p>کدملی : <span>{additionalData.nationalCode}</span></p>
+                    <p>نام پدر : <span>{additionalData.fatherName}</span></p>
+                  </Card>
+                  <div style={{display : 'flex' , justifyContent : 'center'}}>
+                     <Button onClick={() => setIsDataValid(true)} color='primary' size='large' variant='contained' style={{ marginTop : '20px'}}>تایید</Button>
+                  </div>
+                </div>
 
-            <form onSubmit={handleSubmit(sendReq)}>
-              <Autocomplete
-                options={['حمل و نقل' , 'اصناف' , 'وزارت کشور']}
-                getOptionLabel={(option: any) => option}
-                value={state.category}
-                className='comboAcc'
-                onChange={(e, newValue) => {
-                  console.log('fdsa')
-                  setState({...state , category : newValue as string})
-                  if(newValue == 'اصناف') setSubgroupOptions(['کشور' , 'استان' , 'شهر' , 'اتحادیه' , 'واحد صنفی'])
-                  if(newValue == 'وزارت کشور') setSubgroupOptions([ 'واحد صنفی'])
-                  if(newValue == 'حمل و نقل') setSubgroupOptions(['کشور' , 'واحد صنفی'])
-                }}
-                renderInput={(params) => <TextField {...params} label={'دسته بندی'} variant="standard" />}
-              />
-              <Autocomplete
-                options={subgroupOptions}
-                getOptionLabel={(option: any) => option}
-                value={state.subgroup}
-                className='comboAcc'
-                onChange={(e, newValue) => setState({...state , subgroup : newValue as string})}
-                renderInput={(params) => <TextField {...params} label={'گروه بندی'} variant="standard" />}
-              />
-              <Autocomplete
-                options={['کارمند' , 'مدیر']}
-                getOptionLabel={(option: any) => option}
-                value={state.role}
-                className='comboAcc'
-                onChange={(e, newValue) => setState({...state , role : newValue as string})}
-                renderInput={(params) => <TextField {...params} label={'سمت'} variant="standard" />}
-              />
-              
-                {error && <p style={{color : '#ff3d3d' , textAlign : 'center'}}>{error}</p>} 
-                {loading ? 
-                    <div style={{textAlign : 'center' , display : 'flex' , justifyContent : 'center' , margin : '-35px 0px 35px'}}>
-                      <Loader />
-                    </div>
-                    : <Button onClick={sendReq} fullWidth size='large' type='submit' variant='contained' sx={{ mb: 7 }}>
-                    برو به مرحله بعد
-                    </Button>
-                }
-            </form>
+            }
 
           </BoxWrapper>
         </Box>
