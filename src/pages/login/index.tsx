@@ -1,29 +1,14 @@
 // ** React Imports
-import { useState, ReactNode, MouseEvent } from 'react'
-
-// ** Next Imports
-import Link from 'next/link'
-import { signIn } from "next-auth/react"
+import { useState, ReactNode } from 'react'
 
 // ** MUI Components
 import Button from '@mui/material/Button'
-import Divider from '@mui/material/Divider'
-import Checkbox from '@mui/material/Checkbox'
 import TextField from '@mui/material/TextField'
-import InputLabel from '@mui/material/InputLabel'
-import IconButton from '@mui/material/IconButton'
 import Box, { BoxProps } from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
 import useMediaQuery from '@mui/material/useMediaQuery'
-import OutlinedInput from '@mui/material/OutlinedInput'
 import { styled, useTheme } from '@mui/material/styles'
-import FormHelperText from '@mui/material/FormHelperText'
-import InputAdornment from '@mui/material/InputAdornment'
 import Typography, { TypographyProps } from '@mui/material/Typography'
-import MuiFormControlLabel, { FormControlLabelProps } from '@mui/material/FormControlLabel'
-
-// ** Icon Imports
-import Icon from 'src/@core/components/icon'
 
 // ** Third Party Imports
 import { useForm, Controller } from 'react-hook-form'
@@ -32,17 +17,15 @@ import { yupResolver } from '@hookform/resolvers/yup'
 // ** Hooks
 import { useSettings } from 'src/@core/hooks/useSettings'
 
-// ** Configs
-import themeConfig from 'src/configs/themeConfig'
 // ** Layout Import
 import BlankLayout from 'src/@core/layouts/BlankLayout'
-
 // ** Demo Imports
 import FooterIllustrationsV2 from 'src/views/pages/auth/FooterIllustrationsV2'
 import { useRouter } from 'next/navigation'
 import Loader from 'src/@core/components/spinner/loader'
 import { loginCredentialSchema } from 'src/constant'
 import DatePickerFunc from 'src/components/datePicker'
+import convertPersianDateToLatin from 'src/utils/dateConverter'
 
 // ** Styled Components
 const LoginIllustrationWrapper = styled(Box)<BoxProps>(({ theme }) => ({
@@ -92,11 +75,6 @@ const defaultValues = {
   phoneNumber: '',
 }
 
-interface FormData {
-  phoneNumber: string
-  nationalCode: string
-}
-
 const LoginPage = () => {
   
   const [loading, setLoading] = useState<boolean>(false);
@@ -126,9 +104,7 @@ const LoginPage = () => {
       nationalCode: '',
       phoneNumber: '',
   });
-
   const sendReq = async () => {
-
     setLoading(true)
     const result = await fetch('https://api.zibal.ir/v1/facility/shahkarInquiry/' , {
       method: 'POST',
@@ -139,7 +115,7 @@ const LoginPage = () => {
       body: new URLSearchParams({mobile : formData.phoneNumber , nationalCode : formData.nationalCode})
     })
     const Data = await result.json();
-
+    
     if(Data.result == 1){
       const result2 = await fetch('https://api.zibal.ir/v1/facility/nationalIdentityInquiry/' , {
         method: 'POST',
@@ -159,7 +135,6 @@ const LoginPage = () => {
       };
 
       setError('')
-
       document.cookie = `firstName = ${Data2.data.firstName}; SameSite=None; Secure; Path=/`
       document.cookie = `fatherName = ${Data2.data.fatherName}; SameSite=None; Secure; Path=/`
       document.cookie = `isDead = ${Data2.data.isDead}; SameSite=None; Secure; Path=/`
@@ -176,22 +151,6 @@ const LoginPage = () => {
      return setError('مشکلی پیش آمده است')
     }
   }
-
-  function convertPersianDateToLatin(persianDate : any) {  
-    const persianDigits = '۰۱۲۳۴۵۶۷۸۹';  
-    const latinDigits = '0123456789';  
-
-    let latinDate = persianDate.split('').map((char: string) => {  
-        const index = persianDigits.indexOf(char);  
-        return index !== -1 ? latinDigits[index] : char;  
-    }).join('');  
-
-    let [year, month, day] = latinDate.split('/');  
-
-    const formattedMonth = month?.padStart(2, '0'); 
-    const formattedDay = day.padStart(2, '0'); 
-    return `${year}/${formattedMonth}/${formattedDay}`;  
-} 
 
   const ChangeDateHandler = (e : any) => {
     let date = new Date(e);

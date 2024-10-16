@@ -1,32 +1,16 @@
 // ** React Imports
 import { useState, ReactNode, MouseEvent, useEffect } from 'react'
 
-// ** Next Imports
-import Link from 'next/link'
-import { signIn } from "next-auth/react"
-import readXlsxFile from 'read-excel-file'
-// ** MUI Components
 import Button from '@mui/material/Button'
-import Divider from '@mui/material/Divider'
-import Checkbox from '@mui/material/Checkbox'
 import TextField from '@mui/material/TextField'
-import InputLabel from '@mui/material/InputLabel'
-import IconButton from '@mui/material/IconButton'
 import Box, { BoxProps } from '@mui/material/Box'
-import FormControl from '@mui/material/FormControl'
 import useMediaQuery from '@mui/material/useMediaQuery'
-import OutlinedInput from '@mui/material/OutlinedInput'
 import { styled, useTheme } from '@mui/material/styles'
-import FormHelperText from '@mui/material/FormHelperText'
-import InputAdornment from '@mui/material/InputAdornment'
 import Typography, { TypographyProps } from '@mui/material/Typography'
-import MuiFormControlLabel, { FormControlLabelProps } from '@mui/material/FormControlLabel'
 
-// ** Icon Imports
-import Icon from 'src/@core/components/icon'
 
 // ** Third Party Imports
-import { useForm, Controller } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 
 // ** Hooks
@@ -42,7 +26,6 @@ import FooterIllustrationsV2 from 'src/views/pages/auth/FooterIllustrationsV2'
 import { useRouter } from 'next/navigation'
 import Loader from 'src/@core/components/spinner/loader'
 import { loginCredentialSchema } from 'src/constant'
-import DatePickerFunc from 'src/components/datePicker'
 import { Autocomplete, Card } from '@mui/material'
 
 interface IdentiType {
@@ -123,7 +106,7 @@ const secondStep = () => {
       return acc;
     }, {});
   }
-
+  
   const [subgroupOptions , setSubgroupOptions] = useState<string[]>(['کشور' , 'استان' , 'شهر' , 'اتحادیه' , 'واحد صنفی']);
   const [additionalData , setAdditionalData] = useState<IdentiType>({
     firstName: '',
@@ -140,14 +123,10 @@ const secondStep = () => {
     subgroup : ''
   }) 
 
- 
-
   useEffect(() => {
     setAdditionalData(parseCookieString(document.cookie))
   }, []);
 
-  
-  
   const {
     handleSubmit,
     control,
@@ -170,6 +149,7 @@ const secondStep = () => {
     const Data = await result.json();
     setLoading(false);
     document.cookie = `jwt = ${Data.jwt}; SameSite=None; Secure; Path=/`
+    console.log(ParseJwt(Data.jwt))
   }
   return (
     <div dir="ltr">
