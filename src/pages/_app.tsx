@@ -89,9 +89,9 @@ if (themeConfig.routingLoader) {
 
 
 const Guard = ({ children }: GuardProps) => {
-  return <AuthGuard fallback={<Spinner />}>{children}</AuthGuard>
+  return <div>{children}</div>
 }
-
+// <AuthGuard fallback={<Spinner />}> </AuthGuard>
 // ** Configure JSS & ClassName
 const App = (props: ExtendedAppProps) => {
 

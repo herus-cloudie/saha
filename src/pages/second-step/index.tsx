@@ -4,7 +4,7 @@ import { useState, ReactNode, MouseEvent } from 'react'
 // ** Next Imports
 import Link from 'next/link'
 import { signIn } from "next-auth/react"
-
+import readXlsxFile from 'read-excel-file'
 // ** MUI Components
 import Button from '@mui/material/Button'
 import Divider from '@mui/material/Divider'
@@ -43,6 +43,7 @@ import { useRouter } from 'next/navigation'
 import Loader from 'src/@core/components/spinner/loader'
 import { loginCredentialSchema } from 'src/constant'
 import DatePickerFunc from 'src/components/datePicker'
+import { Autocomplete } from '@mui/material'
 
 // ** Styled Components
 const LoginIllustrationWrapper = styled(Box)<BoxProps>(({ theme }) => ({
@@ -92,12 +93,7 @@ const defaultValues = {
   phoneNumber: '',
 }
 
-interface FormData {
-  phoneNumber: string
-  nationalCode: string
-}
-
-const LoginPage = () => {
+const secondStep = () => {
   
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState('');
@@ -109,7 +105,14 @@ const LoginPage = () => {
   const hidden = useMediaQuery(theme.breakpoints.down('md'))
 
   // ** Vars
-  const { skin } = settings
+  const { skin } = settings;
+
+  const [subgroupOptions , setSubgroupOptions] = useState<string[]>([]);
+  const [state , setState] = useState({
+    category : 'اصناف',
+    role : 'کارمند',
+    subgroup : ''
+  }) 
 
   const {
     handleSubmit,
@@ -121,82 +124,17 @@ const LoginPage = () => {
     resolver: yupResolver(loginCredentialSchema)
   })
 
-  const [formData , setFormData] = useState({
-      birthDate: new Date(),
-      nationalCode: '',
-      phoneNumber: '',
-  });
-
-  const sendReq = async () => {
-
-    setLoading(true)
-    const result = await fetch('https://api.zibal.ir/v1/facility/shahkarInquiry/' , {
+  const sendReq = async () => { 
+    setLoading(true);
+    const result = await fetch('xxxxxxx xxxxxxxxx xxxxxxxxx xxxxxxxxx xxxxxxxxxx xxxxxxxxxxxxx' , {
       method: 'POST',
-      headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'Authorization': 'Bearer 9361a1e1fbd64b8e87cf98abb6b665d3'
-      },
-      body: new URLSearchParams({mobile : formData.phoneNumber , nationalCode : formData.nationalCode})
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      body: new URLSearchParams({additionalData : document.cookie.split(';') as any , secondForm : state as any})
     })
     const Data = await result.json();
 
-    if(Data.result == 1){
-      const result2 = await fetch('https://api.zibal.ir/v1/facility/nationalIdentityInquiry/' , {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Authorization': 'Bearer 9361a1e1fbd64b8e87cf98abb6b665d3'
-        },
-        body: new URLSearchParams({birthDate : convertPersianDateToLatin(new Date(formData.birthDate).toLocaleDateString("fa-IR")) , nationalCode : formData.nationalCode})
-      })
-      const Data2 = await result2.json();
-
-      if(!Data2.data.firstName) {
-        console.log('5' , Data2)
-        setLoading(false)
-        setError('مشکلی پیش آمده است')
-        return;
-      };
-
-      setError('')
-
-      document.cookie = `firstName = ${Data2.data.firstName}; SameSite=None; Secure; Path=/`
-      document.cookie = `fatherName = ${Data2.data.fatherName}; SameSite=None; Secure; Path=/`
-      document.cookie = `isDead = ${Data2.data.isDead}; SameSite=None; Secure; Path=/`
-      document.cookie = `lastName = ${Data2.data.lastName}; SameSite=None; Secure; Path=/`
-      document.cookie = `matched = ${Data2.data.matched}; SameSite=None; Secure; Path=/`
-      document.cookie = `alive = ${Data2.data.alive}; SameSite=None; Secure; Path=/`
-      document.cookie = `nationalCode = ${Data2.data.nationalCode}; SameSite=None; Secure; Path=/`
-      
-      setLoading(false)
-      router.push('/second-step');
-
-    } else{
-      setLoading(false)
-     return setError('مشکلی پیش آمده است')
-    }
   }
-
-  function convertPersianDateToLatin(persianDate : any) {  
-    const persianDigits = '۰۱۲۳۴۵۶۷۸۹';  
-    const latinDigits = '0123456789';  
-
-    let latinDate = persianDate.split('').map((char: string) => {  
-        const index = persianDigits.indexOf(char);  
-        return index !== -1 ? latinDigits[index] : char;  
-    }).join('');  
-
-    let [year, month, day] = latinDate.split('/');  
-
-    const formattedMonth = month?.padStart(2, '0'); 
-    const formattedDay = day.padStart(2, '0'); 
-    return `${year}/${formattedMonth}/${formattedDay}`;  
-} 
-
-  const ChangeDateHandler = (e : any) => {
-    let date = new Date(e);
-    setFormData({...formData , birthDate : date})
-  }
+  
 
   return (
     <div dir="ltr">
@@ -249,62 +187,59 @@ const LoginPage = () => {
             {
               hidden ? 
               theme.palette.mode == 'light' 
-              ? <img alt='fadls' src='/images/1.png' width={330} className='step'/>
-              : <img alt='fadls' src='/images/1w.png' width={330} className='step'/>
+              ? <img alt='fadls' src='/images/2.png' width={330} className='step'/>
+              : <img alt='fadls' src='/images/2w.png' width={330} className='step'/>
               : null
             }
             </div>
-
             <Box sx={{ mb: 6 }} dir="rtl">
-              <TypographyStyled variant='h5'>{`به مها خوش آمدید 👋🏻`}</TypographyStyled>
-              <Typography variant='body2'>سامانه مدیریت هویت افراد</Typography>
+              <TypographyStyled variant='h5'>سامانه مدیریت هویت افراد</TypographyStyled>
+              <Typography variant='body2'>لطفا با کمال صداقت موارد زیر را انتخاب کنید</Typography>
             </Box>
-            <form onSubmit={handleSubmit(sendReq)}>
-              <FormControl fullWidth sx={{ mb: 4 }}>
-                <Controller
-                  name='nationalCode'
-                  control={control}
-                  render={({ field: { value, onBlur } }) => (
-                    <TextField
-                      autoFocus
-                      label='کدملی'
-                      value={formData.nationalCode}
-                      onBlur={onBlur}
-                      onChange={(e) => setFormData({...formData , nationalCode : e.target.value})}
-                      placeholder='022*******'
-                    />
-                  )}
-                />
-              </FormControl>
-              <FormControl fullWidth sx={{ mb: 4 }}>
-                <Controller
-                  name='phoneNumber'
-                  control={control}
-                  render={({ field: { value, onBlur } }) => (
-                    <TextField
-                      autoFocus
-                      label='شماره موبایل'
-                      value={formData.phoneNumber}
-                      onBlur={onBlur}
-                      onChange={(e) => setFormData({...formData , phoneNumber : e.target.value})}
-                      placeholder='09*********'
-                    />
-                  )}
-                />
-              </FormControl>
-              <DatePickerFunc value={formData.birthDate} ChangeDateHandler={ChangeDateHandler}/> 
-             
-              {error && <p style={{color : '#ff3d3d' , textAlign : 'center'}}>{error}</p>} 
-              {loading ? 
-                  <div style={{textAlign : 'center' , display : 'flex' , justifyContent : 'center' , margin : '-35px 0px 35px'}}>
-                    <Loader />
-                  </div>
-                  : <Button onClick={sendReq} fullWidth size='large' type='submit' variant='contained' sx={{ mb: 7 }}>
-                   برو به مرحله بعد
-                  </Button>
-              }
 
+            <form onSubmit={handleSubmit(sendReq)}>
+              <Autocomplete
+                options={['حمل و نقل' , 'اصناف' , 'وزارت کشور']}
+                getOptionLabel={(option: any) => option}
+                value={state.category}
+                className='comboAcc'
+                onChange={(e, newValue) => {
+                  console.log('fdsa')
+                  setState({...state , category : newValue as string})
+                  if(newValue == 'اصناف') setSubgroupOptions(['کشور' , 'استان' , 'شهر' , 'اتحادیه' , 'واحد صنفی'])
+                  if(newValue == 'وزارت کشور') setSubgroupOptions([ 'واحد صنفی'])
+                  if(newValue == 'حمل و نقل') setSubgroupOptions(['کشور' , 'واحد صنفی'])
+                }}
+                renderInput={(params) => <TextField {...params} label={'دسته بندی'} variant="standard" />}
+              />
+              <Autocomplete
+                options={subgroupOptions}
+                getOptionLabel={(option: any) => option}
+                value={state.subgroup}
+                className='comboAcc'
+                onChange={(e, newValue) => setState({...state , subgroup : newValue as string})}
+                renderInput={(params) => <TextField {...params} label={'گروه بندی'} variant="standard" />}
+              />
+              <Autocomplete
+                options={['کارمند' , 'مدیر']}
+                getOptionLabel={(option: any) => option}
+                value={state.role}
+                className='comboAcc'
+                onChange={(e, newValue) => setState({...state , role : newValue as string})}
+                renderInput={(params) => <TextField {...params} label={'سمت'} variant="standard" />}
+              />
+              
+                {error && <p style={{color : '#ff3d3d' , textAlign : 'center'}}>{error}</p>} 
+                {loading ? 
+                    <div style={{textAlign : 'center' , display : 'flex' , justifyContent : 'center' , margin : '-35px 0px 35px'}}>
+                      <Loader />
+                    </div>
+                    : <Button onClick={sendReq} fullWidth size='large' type='submit' variant='contained' sx={{ mb: 7 }}>
+                    برو به مرحله بعد
+                    </Button>
+                }
             </form>
+
           </BoxWrapper>
         </Box>
       </RightWrapper>
@@ -313,9 +248,14 @@ const LoginPage = () => {
   )
 }
 
-LoginPage.getLayout = (page: ReactNode) => <BlankLayout>{page}</BlankLayout>
+secondStep.getLayout = (page: ReactNode) => <BlankLayout>{page}</BlankLayout>
 
-LoginPage.guestGuard = true
+secondStep.guestGuard = true
 
-export default LoginPage
+export default secondStep
 
+
+
+{/* <input type='file' id='input' onChange={(e : any) => readXlsxFile(e.target.files[0]).then((rows) => {
+  console.log(rows)
+})}/> */}
