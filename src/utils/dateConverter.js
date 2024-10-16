@@ -4,6 +4,7 @@ export default function convertPersianDateToLatin(persianDate) {
 
     let latinDate = persianDate.split('').map((char) => {  
         const index = persianDigits.indexOf(char);  
+
         return index !== -1 ? latinDigits[index] : char;  
     }).join('');  
 
@@ -11,5 +12,6 @@ export default function convertPersianDateToLatin(persianDate) {
 
     const formattedMonth = month?.padStart(2, '0'); 
     const formattedDay = day.padStart(2, '0'); 
+    
     return `${year}/${formattedMonth}/${formattedDay}`;  
 } 

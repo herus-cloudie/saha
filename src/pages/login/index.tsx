@@ -19,6 +19,7 @@ import { useSettings } from 'src/@core/hooks/useSettings'
 
 // ** Layout Import
 import BlankLayout from 'src/@core/layouts/BlankLayout'
+
 // ** Demo Imports
 import FooterIllustrationsV2 from 'src/views/pages/auth/FooterIllustrationsV2'
 import { useRouter } from 'next/navigation'
@@ -92,7 +93,6 @@ const LoginPage = () => {
   const {
     handleSubmit,
     control,
-    formState: { errors }
   } = useForm({
     defaultValues,
     mode: 'onBlur',
@@ -131,7 +131,9 @@ const LoginPage = () => {
         console.log('5' , Data2)
         setLoading(false)
         setError('مشکلی پیش آمده است')
+
         return;
+
       };
 
       setError('')
@@ -147,13 +149,16 @@ const LoginPage = () => {
       router.push('/second-step');
 
     } else{
+
       setLoading(false)
-     return setError('مشکلی پیش آمده است')
+
+      return setError('مشکلی پیش آمده است')
+
     }
   }
 
   const ChangeDateHandler = (e : any) => {
-    let date = new Date(e);
+    const date = new Date(e);
     setFormData({...formData , birthDate : date})
   }
 
@@ -223,7 +228,7 @@ const LoginPage = () => {
                 <Controller
                   name='nationalCode'
                   control={control}
-                  render={({ field: { value, onBlur } }) => (
+                  render={({ field: { onBlur } }) => (
                     <TextField
                       autoFocus
                       label='کدملی'
@@ -239,7 +244,7 @@ const LoginPage = () => {
                 <Controller
                   name='phoneNumber'
                   control={control}
-                  render={({ field: { value, onBlur } }) => (
+                  render={({ field: { onBlur } }) => (
                     <TextField
                       autoFocus
                       label='شماره موبایل'

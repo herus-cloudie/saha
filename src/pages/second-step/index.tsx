@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, ReactNode, MouseEvent, useEffect } from 'react'
+import { useState, ReactNode, useEffect } from 'react'
 
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
@@ -18,25 +18,26 @@ import { useSettings } from 'src/@core/hooks/useSettings'
 
 // ** Configs
 import ParseJwt from 'src/utils/ParseJwt'
+
 // ** Layout Import
 import BlankLayout from 'src/@core/layouts/BlankLayout'
 
 // ** Demo Imports
 import FooterIllustrationsV2 from 'src/views/pages/auth/FooterIllustrationsV2'
-import { useRouter } from 'next/navigation'
 import Loader from 'src/@core/components/spinner/loader'
 import { loginCredentialSchema } from 'src/constant'
 import { Autocomplete, Card } from '@mui/material'
 
 interface IdentiType {
-  firstName: String,
-  fatherName: String,
-  isDead: String,
-  lastName: String,
-  matched: String,
-  alive: String,
-  nationalCode: String
+  firstName: string,
+  fatherName: string,
+  isDead: string,
+  lastName: string,
+  matched: string,
+  alive: string,
+  nationalCode: string
 }
+
 // ** Styled Components
 const LoginIllustrationWrapper = styled(Box)<BoxProps>(({ theme }) => ({
   padding: theme.spacing(20),
@@ -85,13 +86,12 @@ const defaultValues = {
   phoneNumber: '',
 }
 
-const secondStep = () => {
+const SecondStep = () => {
   
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState('');
   const [isDataValid , setIsDataValid] = useState(false);
-  // ** Hooks
-  const router = useRouter()
+
   const theme = useTheme()
   const { settings } = useSettings()
   const hidden = useMediaQuery(theme.breakpoints.down('md'))
@@ -103,6 +103,7 @@ const secondStep = () => {
     return cookieString.split(';').reduce((acc : any, cookie: any) => {
       const [key, value] = cookie.trim().split('=');
       acc[key] = decodeURIComponent(value);
+      
       return acc;
     }, {});
   }
@@ -129,8 +130,6 @@ const secondStep = () => {
 
   const {
     handleSubmit,
-    control,
-    formState: { errors }
   } = useForm({
     defaultValues,
     mode: 'onBlur',
@@ -151,6 +150,7 @@ const secondStep = () => {
     document.cookie = `jwt = ${Data.jwt}; SameSite=None; Secure; Path=/`
     console.log(ParseJwt(Data.jwt))
   }
+
   return (
     <div dir="ltr">
       <Box className='content-right'>
@@ -285,11 +285,11 @@ const secondStep = () => {
   )
 }
 
-secondStep.getLayout = (page: ReactNode) => <BlankLayout>{page}</BlankLayout>
+SecondStep.getLayout = (page: ReactNode) => <BlankLayout>{page}</BlankLayout>
 
-secondStep.guestGuard = true
+SecondStep.guestGuard = true
 
-export default secondStep
+export default SecondStep
 
 
 

@@ -32,10 +32,6 @@ import { Toaster } from 'react-hot-toast'
 import UserLayout from 'src/layouts/UserLayout'
 import AclGuard from 'src/@core/components/auth/AclGuard'
 import ThemeComponent from 'src/@core/theme/ThemeComponent'
-import AuthGuard from 'src/@core/components/auth/AuthGuard'
-
-// ** Spinner Import
-import Spinner from 'src/@core/components/spinner'
 
 // ** Contexts
 import { AuthProvider } from 'src/context/AuthContext'
@@ -89,10 +85,10 @@ if (themeConfig.routingLoader) {
 
 
 const Guard = ({ children }: GuardProps) => {
+
   return <div>{children}</div>
 }
-// <AuthGuard fallback={<Spinner />}> </AuthGuard>
-// ** Configure JSS & ClassName
+
 const App = (props: ExtendedAppProps) => {
 
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props

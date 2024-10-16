@@ -20,6 +20,7 @@ const navigation = (): HorizontalNavItemsType => {
       icon: "lucide:chart-candlestick",
       path: '/dashboards/trades'
     },
+    
     // {
     //   title: 'Playbook',
     //   icon: 'mdi:notebook-outline',
