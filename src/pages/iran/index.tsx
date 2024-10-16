@@ -76,7 +76,7 @@ const defaultValues = {
   phoneNumber: '',
 }
 
-const LoginPage = () => {
+const Iran = () => {
   
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState('');
@@ -128,12 +128,10 @@ const LoginPage = () => {
       const Data2 = await result2.json();
 
       if(!Data2.data.firstName) {
-        console.log('5' , Data2)
         setLoading(false)
         setError('مشکلی پیش آمده است')
 
         return;
-
       };
 
       setError('')
@@ -149,11 +147,9 @@ const LoginPage = () => {
       router.push('/second-step');
 
     } else{
-
       setLoading(false)
 
       return setError('مشکلی پیش آمده است')
-
     }
   }
 
@@ -220,7 +216,8 @@ const LoginPage = () => {
             </div>
 
             <Box sx={{ mb: 6 }} dir="rtl">
-              <TypographyStyled variant='h5'>{`به مها خوش آمدید 👋🏻`}</TypographyStyled>
+              <span style={{fontSize : '12px'}}>شهروند ایران</span>
+              <TypographyStyled variant='h5'>{`تکمیل اطلاعات`}</TypographyStyled>
               <Typography variant='body2'>سامانه مدیریت هویت افراد</Typography>
             </Box>
             <form onSubmit={handleSubmit(sendReq)}>
@@ -231,7 +228,7 @@ const LoginPage = () => {
                   render={({ field: { onBlur } }) => (
                     <TextField
                       autoFocus
-                      label='کدملی'
+                      label='کد ملی'
                       value={formData.nationalCode}
                       onBlur={onBlur}
                       onChange={(e) => setFormData({...formData , nationalCode : e.target.value})}
@@ -267,7 +264,6 @@ const LoginPage = () => {
                    برو به مرحله بعد
                   </Button>
               }
-
             </form>
           </BoxWrapper>
         </Box>
@@ -277,9 +273,9 @@ const LoginPage = () => {
   )
 }
 
-LoginPage.getLayout = (page: ReactNode) => <BlankLayout>{page}</BlankLayout>
+Iran.getLayout = (page: ReactNode) => <BlankLayout>{page}</BlankLayout>
 
-LoginPage.guestGuard = true
+Iran.guestGuard = true
 
-export default LoginPage
+export default Iran
 

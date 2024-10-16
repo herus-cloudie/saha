@@ -24,3 +24,24 @@ export type AuthValuesType = {
   setUser: (value: UserDataType | null) => void
   login: (params: LoginParams, errorCallback?: ErrCallbackType) => void
 }
+
+export interface IdentType {
+  firstName: string,
+  fatherName: string,
+  isDead: string,
+  lastName: string,
+  matched: string,
+  alive: string,
+  nationalCode: string
+}
+
+export interface IdentTypeWithJwt {
+  firstName: string,
+  fatherName: string,
+  isDead: string,
+  lastName: string,
+  matched: string,
+  alive: string,
+  nationalCode: string,
+  jwt : string
+}

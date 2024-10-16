@@ -16,9 +16,6 @@ import { yupResolver } from '@hookform/resolvers/yup'
 // ** Hooks
 import { useSettings } from 'src/@core/hooks/useSettings'
 
-// ** Configs
-import ParseJwt from 'src/utils/ParseJwt'
-
 // ** Layout Import
 import BlankLayout from 'src/@core/layouts/BlankLayout'
 
@@ -27,16 +24,7 @@ import FooterIllustrationsV2 from 'src/views/pages/auth/FooterIllustrationsV2'
 import Loader from 'src/@core/components/spinner/loader'
 import { loginCredentialSchema } from 'src/constant'
 import { Autocomplete, Card } from '@mui/material'
-
-interface IdentiType {
-  firstName: string,
-  fatherName: string,
-  isDead: string,
-  lastName: string,
-  matched: string,
-  alive: string,
-  nationalCode: string
-}
+import { IdentType } from 'src/context/types'
 
 // ** Styled Components
 const LoginIllustrationWrapper = styled(Box)<BoxProps>(({ theme }) => ({
@@ -109,7 +97,7 @@ const SecondStep = () => {
   }
   
   const [subgroupOptions , setSubgroupOptions] = useState<string[]>(['کشور' , 'استان' , 'شهر' , 'اتحادیه' , 'واحد صنفی']);
-  const [additionalData , setAdditionalData] = useState<IdentiType>({
+  const [additionalData , setAdditionalData] = useState<IdentType>({
     firstName: '',
     fatherName: '',
     isDead: '',
@@ -148,7 +136,6 @@ const SecondStep = () => {
     const Data = await result.json();
     setLoading(false);
     document.cookie = `jwt = ${Data.jwt}; SameSite=None; Secure; Path=/`
-    console.log(ParseJwt(Data.jwt))
   }
 
   return (
@@ -237,14 +224,16 @@ const SecondStep = () => {
                   renderInput={(params) => <TextField {...params} label={'گروه بندی'} variant="standard" />}
                 />
                 <Autocomplete
-                  options={['کارمند' , 'مدیر']}
+                  options={['اتباع' , 'ایرانی']}
                   getOptionLabel={(option: any) => option}
                   value={state.role}
                   className='comboAcc'
                   onChange={(e, newValue) => setState({...state , role : newValue as string})}
-                  renderInput={(params) => <TextField {...params} label={'سمت'} variant="standard" />}
+                  renderInput={(params) => <TextField {...params} label={'ملیت'} variant="standard" />}
                 />
-                
+                {
+
+                }
                   {error && <p style={{color : '#ff3d3d' , textAlign : 'center'}}>{error}</p>} 
                   {loading ? 
                       <div style={{textAlign : 'center' , display : 'flex' , justifyContent : 'center' , margin : '-35px 0px 35px'}}>
