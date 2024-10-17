@@ -2,22 +2,36 @@ import { Grid } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { IdentTypeWithJwt } from 'src/context/types'
 import parseCookieString from 'src/utils/parseCookieString'
+import ParseJwt from 'src/utils/ParseJwt'
 
 const Profile = () => {
   const [userData , setUserData ] = useState<IdentTypeWithJwt>({
-    firstName: '',
-    fatherName: '',
-    isDead: '',
-    lastName: '',
-    matched: '',
-    alive: '',
-    nationalCode: '',
+    id: '',
+    nationalCode : "",
+    firstName : "",
+    fatherName : "",
+    lastName : "",
+    phoneNumber : "",
+    birthDate : "",
+    officiality : "دارای شناسه اتباع",
+    nationality : "ایرانی",
+    workPlace : "",
+    category : "اصناف",
+    subgroup : "",
+    image : "",
+    identPict : "",
+    isDead : 0,
+    matched : 1,
+    alive : 1,
+    role : "user",
     jwt : ''
   })
 
+
   useEffect(() => {
-    setUserData(parseCookieString(document.cookie))
-  } , [])
+    const {jwt} =  parseCookieString(document.cookie)
+    setUserData(ParseJwt(jwt))
+  }, []);
 
   return (
     <div>
@@ -36,9 +50,23 @@ const Profile = () => {
         نام پدر : <span>{userData.fatherName}</span>
         </Grid>
         <Grid item xs={12} sm={6} xl={2.4}>
-        کدملی : <span>{userData.nationalCode}</span>
+        تاریخ تولد : <span>{userData.birthDate as string}</span>
         </Grid>
-
+        <Grid item xs={12} sm={6} xl={2.4}>
+         ملیت : <span>{userData.nationality}</span>
+        </Grid>
+        <Grid item xs={12} sm={6} xl={2.4}>
+         محل کار: <span>{userData.workPlace}</span>
+        </Grid>
+        <Grid item xs={12} sm={6} xl={2.4}>
+        شماره تماس : <span>{userData.phoneNumber}</span>
+        </Grid>
+        <Grid item xs={12} sm={6} xl={2.4}>
+        سمت : <span>{userData.role == 'user' ? 'کارمند' : 'مدیر'}</span>
+        </Grid>
+        <Grid item xs={12} sm={6} xl={2.4}>
+        زیرگروه : <span>{userData.subgroup}</span>
+        </Grid>
       </Grid>
     </div>
   )

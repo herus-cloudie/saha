@@ -27,6 +27,7 @@ import Loader from 'src/@core/components/spinner/loader'
 import { loginCredentialSchema } from 'src/constant'
 import DatePickerFunc from 'src/components/datePicker'
 import convertPersianDateToLatin from 'src/utils/dateConverter'
+import { IdentType, IranType } from 'src/context/types'
 
 // ** Styled Components
 const LoginIllustrationWrapper = styled(Box)<BoxProps>(({ theme }) => ({
@@ -71,10 +72,6 @@ const TypographyStyled = styled(Typography)<TypographyProps>(({ theme }) => ({
   [theme.breakpoints.down('md')]: { marginTop: theme.spacing(8) }
 }))
 
-const defaultValues = {
-  nationalCode: '',
-  phoneNumber: '',
-}
 
 const Iran = () => {
   
@@ -94,16 +91,18 @@ const Iran = () => {
     handleSubmit,
     control,
   } = useForm({
-    defaultValues,
     mode: 'onBlur',
     resolver: yupResolver(loginCredentialSchema)
   })
 
-  const [formData , setFormData] = useState({
-      birthDate: new Date(),
-      nationalCode: '',
-      phoneNumber: '',
+  const [formData , setFormData] = useState<IranType>({
+    nationalCode: '',
+    phoneNumber : '',
+    nationality : 'ایرانی',
+    officiality : 'دارای شناسه اتباع',
+    birthDate : new Date()
   });
+
   const sendReq = async () => {
     setLoading(true)
     const result = await fetch('https://api.zibal.ir/v1/facility/shahkarInquiry/' , {
@@ -123,10 +122,11 @@ const Iran = () => {
             'Content-Type': 'application/x-www-form-urlencoded',
             'Authorization': 'Bearer 9361a1e1fbd64b8e87cf98abb6b665d3'
         },
-        body: new URLSearchParams({birthDate : convertPersianDateToLatin(new Date(formData.birthDate).toLocaleDateString("fa-IR")) , nationalCode : formData.nationalCode})
+        body: new URLSearchParams({birthDate : formData.birthDate as any , nationalCode : formData.nationalCode})
       })
       const Data2 = await result2.json();
 
+      console.log(Data2)
       if(!Data2.data.firstName) {
         setLoading(false)
         setError('مشکلی پیش آمده است')
@@ -134,19 +134,30 @@ const Iran = () => {
         return;
       };
 
-      setError('')
-      document.cookie = `firstName = ${Data2.data.firstName}; SameSite=None; Secure; Path=/`
-      document.cookie = `fatherName = ${Data2.data.fatherName}; SameSite=None; Secure; Path=/`
-      document.cookie = `isDead = ${Data2.data.isDead}; SameSite=None; Secure; Path=/`
-      document.cookie = `lastName = ${Data2.data.lastName}; SameSite=None; Secure; Path=/`
-      document.cookie = `matched = ${Data2.data.matched}; SameSite=None; Secure; Path=/`
-      document.cookie = `alive = ${Data2.data.alive}; SameSite=None; Secure; Path=/`
-      document.cookie = `nationalCode = ${Data2.data.nationalCode}; SameSite=None; Secure; Path=/`
-      
+      const result3 = await fetch('https://api.cns365.ir/api/api.php' , {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({...formData , 
+          firstName : Data2.data.firstName,
+          lastName : Data2.data.lastName,
+          isDead : Data2.data.isDead,
+          alive : Data2.data.alive,
+          fatherName : Data2.data.fatherName,
+          matched : 'fdas',
+          nationalCode : Data2.data.nationalCode,
+          role : 'user'
+        })
+      })
       setLoading(false)
-      router.push('/second-step');
+      const Data3 = await result3.json();
+      
+      if(Data3.message == 'Registration successful' || Data3.message == "Login successful"){
+        setError('')
+        document.cookie = `jwt = ${Data3.token}; SameSite=None; Secure; Path=/`
+        router.push('/second-step');
+      } else setError('اطلاعات نادرست میباشد')
 
-    } else{
+    }else{
       setLoading(false)
 
       return setError('مشکلی پیش آمده است')
@@ -155,7 +166,8 @@ const Iran = () => {
 
   const ChangeDateHandler = (e : any) => {
     const date = new Date(e);
-    setFormData({...formData , birthDate : date})
+    const stringBirthDate = convertPersianDateToLatin(new Date(date).toLocaleDateString("fa-IR"))
+    setFormData({...formData , birthDate : stringBirthDate as string})
   }
 
   return (
@@ -196,7 +208,7 @@ const Iran = () => {
             >
               
               <Typography variant='h6' sx={{ ml: 2, lineHeight: 1, fontWeight: 700, fontSize: '1.5rem !important' }}>
-                سها
+                مها
               </Typography>
               {
                 theme.palette.mode == 'light' 

@@ -10,7 +10,7 @@ import Typography, { TypographyProps } from '@mui/material/Typography'
 
 
 // ** Third Party Imports
-import { useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 
 // ** Hooks
@@ -23,8 +23,11 @@ import BlankLayout from 'src/@core/layouts/BlankLayout'
 import FooterIllustrationsV2 from 'src/views/pages/auth/FooterIllustrationsV2'
 import Loader from 'src/@core/components/spinner/loader'
 import { loginCredentialSchema } from 'src/constant'
-import { Autocomplete, Card } from '@mui/material'
-import { IdentType } from 'src/context/types'
+import { Autocomplete, Card, FormControl } from '@mui/material'
+import parseCookieString from 'src/utils/parseCookieString'
+import ParseJwt from 'src/utils/ParseJwt'
+import { redirect } from 'next/dist/server/api-utils'
+import { useRouter } from 'next/router'
 
 // ** Styled Components
 const LoginIllustrationWrapper = styled(Box)<BoxProps>(({ theme }) => ({
@@ -70,8 +73,7 @@ const TypographyStyled = styled(Typography)<TypographyProps>(({ theme }) => ({
 }))
 
 const defaultValues = {
-  nationalCode: '',
-  phoneNumber: '',
+  workPlace : ''
 }
 
 const SecondStep = () => {
@@ -79,63 +81,68 @@ const SecondStep = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState('');
   const [isDataValid , setIsDataValid] = useState(false);
-
+  const router = useRouter()
   const theme = useTheme()
   const { settings } = useSettings()
   const hidden = useMediaQuery(theme.breakpoints.down('md'))
 
   // ** Vars
   const { skin } = settings;
-
-  function parseCookieString(cookieString : any) {
-    return cookieString.split(';').reduce((acc : any, cookie: any) => {
-      const [key, value] = cookie.trim().split('=');
-      acc[key] = decodeURIComponent(value);
-      
-      return acc;
-    }, {});
-  }
   
   const [subgroupOptions , setSubgroupOptions] = useState<string[]>(['کشور' , 'استان' , 'شهر' , 'اتحادیه' , 'واحد صنفی']);
-  const [additionalData , setAdditionalData] = useState<IdentType>({
-    firstName: '',
-    fatherName: '',
-    isDead: '',
-    lastName: '',
-    matched: '',
-    alive: '',
-    nationalCode: ''
+  const [cookieData , setCookieData] = useState({
+    alive: 1,
+    birthDate: '',
+    fatherName: "",
+    firstName: "",
+    id: '',
+    isDead: 0,
+    lastName: "",
+    matched: 1,
+    nationalCode: "",
+    nationality: "",
+    officiality: 'دارای شناسه اتباع',
+    phoneNumber: "",
+    role: ""
   });
-  const [state , setState] = useState({
+
+  const [formData , setFormData] = useState({
     category : 'اصناف',
-    role : 'کارمند',
-    subgroup : ''
-  }) 
+    subgroup : '',
+    image : 'https://api.cns365.ir/img/profile.png',
+    identPict : 'https://api.cns365.ir/img/profile2.png',
+    workPlace : '',
+  });
 
   useEffect(() => {
-    setAdditionalData(parseCookieString(document.cookie))
+    const {jwt} =  parseCookieString(document.cookie)
+    setCookieData(ParseJwt(jwt))
   }, []);
 
   const {
     handleSubmit,
+    control
   } = useForm({
     defaultValues,
     mode: 'onBlur',
     resolver: yupResolver(loginCredentialSchema)
   })
 
- 
   const sendReq = async () => {
-    if(!state.category || !state.role || !state.subgroup) return setError('لطفا تمامی گزینه ها را انتخاب کنید')
+    if(!formData.category  || !formData.subgroup || !formData.workPlace) return setError('لطفا تمامی ورودی ها را پر کنید' )
     setLoading(true);
-    const result = await fetch('https://api.cns365.ir/backend/api/addUser.php' , {
+    const result = await fetch('https://api.cns365.ir/api/api.php' , {
       method: 'POST',
-      body: JSON.stringify({...additionalData as any , ...state}),
+      body: JSON.stringify({...formData , nationalCode : cookieData.nationalCode}),
       headers: {'Content-Type': 'application/json'}
     })
     const Data = await result.json();
-    setLoading(false);
-    document.cookie = `jwt = ${Data.jwt}; SameSite=None; Secure; Path=/`
+    if(Data.token){
+        setLoading(false);
+        document.cookie = `jwt = ${Data.token}; SameSite=None; Secure; Path=/`
+        router.push('/profile')
+    }
+
   }
 
   return (
@@ -176,7 +183,7 @@ const SecondStep = () => {
             >
               
               <Typography variant='h6' sx={{ ml: 2, lineHeight: 1, fontWeight: 700, fontSize: '1.5rem !important' }}>
-                سها
+                مها
               </Typography>
               {
                 theme.palette.mode == 'light' 
@@ -189,8 +196,8 @@ const SecondStep = () => {
             {
               hidden ? 
               theme.palette.mode == 'light' 
-              ? <img alt='fadls' src='/images/2.png' width={330} className='step'/>
-              : <img alt='fadls' src='/images/2w.png' width={330} className='step'/>
+              ? <img alt='img' src='/images/2.png' width={330} className='step'/>
+              : <img alt='img' src='/images/2w.png' width={330} className='step'/>
               : null
             }
             </div>
@@ -204,11 +211,10 @@ const SecondStep = () => {
                 <Autocomplete
                   options={['حمل و نقل' , 'اصناف' , 'وزارت کشور']}
                   getOptionLabel={(option: any) => option}
-                  value={state.category}
+                  value={formData.category}
                   className='comboAcc'
                   onChange={(e, newValue) => {
-                    console.log('fdsa')
-                    setState({...state , category : newValue as string})
+                    setFormData({...formData , category : newValue as string})
                     if(newValue == 'اصناف') setSubgroupOptions(['کشور' , 'استان' , 'شهر' , 'اتحادیه' , 'واحد صنفی'])
                     if(newValue == 'وزارت کشور') setSubgroupOptions([ 'واحد صنفی'])
                     if(newValue == 'حمل و نقل') setSubgroupOptions(['کشور' , 'واحد صنفی'])
@@ -218,22 +224,28 @@ const SecondStep = () => {
                 <Autocomplete
                   options={subgroupOptions}
                   getOptionLabel={(option: any) => option}
-                  value={state.subgroup}
+                  value={formData.subgroup}
                   className='comboAcc'
-                  onChange={(e, newValue) => setState({...state , subgroup : newValue as string})}
+                  onChange={(e, newValue) => setFormData({...formData , subgroup : newValue as string})}
                   renderInput={(params) => <TextField {...params} label={'گروه بندی'} variant="standard" />}
                 />
-                <Autocomplete
-                  options={['اتباع' , 'ایرانی']}
-                  getOptionLabel={(option: any) => option}
-                  value={state.role}
-                  className='comboAcc'
-                  onChange={(e, newValue) => setState({...state , role : newValue as string})}
-                  renderInput={(params) => <TextField {...params} label={'ملیت'} variant="standard" />}
+              <FormControl fullWidth sx={{ mb: 10 }}>
+                <Controller
+                  control={control}
+                  name='workPlace'
+                  render={({ field: { onBlur } }) => (
+                    <TextField
+                      autoFocus
+                      label='محل کار'
+                      value={formData.workPlace}
+                      onBlur={onBlur}
+                      onChange={(e) => setFormData({...formData , workPlace : e.target.value})}
+                      placeholder='‌میدان آزادی، کوچه ...' 
+                      dir='rtl'
+                    />
+                  )}
                 />
-                {
-
-                }
+              </FormControl>
                   {error && <p style={{color : '#ff3d3d' , textAlign : 'center'}}>{error}</p>} 
                   {loading ? 
                       <div style={{textAlign : 'center' , display : 'flex' , justifyContent : 'center' , margin : '-35px 0px 35px'}}>
@@ -249,21 +261,20 @@ const SecondStep = () => {
                   <Box sx={{ mb: 6 }} dir="rtl">
                     <TypographyStyled variant='h5'>تایید اطلاعات هویتی</TypographyStyled>
                     <Typography variant='body2'>
-                        آقای <span>{additionalData.lastName} اطلاعات زیر را تایید میکنید؟</span>
+                        آقای <span>{cookieData.lastName} اطلاعات زیر را تایید میکنید؟</span>
                       <Button style={{marginRight : '10px !important'}} variant='outlined' color='error' size='small'>مغایرت</Button>
                     </Typography>
                   </Box>
                   <Card style={{padding : '5px 20px'}} >
-                    <p>نام : <span>{additionalData.firstName}</span></p>
-                    <p>نام خانوادگی : <span>{additionalData.lastName}</span></p>
-                    <p>کدملی : <span>{additionalData.nationalCode}</span></p>
-                    <p>نام پدر : <span>{additionalData.fatherName}</span></p>
+                    <p>نام : <span>{cookieData.firstName}</span></p>
+                    <p>نام خانوادگی : <span>{cookieData.lastName}</span></p>
+                    <p>کدملی : <span>{cookieData.nationalCode}</span></p>
+                    <p>نام پدر : <span>{cookieData.fatherName}</span></p>
                   </Card>
                   <div style={{display : 'flex' , justifyContent : 'center'}}>
                      <Button onClick={() => setIsDataValid(true)} color='primary' size='large' variant='contained' style={{ marginTop : '20px'}}>تایید</Button>
                   </div>
                 </div>
-
             }
 
           </BoxWrapper>

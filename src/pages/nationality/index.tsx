@@ -10,8 +10,6 @@ import useMediaQuery from '@mui/material/useMediaQuery'
 import { styled, useTheme } from '@mui/material/styles'
 import Typography, { TypographyProps } from '@mui/material/Typography'
 
-// ** Third Party Imports
-import { useForm, Controller } from 'react-hook-form'
 
 // ** Hooks
 import { useSettings } from 'src/@core/hooks/useSettings'
@@ -22,7 +20,6 @@ import BlankLayout from 'src/@core/layouts/BlankLayout'
 // ** Demo Imports
 import FooterIllustrationsV2 from 'src/views/pages/auth/FooterIllustrationsV2'
 import { useRouter } from 'next/navigation'
-import Loader from 'src/@core/components/spinner/loader'
 import { Autocomplete } from '@mui/material'
 
 // ** Styled Components
@@ -67,7 +64,6 @@ const TypographyStyled = styled(Typography)<TypographyProps>(({ theme }) => ({
   marginBottom: theme.spacing(1.5),
   [theme.breakpoints.down('md')]: { marginTop: theme.spacing(8) }
 }))
-
 
 const LoginPage = () => {
   
@@ -123,7 +119,7 @@ const LoginPage = () => {
             >
               
               <Typography variant='h6' sx={{ ml: 2, lineHeight: 1, fontWeight: 700, fontSize: '1.5rem !important' }}>
-                سها
+                مها
               </Typography>
               {
                 theme.palette.mode == 'light' 

@@ -26,22 +26,52 @@ export type AuthValuesType = {
 }
 
 export interface IdentType {
+  birthDate: string | Date,
+  nationalCode: string,
   firstName: string,
   fatherName: string,
-  isDead: string,
+  isDead: boolean | number,
+  officiality: 'دارای شناسه اتباع' | 'بدون شناسه اتباع',
   lastName: string,
-  matched: string,
-  alive: string,
-  nationalCode: string
+  matched: boolean | number,
+  alive: boolean | number,
+  phoneNumber : string,
+  workPlace ?: string,
+  nationality : 'ایرانی' | 'اتباع',
+  category ?: 'اصناف' | 'حمل و نقل' | 'گردشگری',
+  role ?: 'user' | 'manager',
+  subgroup ?:string,
+  image ?:string,
+  identPict ?:string,
 }
 
 export interface IdentTypeWithJwt {
+  birthDate: string | Date,
+  nationalCode: string,
   firstName: string,
   fatherName: string,
-  isDead: string,
+  isDead: boolean | number,
+  officiality: 'دارای شناسه اتباع' | 'بدون شناسه اتباع',
   lastName: string,
-  matched: string,
-  alive: string,
+  matched: boolean | number,
+  alive: boolean | number,
+  phoneNumber : string,
+  workPlace : string,
+  nationality : 'ایرانی' | 'اتباع',
+  category : 'اصناف' | 'حمل و نقل' | 'گردشگری',
+  role : 'user' | 'manager',
+  subgroup :string,
+  image :string,
+  identPict :string,
+  jwt : string,
+  id ?: number | string
+}
+
+
+export interface IranType{
   nationalCode: string,
-  jwt : string
+  phoneNumber : string,
+  nationality : 'ایرانی' | 'اتباع',
+  officiality: 'دارای شناسه اتباع' | 'بدون شناسه اتباع',
+  birthDate : string | Date,
 }
