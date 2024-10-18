@@ -191,7 +191,7 @@ const TimelineCenter = () => {
             Weekly review of freshly prepared design for our new application.
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Avatar src='/images/avatars/1.png' sx={{ width: '2rem', height: '2rem', mr: 2 }} />
+            <Avatar src='https://api.cns365.ir/img/profile.png' sx={{ width: '2rem', height: '2rem', mr: 2 }} />
             <Typography variant='subtitle2' sx={{ fontWeight: 600 }}>
               John Doe (Client)
             </Typography>

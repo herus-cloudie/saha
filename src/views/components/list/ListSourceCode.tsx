@@ -200,7 +200,7 @@ const ListSecondary = () => {
       </ListItem>
       <ListItem>
         <ListItemAvatar>
-          <Avatar src='/images/avatars/1.png' alt='Alfred Copeland' sx={{ height: 36, width: 36 }} />
+          <Avatar src='https://api.cns365.ir/img/profile.png' alt='Alfred Copeland' sx={{ height: 36, width: 36 }} />
         </ListItemAvatar>
         <ListItemText primary='Alfred Copeland' secondary='Pudding pie tiramisu.' />
         <ListItemSecondaryAction>
@@ -483,7 +483,7 @@ const ListUsers = () => {
       </ListItem>
       <ListItem>
         <ListItemAvatar>
-          <Avatar src='/images/avatars/1.png' alt='Alfred Copeland' />
+          <Avatar src='https://api.cns365.ir/img/profile.png' alt='Alfred Copeland' />
         </ListItemAvatar>
         <div>
           <ListItemText primary='Alfred Copeland' />
@@ -611,7 +611,7 @@ const ListWithCheckbox = () => {
       <ListItem disablePadding>
         <ListItemButton onClick={handleToggle(1)}>
           <ListItemAvatar>
-            <Avatar src='/images/avatars/1.png' alt='Alfred Copeland' sx={{ height: 32, width: 32 }} />
+            <Avatar src='https://api.cns365.ir/img/profile.png' alt='Alfred Copeland' sx={{ height: 32, width: 32 }} />
           </ListItemAvatar>
           <ListItemText id='checkbox-list-label-1' primary='Alfred Copeland' />
           <ListItemSecondaryAction>
@@ -798,7 +798,7 @@ const ListItemSelected = () => {
       <ListItem disablePadding>
         <ListItemButton selected={selectedIndex === 1} onClick={() => handleListItemClick(1)}>
           <ListItemAvatar>
-            <Avatar src='/images/avatars/1.png' alt='Alfred Copeland' sx={{ height: 32, width: 32 }} />
+            <Avatar src='https://api.cns365.ir/img/profile.png' alt='Alfred Copeland' sx={{ height: 32, width: 32 }} />
           </ListItemAvatar>
           <ListItemText primary='Alfred Copeland' />
           <ListItemSecondaryAction>
@@ -939,7 +939,7 @@ const ListItemSelected = () => {
       <ListItem disablePadding>
         <ListItemButton selected={selectedIndex === 1} onClick={() => handleListItemClick(1)}>
           <ListItemAvatar>
-            <Avatar src='/images/avatars/1.png' alt='Alfred Copeland' sx={{ height: 32, width: 32 }} />
+            <Avatar src='https://api.cns365.ir/img/profile.png' alt='Alfred Copeland' sx={{ height: 32, width: 32 }} />
           </ListItemAvatar>
           <ListItemText primary='Alfred Copeland' />
           <ListItemSecondaryAction>
@@ -1108,7 +1108,7 @@ const ListSecondary = () => {
       </ListItem>
       <ListItem>
         <ListItemAvatar>
-          <Avatar src='/images/avatars/1.png' alt='Alfred Copeland' sx={{ height: 36, width: 36 }} />
+          <Avatar src='https://api.cns365.ir/img/profile.png' alt='Alfred Copeland' sx={{ height: 36, width: 36 }} />
         </ListItemAvatar>
         <ListItemText primary='Alfred Copeland' secondary='Pudding pie tiramisu.' />
         <ListItemSecondaryAction>
@@ -1391,7 +1391,7 @@ const ListUsers = () => {
       </ListItem>
       <ListItem>
         <ListItemAvatar>
-          <Avatar src='/images/avatars/1.png' alt='Alfred Copeland' />
+          <Avatar src='https://api.cns365.ir/img/profile.png' alt='Alfred Copeland' />
         </ListItemAvatar>
         <div>
           <ListItemText primary='Alfred Copeland' />
@@ -1624,7 +1624,7 @@ const ListWithCheckbox = () => {
       <ListItem disablePadding>
         <ListItemButton onClick={handleToggle(1)}>
           <ListItemAvatar>
-            <Avatar src='/images/avatars/1.png' alt='Alfred Copeland' sx={{ height: 32, width: 32 }} />
+            <Avatar src='https://api.cns365.ir/img/profile.png' alt='Alfred Copeland' sx={{ height: 32, width: 32 }} />
           </ListItemAvatar>
           <ListItemText id='checkbox-list-label-1' primary='Alfred Copeland' />
           <ListItemSecondaryAction>

@@ -98,7 +98,7 @@ const EcommerceActivityTimeline = () => {
                 Invoices have been paid to the company.
               </Typography>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Avatar src='/images/avatars/1.png' sx={{ mr: 2.5, width: 24, height: 24 }} />
+                <Avatar src='https://api.cns365.ir/img/profile.png' sx={{ mr: 2.5, width: 24, height: 24 }} />
                 <Typography variant='body2' sx={{ fontWeight: 600, fontSize: '0.875rem' }}>
                   John Doe (Client)
                 </Typography>

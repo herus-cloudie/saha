@@ -97,7 +97,7 @@ const UserDropdown = (props: Props) => {
           alt='John Doe'
           onClick={handleDropdownOpen}
           sx={{ width: 40, height: 40 }}
-          src='/images/avatars/1.png'
+          src='https://api.cns365.ir/img/profile.png'
         />
       </Badge>
       <Menu
@@ -118,7 +118,7 @@ const UserDropdown = (props: Props) => {
                 horizontal: 'right'
               }}
             >
-              <Avatar alt='حامد عسگری' src='/images/avatars/1.png' sx={{ width: '2.5rem', height: '2.5rem' }} />
+              <Avatar alt='حامد عسگری' src='https://api.cns365.ir/img/profile.png' sx={{ width: '2.5rem', height: '2.5rem' }} />
             </Badge>
             <Box sx={{ display: 'flex', ml: 3, alignItems: 'flex-start', flexDirection: 'column' }}>
               <Typography sx={{ fontWeight: 600 }}> حامد عسگری</Typography>

@@ -42,7 +42,7 @@ import Avatar from '@mui/material/Avatar'
 const ChipsArray = () => {
   // ** State
   const [chipData, setChipData] = useState([
-    { key: 0, avatar: '/images/avatars/1.png', avatarAlt: 'User Avatar', label: 'Norman Santiago' },
+    { key: 0, avatar: 'https://api.cns365.ir/img/profile.png', avatarAlt: 'User Avatar', label: 'Norman Santiago' },
     { key: 1, avatar: '/images/avatars/2.png', avatarAlt: 'User Avatar', label: 'Cecelia Tucker' },
     { key: 2, label: 'Max Burns' },
     { key: 3, avatar: '/images/avatars/4.png', avatarAlt: 'User Avatar', label: 'Ellen Nguyen' },
@@ -559,7 +559,7 @@ interface ChipData {
 const ChipsArray = () => {
   // ** State
   const [chipData, setChipData] = useState<ChipData[]>([
-    { key: 0, avatar: '/images/avatars/1.png', avatarAlt: 'User Avatar', label: 'Norman Santiago' },
+    { key: 0, avatar: 'https://api.cns365.ir/img/profile.png', avatarAlt: 'User Avatar', label: 'Norman Santiago' },
     { key: 1, avatar: '/images/avatars/2.png', avatarAlt: 'User Avatar', label: 'Cecelia Tucker' },
     { key: 2, label: 'Max Burns' },
     { key: 3, avatar: '/images/avatars/4.png', avatarAlt: 'User Avatar', label: 'Ellen Nguyen' },

@@ -28,7 +28,7 @@ import { loginCredentialSchema } from 'src/constant'
 import DatePickerFunc from 'src/components/datePicker'
 import convertPersianDateToLatin from 'src/utils/dateConverter'
 import { Autocomplete } from '@mui/material'
-import { IdentType } from 'src/context/types'
+import { IdentType, IdentTypeWithJwt } from 'src/context/types'
 
 // ** Styled Components
 const LoginIllustrationWrapper = styled(Box)<BoxProps>(({ theme }) => ({
@@ -90,7 +90,8 @@ const defaultValues = {
   birthDate : new Date(),
   category : 'اصناف',
   role : 'user',
-  subgroup : ''
+  subgroup : '',
+  address : ''
 }
 
 const Iran = () => {
@@ -117,7 +118,7 @@ const Iran = () => {
   })
   const [subgroupOptions , setSubgroupOptions] = useState<string[]>(['کشور' , 'استان' , 'شهر' , 'اتحادیه' , 'واحد صنفی']);
 
-  const [formData , setFormData] = useState<IdentType>({
+  const [formData , setFormData] = useState<IdentTypeWithJwt>({
     firstName: '',
     fatherName: '',
     isDead: false,
@@ -129,16 +130,22 @@ const Iran = () => {
     identPict : 'https://api.cns365.ir/img/profile2.png',
     phoneNumber : '',
     workPlace : '',
-    nationality : 'ایرانی',
+    nationality : 'اتباع',
     officiality : 'دارای شناسه اتباع',
     birthDate : new Date(),
     category : 'اصناف',
     role : 'user',
-    subgroup : ''
+    subgroup : '',
+    postal_code : '',
+    address : '',
+    jwt : ''
   });
 
-  const sendReq = async () => {
-    if(!formData.firstName || !formData.lastName || !formData.fatherName || !formData.nationalCode || !formData.phoneNumber || !formData.workPlace || !formData.subgroup) return setError('تمامی بخش ها را کامل کنید')
+  const sendReq = async () => { 
+     console.log(formData)
+    if(!formData.firstName || !formData.lastName || !formData.fatherName || !formData.nationalCode || !formData.phoneNumber || !formData.workPlace || !formData.subgroup || !formData.address) return setError('تمامی بخش ها را کامل کنید')
+    setError('')
+
     setLoading(true);
     const result = await fetch('https://api.cns365.ir/api/api.php' , {
       method: 'POST',
@@ -146,6 +153,11 @@ const Iran = () => {
       headers: {'Content-Type': 'application/json'}
     })
     const Data = await result.json();
+    if(Data.token) {
+      
+      router.push('/second-step')
+    }
+   
     setLoading(false);
   }
 
@@ -262,6 +274,22 @@ const Iran = () => {
                         </FormControl>
                         <FormControl fullWidth sx={{ mb: 4 }}>
                             <Controller
+                            name='fatherName'
+                            control={control}
+                            render={({ field: { onBlur } }) => (
+                                <TextField
+                                autoFocus
+                                label='نام پدر'
+                                value={formData.fatherName}
+                                onBlur={onBlur}
+                                onChange={(e) => setFormData({...formData , fatherName : e.target.value})}
+                                placeholder=''
+                                />
+                            )}
+                            />
+                        </FormControl>
+                        <FormControl fullWidth sx={{ mb: 4 }}>
+                            <Controller
                             name='nationalCode'
                             control={control}
                             render={({ field: { onBlur } }) => (
@@ -303,6 +331,22 @@ const Iran = () => {
                                 value={formData.phoneNumber}
                                 onBlur={onBlur}
                                 onChange={(e) => setFormData({...formData , phoneNumber : e.target.value})}
+                                placeholder=''
+                                />
+                            )}
+                            />
+                        </FormControl>
+                        <FormControl fullWidth sx={{ mb: 4 }}>
+                            <Controller
+                            name='address'
+                            control={control}
+                            render={({ field: { onBlur } }) => (
+                                <TextField
+                                autoFocus
+                                label='محل سکونت'
+                                value={formData.address}
+                                onBlur={onBlur}
+                                onChange={(e) => setFormData({...formData , address : e.target.value})}
                                 placeholder=''
                                 />
                             )}

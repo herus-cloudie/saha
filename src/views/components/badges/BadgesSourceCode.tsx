@@ -8,16 +8,16 @@ const BadgesAlignment = () => {
   return (
     <div className='demo-space-x'>
       <Badge color='primary' variant='dot'>
-        <Avatar src='/images/avatars/1.png' alt='User Avatar' />
+        <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' />
       </Badge>
       <Badge color='primary' variant='dot' anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
-        <Avatar src='/images/avatars/1.png' alt='User Avatar' />
+        <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' />
       </Badge>
       <Badge color='primary' variant='dot' anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}>
-        <Avatar src='/images/avatars/1.png' alt='User Avatar' />
+        <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' />
       </Badge>
       <Badge color='primary' variant='dot' anchorOrigin={{ vertical: 'top', horizontal: 'left' }}>
-        <Avatar src='/images/avatars/1.png' alt='User Avatar' />
+        <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' />
       </Badge>
     </div>
   )
@@ -38,22 +38,22 @@ const BadgesBasic = () => {
   return (
     <div className='demo-space-x'>
       <Badge badgeContent={4} color='primary'>
-        <Avatar src='/images/avatars/1.png' alt='User Avatar' />
+        <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' />
       </Badge>
       <Badge badgeContent={4} color='secondary'>
-        <Avatar src='/images/avatars/1.png' alt='User Avatar' />
+        <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' />
       </Badge>
       <Badge badgeContent={4} color='success'>
-        <Avatar src='/images/avatars/1.png' alt='User Avatar' />
+        <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' />
       </Badge>
       <Badge badgeContent={4} color='error'>
-        <Avatar src='/images/avatars/1.png' alt='User Avatar' />
+        <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' />
       </Badge>
       <Badge badgeContent={4} color='warning'>
-        <Avatar src='/images/avatars/1.png' alt='User Avatar' />
+        <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' />
       </Badge>
       <Badge badgeContent={4} color='info'>
-        <Avatar src='/images/avatars/1.png' alt='User Avatar' />
+        <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' />
       </Badge>
     </div>
   )
@@ -75,10 +75,10 @@ const BadgesDot = () => {
   return (
     <div className='demo-space-x'>
       <Badge variant='dot' color='primary'>
-        <Avatar src='/images/avatars/1.png' alt='User Avatar' />
+        <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' />
       </Badge>
       <Badge variant='dot' color='secondary'>
-        <Avatar src='/images/avatars/1.png' alt='User Avatar' />
+        <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' />
       </Badge>
       <Badge variant='dot' color='error'>
         <Typography>Typography</Typography>
@@ -110,13 +110,13 @@ const BadgesMaxValue = () => {
   return (
     <Wrapper className='demo-space-x'>
       <Badge badgeContent={99} color='primary'>
-        <Avatar src='/images/avatars/1.png' alt='User Avatar' />
+        <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' />
       </Badge>
       <Badge badgeContent={100} color='primary'>
-        <Avatar src='/images/avatars/1.png' alt='User Avatar' />
+        <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' />
       </Badge>
       <Badge badgeContent={1000} max={999} color='primary'>
-        <Avatar src='/images/avatars/1.png' alt='User Avatar' />
+        <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' />
       </Badge>
     </Wrapper>
   )
@@ -147,22 +147,22 @@ const BadgesLight = () => {
   return (
     <Wrapper className='demo-space-x'>
       <CustomBadge skin='light' color='primary' badgeContent={4}>
-        <Avatar src='/images/avatars/1.png' alt='User Avatar' />
+        <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' />
       </CustomBadge>
       <CustomBadge skin='light' color='secondary' badgeContent={4}>
-        <Avatar src='/images/avatars/1.png' alt='User Avatar' />
+        <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' />
       </CustomBadge>
       <CustomBadge skin='light' color='success' badgeContent={4}>
-        <Avatar src='/images/avatars/1.png' alt='User Avatar' />
+        <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' />
       </CustomBadge>
       <CustomBadge skin='light' color='error' badgeContent={4}>
-        <Avatar src='/images/avatars/1.png' alt='User Avatar' />
+        <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' />
       </CustomBadge>
       <CustomBadge skin='light' color='warning' badgeContent={4}>
-        <Avatar src='/images/avatars/1.png' alt='User Avatar' />
+        <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' />
       </CustomBadge>
       <CustomBadge skin='light' color='info' badgeContent={4}>
-        <Avatar src='/images/avatars/1.png' alt='User Avatar' />
+        <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' />
       </CustomBadge>
     </Wrapper>
   )
@@ -212,7 +212,7 @@ const BadgesVisibility = () => {
     <Fragment>
       <Wrapper className='demo-space-x'>
         <Badge badgeContent={count} color='primary'>
-          <Avatar src='/images/avatars/1.png' alt='User Avatar' />
+          <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' />
         </Badge>
         <ButtonGroup size='small'>
           <Button aria-label='reduce' onClick={() => setCount(Math.max(count - 1, 0))}>
@@ -226,7 +226,7 @@ const BadgesVisibility = () => {
 
       <Wrapper className='demo-space-x'>
         <Badge variant='dot' color='primary' invisible={invisible}>
-          <Avatar src='/images/avatars/1.png' alt='User Avatar' />
+          <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' />
         </Badge>
         <FormControlLabel
           label='Show Badge'
@@ -260,16 +260,16 @@ const BadgesOverlap = () => {
   return (
     <Wrapper className='demo-space-x'>
       <Badge color='primary' badgeContent=' '>
-        <Avatar src='/images/avatars/1.png' alt='User Avatar' variant='square' />
+        <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' variant='square' />
       </Badge>
       <Badge color='primary' variant='dot'>
-        <Avatar src='/images/avatars/1.png' alt='User Avatar' variant='square' />
+        <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' variant='square' />
       </Badge>
       <Badge color='primary' overlap='circular' badgeContent=' '>
-        <Avatar src='/images/avatars/1.png' alt='User Avatar' />
+        <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' />
       </Badge>
       <Badge color='primary' overlap='circular' variant='dot'>
-        <Avatar src='/images/avatars/1.png' alt='User Avatar' />
+        <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' />
       </Badge>
     </Wrapper>
   )
@@ -290,22 +290,22 @@ const BadgesBasic = () => {
   return (
     <div className='demo-space-x'>
       <Badge badgeContent={4} color='primary'>
-        <Avatar src='/images/avatars/1.png' alt='User Avatar' />
+        <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' />
       </Badge>
       <Badge badgeContent={4} color='secondary'>
-        <Avatar src='/images/avatars/1.png' alt='User Avatar' />
+        <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' />
       </Badge>
       <Badge badgeContent={4} color='success'>
-        <Avatar src='/images/avatars/1.png' alt='User Avatar' />
+        <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' />
       </Badge>
       <Badge badgeContent={4} color='error'>
-        <Avatar src='/images/avatars/1.png' alt='User Avatar' />
+        <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' />
       </Badge>
       <Badge badgeContent={4} color='warning'>
-        <Avatar src='/images/avatars/1.png' alt='User Avatar' />
+        <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' />
       </Badge>
       <Badge badgeContent={4} color='info'>
-        <Avatar src='/images/avatars/1.png' alt='User Avatar' />
+        <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' />
       </Badge>
     </div>
   )
@@ -326,16 +326,16 @@ const BadgesAlignment = () => {
   return (
     <div className='demo-space-x'>
       <Badge color='primary' variant='dot'>
-        <Avatar src='/images/avatars/1.png' alt='User Avatar' />
+        <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' />
       </Badge>
       <Badge color='primary' variant='dot' anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
-        <Avatar src='/images/avatars/1.png' alt='User Avatar' />
+        <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' />
       </Badge>
       <Badge color='primary' variant='dot' anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}>
-        <Avatar src='/images/avatars/1.png' alt='User Avatar' />
+        <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' />
       </Badge>
       <Badge color='primary' variant='dot' anchorOrigin={{ vertical: 'top', horizontal: 'left' }}>
-        <Avatar src='/images/avatars/1.png' alt='User Avatar' />
+        <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' />
       </Badge>
     </div>
   )
@@ -357,10 +357,10 @@ const BadgesDot = () => {
   return (
     <div className='demo-space-x'>
       <Badge variant='dot' color='primary'>
-        <Avatar src='/images/avatars/1.png' alt='User Avatar' />
+        <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' />
       </Badge>
       <Badge variant='dot' color='secondary'>
-        <Avatar src='/images/avatars/1.png' alt='User Avatar' />
+        <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' />
       </Badge>
       <Badge variant='dot' color='error'>
         <Typography>Typography</Typography>
@@ -392,16 +392,16 @@ const BadgesOverlap = () => {
   return (
     <Wrapper className='demo-space-x'>
       <Badge color='primary' badgeContent=' '>
-        <Avatar src='/images/avatars/1.png' alt='User Avatar' variant='square' />
+        <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' variant='square' />
       </Badge>
       <Badge color='primary' variant='dot'>
-        <Avatar src='/images/avatars/1.png' alt='User Avatar' variant='square' />
+        <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' variant='square' />
       </Badge>
       <Badge color='primary' overlap='circular' badgeContent=' '>
-        <Avatar src='/images/avatars/1.png' alt='User Avatar' />
+        <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' />
       </Badge>
       <Badge color='primary' overlap='circular' variant='dot'>
-        <Avatar src='/images/avatars/1.png' alt='User Avatar' />
+        <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' />
       </Badge>
     </Wrapper>
   )
@@ -430,13 +430,13 @@ const BadgesMaxValue = () => {
   return (
     <Wrapper className='demo-space-x'>
       <Badge badgeContent={99} color='primary'>
-        <Avatar src='/images/avatars/1.png' alt='User Avatar' />
+        <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' />
       </Badge>
       <Badge badgeContent={100} color='primary'>
-        <Avatar src='/images/avatars/1.png' alt='User Avatar' />
+        <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' />
       </Badge>
       <Badge badgeContent={1000} max={999} color='primary'>
-        <Avatar src='/images/avatars/1.png' alt='User Avatar' />
+        <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' />
       </Badge>
     </Wrapper>
   )
@@ -486,7 +486,7 @@ const BadgesVisibility = () => {
     <Fragment>
       <Wrapper className='demo-space-x'>
         <Badge badgeContent={count} color='primary'>
-          <Avatar src='/images/avatars/1.png' alt='User Avatar' />
+          <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' />
         </Badge>
         <ButtonGroup size='small'>
           <Button aria-label='reduce' onClick={() => setCount(Math.max(count - 1, 0))}>
@@ -500,7 +500,7 @@ const BadgesVisibility = () => {
 
       <Wrapper className='demo-space-x'>
         <Badge variant='dot' color='primary' invisible={invisible}>
-          <Avatar src='/images/avatars/1.png' alt='User Avatar' />
+          <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' />
         </Badge>
         <FormControlLabel
           label='Show Badge'
@@ -536,22 +536,22 @@ const BadgesLight = () => {
   return (
     <Wrapper className='demo-space-x'>
       <CustomBadge skin='light' color='primary' badgeContent={4}>
-        <Avatar src='/images/avatars/1.png' alt='User Avatar' />
+        <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' />
       </CustomBadge>
       <CustomBadge skin='light' color='secondary' badgeContent={4}>
-        <Avatar src='/images/avatars/1.png' alt='User Avatar' />
+        <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' />
       </CustomBadge>
       <CustomBadge skin='light' color='success' badgeContent={4}>
-        <Avatar src='/images/avatars/1.png' alt='User Avatar' />
+        <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' />
       </CustomBadge>
       <CustomBadge skin='light' color='error' badgeContent={4}>
-        <Avatar src='/images/avatars/1.png' alt='User Avatar' />
+        <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' />
       </CustomBadge>
       <CustomBadge skin='light' color='warning' badgeContent={4}>
-        <Avatar src='/images/avatars/1.png' alt='User Avatar' />
+        <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' />
       </CustomBadge>
       <CustomBadge skin='light' color='info' badgeContent={4}>
-        <Avatar src='/images/avatars/1.png' alt='User Avatar' />
+        <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' />
       </CustomBadge>
     </Wrapper>
   )

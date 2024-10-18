@@ -56,6 +56,8 @@ export interface IdentTypeWithJwt {
   matched: boolean | number,
   alive: boolean | number,
   phoneNumber : string,
+  postal_code : string,
+  address : string,
   workPlace : string,
   nationality : 'ایرانی' | 'اتباع',
   category : 'اصناف' | 'حمل و نقل' | 'گردشگری',

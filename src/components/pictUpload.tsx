@@ -1,5 +1,5 @@
 
-import { useState, ElementType, ChangeEvent } from 'react'
+import { useState, ElementType, ChangeEvent, useEffect } from 'react'
 
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
@@ -11,6 +11,8 @@ import Button, { ButtonProps } from '@mui/material/Button'
 import CardHeader from '@mui/material/CardHeader'
 import CardContent from '@mui/material/CardContent'
 import Loader from 'src/@core/components/spinner/loader'
+import { IdentTypeWithJwt } from 'src/context/types'
+import Icon from 'src/@core/components/icon'
 
 const ImgStyled = styled('img')(({ theme }) => ({
   width: 120,
@@ -36,7 +38,7 @@ const ResetButtonStyled = styled(Button)<ButtonProps>(({ theme }) => ({
   }
 }))
 
-const PictUpload = ({dialogFunc , areImagesFilled} : {dialogFunc : any , areImagesFilled : any}) => {
+const PictUpload = ({dialogFunc , userData , areImagesFilled} : {dialogFunc : any , userData: IdentTypeWithJwt , areImagesFilled : any}) => {
   const [imgFront, setImgFront] = useState<string>('/images/ncard.png');
   const [imgBack, setImgBack] = useState<string>('/images/ncard.png');
   const [frontData , setFrontData] = useState<any>();
@@ -104,6 +106,7 @@ const PictUpload = ({dialogFunc , areImagesFilled} : {dialogFunc : any , areImag
   
       const responseData = await sendPictures.json();
       dialogFunc(responseData); 
+
     } catch (error) {
       console.error('Error in sendIdentFunc:', error);
       dialogFunc({
@@ -111,60 +114,40 @@ const PictUpload = ({dialogFunc , areImagesFilled} : {dialogFunc : any , areImag
         result: 21,
         data: undefined
       });
+
     } finally {
       setLoading(false);
     }
   };
   
-
-
+  const [state , setState ] = useState(false)
+  useEffect(() => {
+    if(!userData.image) return
+    setState(true)
+  } , [userData.image])
 
   return (
     <Grid container spacing={6} style={{ marginRight: '0px', marginTop: '10px' }}>
-      <Grid item xs={12}>
+      {
+        !state ?
+        <>
+          <Grid item xs={12}>
 
-        <Grid item xs={12}>
-            <div style={{display : 'flex' , justifyContent : 'space-between' , alignItems : 'center'}}>
-              <h3>بارگذاری عکس کارت ملی</h3>
-              <h2 style={{padding: '5px 25px', borderRadius: '25px', boxShadow: '0px 0px 8px #c4c4c4'}}>1</h2>
-            </div>
-        </Grid>
+          <Grid item xs={12}>
+              <div style={{display : 'flex' , justifyContent : 'space-between' , alignItems : 'center'}}>
+                <h3>بارگذاری عکس کارت ملی</h3>
+                <h2 style={{padding: '5px 25px', borderRadius: '25px', boxShadow: '0px 0px 8px #c4c4c4'}}>1</h2>
+              </div>
+          </Grid>
 
-        <Card> 
+          <Card> 
 
-            <Grid  item xs={12}>
-            <CardHeader title='روی کارت' />
-            <form>
-                <CardContent sx={{ pt: 0 }}>
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <ImgStyled src={imgFront} alt='Profile Pic' />
-                    <div>
-                    <ButtonStyled component='label' variant='contained'>
-                        تصویر خود را آپلود کنید
-                        <input
-                        hidden
-                        type='file'
-                        accept='image/png, image/jpeg'
-                        onChange={handleFrontImageChange}
-                        />
-                    </ButtonStyled>
-                    <ResetButtonStyled color='secondary' variant='outlined' onClick={handleInputFrontReset}>
-                        بازنشانی عکس
-                    </ResetButtonStyled>
-                    <Typography sx={{ mt: 5, color: 'text.disabled' }}>حداکثر حجم عکس 5 مگابایت</Typography>
-                    </div>
-                </Box>
-                </CardContent>
-                <Divider />
-            </form>
-            </Grid>
-
-            <Grid item xs={12}>
-              <CardHeader title='پشت کارت' />
+              <Grid  item xs={12}>
+              <CardHeader title='روی کارت' />
               <form>
                   <CardContent sx={{ pt: 0 }}>
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                      <ImgStyled src={imgBack} alt='Profile Pic' />
+                      <ImgStyled src={imgFront} alt='Profile Pic' />
                       <div>
                       <ButtonStyled component='label' variant='contained'>
                           تصویر خود را آپلود کنید
@@ -172,10 +155,10 @@ const PictUpload = ({dialogFunc , areImagesFilled} : {dialogFunc : any , areImag
                           hidden
                           type='file'
                           accept='image/png, image/jpeg'
-                          onChange={handleBackImageChange}
+                          onChange={handleFrontImageChange}
                           />
-                          </ButtonStyled>
-                      <ResetButtonStyled color='secondary' variant='outlined' onClick={handleInputBackReset}>
+                      </ButtonStyled>
+                      <ResetButtonStyled color='secondary' variant='outlined' onClick={handleInputFrontReset}>
                           بازنشانی عکس
                       </ResetButtonStyled>
                       <Typography sx={{ mt: 5, color: 'text.disabled' }}>حداکثر حجم عکس 5 مگابایت</Typography>
@@ -184,24 +167,81 @@ const PictUpload = ({dialogFunc , areImagesFilled} : {dialogFunc : any , areImag
                   </CardContent>
                   <Divider />
               </form>
-            </Grid>
+              </Grid>
 
-        </Card>
+              <Grid item xs={12}>
+                <CardHeader title='پشت کارت' />
+                <form>
+                    <CardContent sx={{ pt: 0 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        <ImgStyled src={imgBack} alt='Profile Pic' />
+                        <div>
+                        <ButtonStyled component='label' variant='contained'>
+                            تصویر خود را آپلود کنید
+                            <input
+                            hidden
+                            type='file'
+                            accept='image/png, image/jpeg'
+                            onChange={handleBackImageChange}
+                            />
+                            </ButtonStyled>
+                        <ResetButtonStyled color='secondary' variant='outlined' onClick={handleInputBackReset}>
+                            بازنشانی عکس
+                        </ResetButtonStyled>
+                        <Typography sx={{ mt: 5, color: 'text.disabled' }}>حداکثر حجم عکس 5 مگابایت</Typography>
+                        </div>
+                    </Box>
+                    </CardContent>
+                    <Divider />
+                </form>
+              </Grid>
 
-      </Grid>
-      <Grid style={{marginBottom : '20px' , padding : '10px'}} item xs={12}>
-        <div style={{display : 'flex' , justifyContent : 'center' , widows : '100%' }}>
-          { 
-            loading 
-            ? <div style={{ marginTop : '-50px'}}> <Loader /> </div>
-            : <Button onClick={sendIdentFunc} style={{width : '300px'}} size='large' color='success' component='label' variant='contained'>
-                    بررسی
-            </Button>
-          }
+          </Card>
 
-
-        </div>
-      </Grid>   
+        </Grid>
+        <Grid style={{marginBottom : '20px' , padding : '10px'}} item xs={12}>
+          <div style={{display : 'flex' , justifyContent : 'center' , widows : '100%' }}>
+            { 
+              loading 
+              ? <div style={{ marginTop : '-45px'}}> <Loader /> </div>
+              : <Button onClick={sendIdentFunc} style={{width : '300px'}} size='large' color='success' component='label' variant='contained'>
+                      بررسی
+              </Button>
+            }
+          </div>
+        </Grid>  
+        </>
+        
+       : <Grid item xs={12}>
+          <Card style={{padding : '20px'}}>
+            <Grid item xs={12}>
+                  <div style={{display : 'flex' , justifyContent : 'space-between' , alignItems : 'center'}}>
+                    <h3>بارگذاری عکس کارت ملی</h3>
+                    <h2 style={{padding: '5px 25px', borderRadius: '25px', boxShadow: '0px 0px 8px #c4c4c4'}}>1</h2>
+                    
+                  </div>
+                  <div style={{display : 'flex' , justifyContent : 'space-around' , flexDirection : 'column' , alignItems : 'center'}}>
+                      <h3>عکس کارت ملی شما ثبت و تایید شده است</h3>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          textAlign: 'center',
+                          alignItems: 'center',
+                          flexDirection: 'column',
+                          justifyContent: 'center',
+                          '& svg': {
+                            mb: 8,
+                            color:  'success.main'
+                          }
+                        }}
+                      >
+                      <Icon color='success' icon='mdi:check-circle-outline' fontSize='3.5rem'/>
+                    </Box>
+                  </div>
+              </Grid>
+          </Card>
+        </Grid>
+        }
     </Grid>
   )
 }

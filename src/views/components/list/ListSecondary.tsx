@@ -26,7 +26,7 @@ const ListSecondary = () => {
       </ListItem>
       <ListItem>
         <ListItemAvatar>
-          <Avatar src='/images/avatars/1.png' alt='Alfred Copeland' sx={{ height: 36, width: 36 }} />
+          <Avatar src='https://api.cns365.ir/img/profile.png' alt='Alfred Copeland' sx={{ height: 36, width: 36 }} />
         </ListItemAvatar>
         <ListItemText primary='Alfred Copeland' secondary='Pudding pie tiramisu.' />
         <ListItemSecondaryAction>

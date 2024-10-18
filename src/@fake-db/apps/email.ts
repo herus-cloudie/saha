@@ -11,7 +11,7 @@ const data: { emails: MailType[] } = {
       from: {
         email: 'tommys@mail.com',
         name: 'Tommy Sicilia',
-        avatar: '/images/avatars/1.png'
+        avatar: 'https://api.cns365.ir/img/profile.png'
       },
       to: [
         {
@@ -194,7 +194,7 @@ const data: { emails: MailType[] } = {
       from: {
         email: 'swilby2@yandex.ru',
         name: 'Shawn Wilby',
-        avatar: '/images/avatars/1.png'
+        avatar: 'https://api.cns365.ir/img/profile.png'
       },
       to: [
         {
@@ -246,7 +246,7 @@ const data: { emails: MailType[] } = {
       from: {
         email: 'hfrostdyke4@scientificamerican.com',
         name: 'Heath Frostdyke',
-        avatar: '/images/avatars/1.png'
+        avatar: 'https://api.cns365.ir/img/profile.png'
       },
       to: [
         {
@@ -595,7 +595,7 @@ const data: { emails: MailType[] } = {
           from: {
             email: 'hettiem@mail.com',
             name: 'Hettie Mcerlean',
-            avatar: '/images/avatars/1.png'
+            avatar: 'https://api.cns365.ir/img/profile.png'
           },
           to: [
             {
@@ -703,7 +703,7 @@ const data: { emails: MailType[] } = {
       from: {
         email: 'douldcottj@yellowpages.com',
         name: 'Dalila Ouldcott',
-        avatar: '/images/avatars/1.png'
+        avatar: 'https://api.cns365.ir/img/profile.png'
       },
       to: [
         {
@@ -733,7 +733,7 @@ const data: { emails: MailType[] } = {
           from: {
             email: 'johndoe@mail.com',
             name: 'John Doe',
-            avatar: '/images/avatars/1.png'
+            avatar: 'https://api.cns365.ir/img/profile.png'
           },
           to: [
             {
@@ -864,7 +864,7 @@ const data: { emails: MailType[] } = {
           from: {
             email: 'hettiem@mail.com',
             name: 'Hettie Mcerlean',
-            avatar: '/images/avatars/1.png'
+            avatar: 'https://api.cns365.ir/img/profile.png'
           },
           to: [
             {
@@ -969,7 +969,7 @@ const data: { emails: MailType[] } = {
           from: {
             email: 'johndoe@mail.com',
             name: 'John Doe',
-            avatar: '/images/avatars/1.png'
+            avatar: 'https://api.cns365.ir/img/profile.png'
           },
           to: [
             {
@@ -995,7 +995,7 @@ const data: { emails: MailType[] } = {
           from: {
             email: 'hettiem@mail.com',
             name: 'Hettie Mcerlean',
-            avatar: '/images/avatars/1.png'
+            avatar: 'https://api.cns365.ir/img/profile.png'
           },
           to: [
             {
@@ -1025,7 +1025,7 @@ const data: { emails: MailType[] } = {
       from: {
         email: 'hidden@mail.com',
         name: 'Hidden Mail',
-        avatar: '/images/avatars/1.png'
+        avatar: 'https://api.cns365.ir/img/profile.png'
       },
       to: [
         {

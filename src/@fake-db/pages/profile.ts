@@ -25,7 +25,7 @@ const data: DataType = {
     location: 'Vatican City',
     joiningDate: 'April 2021',
     designation: 'UX Designer',
-    profileImg: '/images/avatars/1.png',
+    profileImg: 'https://api.cns365.ir/img/profile.png',
     designationIcon: 'mdi:fountain-pen-tip',
     coverImg: '/images/pages/profile-banner.png'
   },
@@ -127,7 +127,7 @@ const data: DataType = {
       title: 'React Developers',
       avatar: '/images/icons/project-icons/react-label.png',
       avatarGroup: [
-        { avatar: '/images/avatars/1.png', name: 'Vinnie Mostowy' },
+        { avatar: 'https://api.cns365.ir/img/profile.png', name: 'Vinnie Mostowy' },
         { avatar: '/images/avatars/2.png', name: 'Allen Rieske' },
         { avatar: '/images/avatars/3.png', name: 'Julee Rossignol' },
         { avatar: '/images/avatars/4.png', name: 'George Burrill' }
@@ -173,7 +173,7 @@ const data: DataType = {
       title: 'Creative Designers',
       avatar: '/images/icons/project-icons/xd-label.png',
       avatarGroup: [
-        { avatar: '/images/avatars/1.png', name: 'Jimmy Ressula' },
+        { avatar: 'https://api.cns365.ir/img/profile.png', name: 'Jimmy Ressula' },
         { avatar: '/images/avatars/2.png', name: 'Kristi Lawker' },
         { avatar: '/images/avatars/3.png', name: 'Danny Paul' },
         { avatar: '/images/avatars/4.png', name: 'Alicia Littleton' }
@@ -215,7 +215,7 @@ const data: DataType = {
       title: 'Digital Marketing',
       avatar: '/images/icons/project-icons/social-label.png',
       avatarGroup: [
-        { avatar: '/images/avatars/1.png', name: 'Kim Merchent' },
+        { avatar: 'https://api.cns365.ir/img/profile.png', name: 'Kim Merchent' },
         { avatar: '/images/avatars/2.png', name: "Sam D'souza" },
         { avatar: '/images/avatars/3.png', name: 'Nurvi Karlos' },
         { avatar: '/images/avatars/4.png', name: 'Margorie Whitmire' }
@@ -257,7 +257,7 @@ const data: DataType = {
       title: 'Figma Resources',
       avatar: '/images/icons/project-icons/figma-label.png',
       avatarGroup: [
-        { avatar: '/images/avatars/1.png', name: 'Andrew Mostowy' },
+        { avatar: 'https://api.cns365.ir/img/profile.png', name: 'Andrew Mostowy' },
         { avatar: '/images/avatars/2.png', name: 'Micky Ressula' },
         { avatar: '/images/avatars/3.png', name: 'Michel Pal' },
         { avatar: '/images/avatars/4.png', name: 'Herman Lockard' }
@@ -318,7 +318,7 @@ const data: DataType = {
       avatar: '/images/icons/project-icons/social-label.png',
       description: 'We are Consulting, Software Development and Web Development Services.',
       avatarGroup: [
-        { avatar: '/images/avatars/1.png', name: 'Vinnie Mostowy' },
+        { avatar: 'https://api.cns365.ir/img/profile.png', name: 'Vinnie Mostowy' },
         { avatar: '/images/avatars/2.png', name: 'Allen Rieske' },
         { avatar: '/images/avatars/3.png', name: 'Julee Rossignol' }
       ]
@@ -366,7 +366,7 @@ const data: DataType = {
       avatarGroup: [
         { avatar: '/images/avatars/7.png', name: 'Jimmy Ressula' },
         { avatar: '/images/avatars/8.png', name: 'Kristi Lawker' },
-        { avatar: '/images/avatars/1.png', name: 'Danny Paul' }
+        { avatar: 'https://api.cns365.ir/img/profile.png', name: 'Danny Paul' }
       ]
     },
     {
@@ -434,7 +434,7 @@ const data: DataType = {
       description: 'Premium logo designs created by top logo designers. Create the branding of business.',
       avatarGroup: [
         { avatar: '/images/avatars/8.png', name: 'Kim Karlos' },
-        { avatar: '/images/avatars/1.png', name: 'Katy Turner' },
+        { avatar: 'https://api.cns365.ir/img/profile.png', name: 'Katy Turner' },
         { avatar: '/images/avatars/2.png', name: 'Peter Adward' }
       ]
     }
@@ -447,7 +447,7 @@ const data: DataType = {
       connections: '129',
       name: 'Mark Gilbert',
       designation: 'UI Designer',
-      avatar: '/images/avatars/1.png',
+      avatar: 'https://api.cns365.ir/img/profile.png',
       chips: [
         {
           title: 'Figma',
@@ -573,7 +573,7 @@ const projectTable: ProjectTableRowType[] = [
     name: 'Website SEO',
     date: '10 may 2021',
     avatarColor: 'success',
-    avatarGroup: ['/images/avatars/1.png', '/images/avatars/2.png', '/images/avatars/3.png', '/images/avatars/4.png']
+    avatarGroup: ['https://api.cns365.ir/img/profile.png', '/images/avatars/2.png', '/images/avatars/3.png', '/images/avatars/4.png']
   },
   {
     id: 2,
@@ -591,7 +591,7 @@ const projectTable: ProjectTableRowType[] = [
     date: '12 Aug 2021',
     name: 'Logo Designs',
     avatar: '/images/icons/project-icons/sketch-label.png',
-    avatarGroup: ['/images/avatars/7.png', '/images/avatars/8.png', '/images/avatars/1.png', '/images/avatars/2.png']
+    avatarGroup: ['/images/avatars/7.png', '/images/avatars/8.png', 'https://api.cns365.ir/img/profile.png', '/images/avatars/2.png']
   },
   {
     id: 4,
@@ -609,7 +609,7 @@ const projectTable: ProjectTableRowType[] = [
     date: '08 Apr 2021',
     name: 'Figma Dashboards',
     avatar: '/images/icons/project-icons/figma-label.png',
-    avatarGroup: ['/images/avatars/7.png', '/images/avatars/8.png', '/images/avatars/1.png']
+    avatarGroup: ['/images/avatars/7.png', '/images/avatars/8.png', 'https://api.cns365.ir/img/profile.png']
   },
   {
     id: 6,
@@ -627,7 +627,7 @@ const projectTable: ProjectTableRowType[] = [
     date: '20 Mar 2021',
     name: 'Create Website',
     avatar: '/images/icons/project-icons/react-label.png',
-    avatarGroup: ['/images/avatars/6.png', '/images/avatars/7.png', '/images/avatars/8.png', '/images/avatars/1.png']
+    avatarGroup: ['/images/avatars/6.png', '/images/avatars/7.png', '/images/avatars/8.png', 'https://api.cns365.ir/img/profile.png']
   },
   {
     id: 8,
@@ -645,7 +645,7 @@ const projectTable: ProjectTableRowType[] = [
     date: '17 June 2021',
     name: 'Angular APIs',
     avatar: '/images/icons/project-icons/figma-label.png',
-    avatarGroup: ['/images/avatars/6.png', '/images/avatars/7.png', '/images/avatars/8.png', '/images/avatars/1.png']
+    avatarGroup: ['/images/avatars/6.png', '/images/avatars/7.png', '/images/avatars/8.png', 'https://api.cns365.ir/img/profile.png']
   },
   {
     id: 10,

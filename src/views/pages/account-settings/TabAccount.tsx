@@ -90,7 +90,7 @@ const TabAccount = () => {
   const [inputValue, setInputValue] = useState<string>('')
   const [userInput, setUserInput] = useState<string>('yes')
   const [formData, setFormData] = useState<Data>(initialData)
-  const [imgSrc, setImgSrc] = useState<string>('/images/avatars/1.png')
+  const [imgSrc, setImgSrc] = useState<string>('https://api.cns365.ir/img/profile.png')
   const [secondDialogOpen, setSecondDialogOpen] = useState<boolean>(false)
 
   // ** Hooks
@@ -126,7 +126,7 @@ const TabAccount = () => {
   }
   const handleInputImageReset = () => {
     setInputValue('')
-    setImgSrc('/images/avatars/1.png')
+    setImgSrc('https://api.cns365.ir/img/profile.png')
   }
 
   const handleFormChange = (field: keyof Data, value: Data[keyof Data]) => {

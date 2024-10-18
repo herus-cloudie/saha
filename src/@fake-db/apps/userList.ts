@@ -44,7 +44,7 @@ const data: { users: UsersType[] } = {
       email: 'msicely2@who.int',
       currentPlan: 'enterprise',
       status: 'active',
-      avatar: '/images/avatars/1.png'
+      avatar: 'https://api.cns365.ir/img/profile.png'
     },
     {
       id: 4,
@@ -70,7 +70,7 @@ const data: { users: UsersType[] } = {
       email: 'mhurran4@yahoo.co.jp',
       currentPlan: 'enterprise',
       status: 'pending',
-      avatar: '/images/avatars/1.png'
+      avatar: 'https://api.cns365.ir/img/profile.png'
     },
     {
       id: 6,
@@ -282,7 +282,7 @@ const data: { users: UsersType[] } = {
       email: 'irena.dubrovna@wayne.com',
       currentPlan: 'team',
       status: 'active',
-      avatar: '/images/avatars/1.png'
+      avatar: 'https://api.cns365.ir/img/profile.png'
     },
     {
       id: 22,
@@ -415,7 +415,7 @@ const data: { users: UsersType[] } = {
       email: 'gmeinekenu@hc360.com',
       currentPlan: 'basic',
       status: 'pending',
-      avatar: '/images/avatars/1.png'
+      avatar: 'https://api.cns365.ir/img/profile.png'
     },
     {
       id: 32,
@@ -495,7 +495,7 @@ const data: { users: UsersType[] } = {
       email: 'shebblethwaite10@arizona.edu',
       currentPlan: 'company',
       status: 'inactive',
-      avatar: '/images/avatars/1.png'
+      avatar: 'https://api.cns365.ir/img/profile.png'
     },
     {
       id: 38,
@@ -508,7 +508,7 @@ const data: { users: UsersType[] } = {
       email: 'mpiccard11@vimeo.com',
       currentPlan: 'enterprise',
       status: 'inactive',
-      avatar: '/images/avatars/1.png'
+      avatar: 'https://api.cns365.ir/img/profile.png'
     },
     {
       id: 39,
@@ -631,7 +631,7 @@ const data: { users: UsersType[] } = {
       email: 'kcourtliff1a@bbc.co.uk',
       currentPlan: 'basic',
       status: 'active',
-      avatar: '/images/avatars/1.png'
+      avatar: 'https://api.cns365.ir/img/profile.png'
     },
     {
       id: 48,

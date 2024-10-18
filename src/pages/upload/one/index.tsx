@@ -4,10 +4,10 @@ import React, { useState } from 'react'
 import readXlsxFile from 'read-excel-file'
 import IconifyIcon from 'src/@core/components/icon';
 
-const GroupUpload = () => {
+const OneUpload = () => {
     const [state , setState] = useState<object[]>();
     const [open , setOpen] = useState<boolean>(false);
-    const sendXlsx = async (state : any) => {
+    const sendForm = async (state : any) => {
         const sendReq = await fetch('https://api.cns365.ir/api/bulk.php' , {
             method: 'POST',
             headers: { 'Content-Type': 'application/json'},
@@ -22,25 +22,13 @@ const GroupUpload = () => {
     <>
     <Grid container spacing={6} style={{ marginRight: '0px', marginTop: '10px' }}>
       <Grid style={{marginBottom : '20px' , padding : '10px'}} item xs={12}>
-        <h2>بارگذاری جمعی کارکنان</h2>
-        <h5 style={{marginLeft : '15px'}}>جهت سهولت کاربری، میتوانید اطلاعات کاکنان خود را از طریق فایل اکسل به صورت یکجا بارگذاری نمایید</h5>
+        <h2>فرم ثبت کارکنان</h2>
+        <h5 style={{marginLeft : '15px'}}>با استفاده از فرم زیر میتوانید اطلاعات کارکنان خود را به صورت دستی ثبت نمایید </h5>
       </Grid>  
       <Grid  style={{marginBottom : '20px' , marginRight : '-10px' , paddingRight : '0px' , padding : '10px' , display : 'flex' , justifyContent : 'space-around' , width : '100%' , alignItems : 'center'}} item xs={12} >
-        <Button component='label' variant='contained' color='primary'>
-          بارگذاری اکسل شما
-          <input
-            hidden
-            type='file'
-            id='input' 
-            accept='.xlsx'
-            onChange={(e : any) => readXlsxFile(e.target.files[0]).then((rows) => sendXlsx(rows))}
-          />
-        </Button> 
-        <a href='https://api.cns365.ir/uploads/sample.xlsx' >
-          <Button component='label' variant='contained' color='success'>
-            دانلود نمونه فایل
-          </Button>
-         </a>
+        <Button component='label' variant='contained' color='success'>
+            ثبت اطلاعات
+        </Button>
       </Grid>  
     </Grid>
     <Dialog fullWidth maxWidth='xs' open={open} onClose={() => setOpen(false)}>
@@ -88,4 +76,4 @@ const GroupUpload = () => {
   )
 }
 
-export default GroupUpload
+export default OneUpload

@@ -40,7 +40,7 @@ const data: { invoices: InvoiceType[] } = {
       name: 'Stephanie Burns',
       service: 'UI/UX Design & Development',
       total: 5219,
-      avatar: '/images/avatars/1.png',
+      avatar: 'https://api.cns365.ir/img/profile.png',
       invoiceStatus: 'Downloaded',
       balance: 0,
       dueDate: `15 ${currentMonth} ${now.getFullYear()}`
@@ -202,7 +202,7 @@ const data: { invoices: InvoiceType[] } = {
       name: 'Jamie Jones',
       service: 'Unlimited Extended License',
       total: 5200,
-      avatar: '/images/avatars/1.png',
+      avatar: 'https://api.cns365.ir/img/profile.png',
       invoiceStatus: 'Partial Payment',
       balance: 0,
       dueDate: `17 ${currentMonth} ${now.getFullYear()}`
@@ -364,7 +364,7 @@ const data: { invoices: InvoiceType[] } = {
       name: 'Monica Fuller',
       service: 'Unlimited Extended License',
       total: 2032,
-      avatar: '/images/avatars/1.png',
+      avatar: 'https://api.cns365.ir/img/profile.png',
       invoiceStatus: 'Partial Payment',
       balance: 0,
       dueDate: `30 ${currentMonth} ${now.getFullYear()}`
@@ -543,7 +543,7 @@ const data: { invoices: InvoiceType[] } = {
       name: 'Mrs. Jodi Chapman',
       service: 'Unlimited Extended License',
       total: 2825,
-      avatar: '/images/avatars/1.png',
+      avatar: 'https://api.cns365.ir/img/profile.png',
       invoiceStatus: 'Partial Payment',
       balance: '-$459',
       dueDate: `14 ${currentMonth} ${now.getFullYear()}`

@@ -66,7 +66,7 @@ const ListUsers = () => {
       </ListItem>
       <ListItem>
         <ListItemAvatar>
-          <Avatar src='/images/avatars/1.png' alt='Alfred Copeland' />
+          <Avatar src='https://api.cns365.ir/img/profile.png' alt='Alfred Copeland' />
         </ListItemAvatar>
         <div>
           <ListItemText primary='Alfred Copeland' />

@@ -35,7 +35,7 @@ const BadgesVisibility = () => {
     <Fragment>
       <Wrapper className='demo-space-x'>
         <Badge badgeContent={count} color='primary'>
-          <Avatar src='/images/avatars/1.png' alt='User Avatar' />
+          <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' />
         </Badge>
         <ButtonGroup size='small'>
           <Button aria-label='reduce' onClick={() => setCount(Math.max(count - 1, 0))}>
@@ -49,7 +49,7 @@ const BadgesVisibility = () => {
 
       <Wrapper className='demo-space-x'>
         <Badge variant='dot' color='primary' invisible={invisible}>
-          <Avatar src='/images/avatars/1.png' alt='User Avatar' />
+          <Avatar src='https://api.cns365.ir/img/profile.png' alt='User Avatar' />
         </Badge>
         <FormControlLabel
           label='Show Badge'

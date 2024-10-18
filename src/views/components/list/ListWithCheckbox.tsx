@@ -51,7 +51,7 @@ const ListWithCheckbox = () => {
       <ListItem disablePadding>
         <ListItemButton onClick={handleToggle(1)}>
           <ListItemAvatar>
-            <Avatar src='/images/avatars/1.png' alt='Alfred Copeland' sx={{ height: 32, width: 32 }} />
+            <Avatar src='https://api.cns365.ir/img/profile.png' alt='Alfred Copeland' sx={{ height: 32, width: 32 }} />
           </ListItemAvatar>
           <ListItemText id='checkbox-list-label-1' primary='Alfred Copeland' />
           <ListItemSecondaryAction>

@@ -98,7 +98,7 @@ const rows: TableBodyRowType[] = [
     name: 'Jordan Stevenson',
     username: '@jstevenson5c',
     email: 'susanna.Lind57@gmail.com',
-    avatarSrc: '/images/avatars/1.png'
+    avatarSrc: 'https://api.cns365.ir/img/profile.png'
   },
   {
     id: 2,

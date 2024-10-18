@@ -50,7 +50,7 @@ const menuItemsArr = [
   {
     name: 'Ross Geller',
     value: 'ross',
-    src: '/images/avatars/1.png'
+    src: 'https://api.cns365.ir/img/profile.png'
   },
   {
     name: 'Pheobe Buffay',

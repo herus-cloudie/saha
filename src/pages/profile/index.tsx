@@ -3,6 +3,7 @@ import { Box } from '@mui/system'
 import React, { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import Icon from 'src/@core/components/icon'
+import Loader from 'src/@core/components/spinner/loader'
 import PictUpload from 'src/components/pictUpload'
 import { IdentType, IdentTypeWithJwt } from 'src/context/types'
 import parseCookieString from 'src/utils/parseCookieString'
@@ -32,12 +33,10 @@ const Profile = () => {
     mode: 'onBlur'
   })
   
-  useEffect(() => {
-    const {jwt} =  parseCookieString(document.cookie)
-    setUserData(ParseJwt(jwt))
-  }, []);
 
-  const [userData , setUserData ] = useState<IdentType>({
+
+  const [userData , setUserData ] = useState<IdentTypeWithJwt>({
+    id : 0,
     nationalCode : "",
     firstName : "",
     fatherName : "",
@@ -50,15 +49,23 @@ const Profile = () => {
     category : "اصناف",
     subgroup : "",
     image : "",
+    postal_code : "",
+    address : "",
     identPict : "",
     isDead : 0,
     matched : 1,
     alive : 1,
     role : "user",
+    jwt : ""
   })
 
+  useEffect(() => {
+    const {jwt} =  parseCookieString(document.cookie)
+    setUserData(ParseJwt(jwt))
+  }, [userData.jwt]);
+  
   const [open , setOpen ] = useState<boolean>(false)
-
+  const [postalError , setPostalError ] = useState<''>('')
   const [OCRData , setOCRData] = useState<OCRDataType>({
     message : '',
     result : 1,
@@ -78,8 +85,8 @@ const Profile = () => {
   });
 
   const [postalCode , setPostalCode] = useState<string | number>();
+  const [loading , setLoading] = useState<boolean>(false);
 
-    
   const dialogFunc = async (data: OCRDataType) => {
     try {
       setOCRData(data);
@@ -98,20 +105,26 @@ const Profile = () => {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ 
             image: `data:image/png;base64,${data.data?.front?.facePhoto}`,
-            nationalCode: userData.nationalCode
+            nationalCode: userData.nationalCode,
+            category : userData.category,
+            subgroup : userData.subgroup,
+            workPlace : userData.workPlace,
           })
         });
   
         const updatedResponse = await updateImgInJwt.json();
+
         if (!updateImgInJwt.ok) {
           throw new Error(updatedResponse.message || 'خطا در به روزرسانی تصویر');
         }
-  
-        console.log(updatedResponse);
+
+        setUserData({...userData , jwt : updatedResponse.token})
+        document.cookie = `jwt = ${updatedResponse.token}; SameSite=None; Secure; Path=/; SameSite=None; Secure; Max-Age=${7 * 24 * 60 * 60}`;
+      
       } else {
         setOCRData({ ...OCRData, message: data.message, result: 21 });
       }
-    } catch (error) {
+    } catch (postalError) {
       setOCRData({
         message: 'خطایی رخ داده است. دوباره تلاش کنید',
         result: 21
@@ -120,8 +133,6 @@ const Profile = () => {
       setOpen(true); 
     }
   };
-  
-
 
   const areImagesFilled = (front : any, back : any) => {
     if(!front || !back) {
@@ -129,7 +140,43 @@ const Profile = () => {
       setOCRData({...OCRData , message : 'لطفا پشت و روی عکس خود را بارگذاری کنید' , result : 21})
     } 
   }
-  
+
+
+  const sendPostalCode = async () => {
+    setLoading(true)
+    const sendPostal = await fetch('https://api.zibal.ir/v1/facility/postalCodeInquiry', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json',
+        'Authorization': 'Bearer 9361a1e1fbd64b8e87cf98abb6b665d3'
+       },
+      body: JSON.stringify({"postalCode": postalCode})
+    });
+
+    const Data = await sendPostal.json();
+    
+    if(Data.result == 6) return setPostalError(Data.message)
+    setUserData({...userData , address : `${Data.data.address.town}, ${Data.data.address.district}, ${Data.data.address.street}, ${Data.data.address.street2}, پلاک ${Data.data.address.number}, طبقه ${Data.data.address.floor}, واحد ${Data.data.address.sideFloor}`})
+
+    const updateAddress = await fetch('https://api.cns365.ir/api/api.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        address : `${Data.data.address.town}, ${Data.data.address.district}, ${Data.data.address.street}, ${Data.data.address.street2}, پلاک ${Data.data.address.number}, طبقه ${Data.data.address.floor}, واحد ${Data.data.address.sideFloor}`,
+        category : userData.category,
+        subgroup : userData.subgroup,
+        workPlace : userData.workPlace,
+        postal_code : postalCode,
+        nationalCode : userData.nationalCode
+      })
+    });
+    
+    const updatedResponse = await updateAddress.json();
+    setLoading(false)
+    document.cookie = `jwt = ${updatedResponse.token}; SameSite=None; Secure; Path=/; SameSite=None; Secure; Max-Age=${7 * 24 * 60 * 60}`;
+      
+  }
+
+  console.log(userData)
   return (
     <div>
       <Card style={{padding : '0 30px 30px'}}>
@@ -137,7 +184,6 @@ const Profile = () => {
             <Grid item xs={12}>
               <h1>نمایه</h1>
             </Grid>
-          
             <Grid item xs={12} sm={6} xl={2.4}>
             نام : <span>{userData.firstName}</span>
             </Grid>
@@ -165,30 +211,74 @@ const Profile = () => {
             <Grid item xs={12} sm={6} xl={2.4}>
             زیرگروه : <span>{userData.subgroup}</span>
             </Grid>
-            <PictUpload areImagesFilled={areImagesFilled} dialogFunc={dialogFunc}/>
-            <Grid style={{filter : 'blur(1px)'}} item xs={12}>
-              <div style={{display : 'flex' , justifyContent : 'space-between' , alignItems : 'center'}}>
-                <h3>کد پستی</h3>
-                <h2 style={{padding: '5px 25px', borderRadius: '25px', boxShadow: '0px 0px 8px #c4c4c4'}}>2</h2>
-              </div>
-              <FormControl fullWidth sx={{ mb: 4 }}>
-                  <Controller
-                    name='nationalCode'
-                    control={control}
-                    render={({ field: { onBlur } }) => (
-                      <TextField
-                        disabled
-                        autoFocus
-                        label='کد پستی'
-                        value={postalCode}
-                        onBlur={onBlur}
-                        onChange={(e) => setPostalCode(e.target.value)}
-                        placeholder='10 رقم'
-                      />
-                    )}
-                  />
+            <PictUpload userData={userData} areImagesFilled={areImagesFilled} dialogFunc={dialogFunc}/>
+            {
+              !userData.address ? 
+              <>
+              <Grid style={!userData.image ? {filter : 'blur(1px)'} : {filter : 'blur(0px)'}} item xs={12}>
+                <div style={{display : 'flex' , justifyContent : 'space-between' , alignItems : 'center'}}>
+                  <h3>کد پستی</h3>
+                  <h2 style={{padding: '5px 25px', borderRadius: '25px', boxShadow: '0px 0px 8px #c4c4c4'}}>2</h2>
+                </div>
+                <FormControl fullWidth sx={{ mb: 4 }}>
+                    <Controller
+                      name='nationalCode'
+                      control={control}
+                      render={({ field: { onBlur } }) => (
+                        <TextField
+                          disabled={!userData.image ? true : false}
+                          autoFocus
+                          label='کد پستی'
+                          value={postalCode}
+                          onBlur={onBlur}
+                          onChange={(e) => setPostalCode(e.target.value)}
+                          placeholder='10 رقم'
+                        />
+                      )}
+                    />
                 </FormControl>
               </Grid>
+              <div style={{display : 'flex' , justifyContent : "center" , width : '100%' , paddingRight: '1.5rem' , flexDirection : 'column' , alignItems : 'center'}}>
+                { postalError && <h4 style={{color : 'red'}}>{postalError}</h4>}
+                 {loading ? <Loader />
+                  : 
+                  <Button onClick={sendPostalCode} style={{width : '300px'}} size='large' color='success' component='label' variant='contained'>
+                      صحت سنجی کدپستی
+                  </Button> 
+                  }
+              </div> 
+              </> : 
+               <Grid item xs={12}>
+                    <Card style={{padding : '20px'}}>
+                      <Grid item xs={12}>
+                            <div style={{display : 'flex' , justifyContent : 'space-between' , alignItems : 'center'}}>
+                              <h3>کد پستی و  آدرس</h3>
+                              <h2 style={{padding: '5px 25px', borderRadius: '25px', boxShadow: '0px 0px 8px #c4c4c4'}}>2</h2>
+                              
+                            </div>
+                            <div style={{display : 'flex' , justifyContent : 'space-around' , flexDirection : 'column' , alignItems : 'center'}}>
+                                <h3>کد پستی : {userData.postal_code}</h3>
+                                <h3>آدرس: {userData.address}</h3>
+                                <Box
+                                  sx={{
+                                    display: 'flex',
+                                    textAlign: 'center',
+                                    alignItems: 'center',
+                                    flexDirection: 'column',
+                                    justifyContent: 'center',
+                                    '& svg': {
+                                      mb: 8,
+                                      color:  'success.main'
+                                    }
+                                  }}
+                                >
+                                <Icon color='success' icon='mdi:check-circle-outline' fontSize='3.5rem'/>
+                              </Box>
+                            </div>
+                        </Grid>
+                    </Card>
+                  </Grid>
+            }
             <Dialog fullWidth maxWidth='xs' open={open} onClose={() => setOpen(false)}>
               <DialogContent
                 sx={{
@@ -206,7 +296,7 @@ const Profile = () => {
                     justifyContent: 'center',
                     '& svg': {
                       mb: 8,
-                      color: OCRData.result == 1  ? 'success.main' : 'error.main'
+                      color: OCRData.result == 1  ? 'success.main' : 'postalError.main'
                     }
                   }}
                 >

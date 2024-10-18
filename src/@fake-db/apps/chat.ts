@@ -10,7 +10,7 @@ const dayBeforePreviousDay = new Date(new Date().getTime() - 24 * 60 * 60 * 1000
 const data: { chats: ChatsObj[]; contacts: ContactType[]; profileUser: ProfileUserType } = {
   profileUser: {
     id: 11,
-    avatar: '/images/avatars/1.png',
+    avatar: 'https://api.cns365.ir/img/profile.png',
     fullName: 'John Doe',
     role: 'admin',
     about:
