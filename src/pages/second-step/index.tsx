@@ -22,7 +22,7 @@ import BlankLayout from 'src/@core/layouts/BlankLayout'
 // ** Demo Imports
 import FooterIllustrationsV2 from 'src/views/pages/auth/FooterIllustrationsV2'
 import Loader from 'src/@core/components/spinner/loader'
-import { loginCredentialSchema } from 'src/constant'
+import { defaultBase64, loginCredentialSchema } from 'src/constant'
 import { Autocomplete, Card, FormControl } from '@mui/material'
 import parseCookieString from 'src/utils/parseCookieString'
 import ParseJwt from 'src/utils/ParseJwt'
@@ -108,8 +108,8 @@ const SecondStep = () => {
   const [formData , setFormData] = useState({
     category : 'اصناف',
     subgroup : '',
-    image : 'https://api.cns365.ir/img/profile.png',
-    identPict : 'https://api.cns365.ir/img/profile2.png',
+    image : defaultBase64,
+    identPict : '',
     workPlace : '',
   });
 

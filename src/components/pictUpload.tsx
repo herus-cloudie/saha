@@ -10,6 +10,7 @@ import Typography from '@mui/material/Typography'
 import Button, { ButtonProps } from '@mui/material/Button'
 import CardHeader from '@mui/material/CardHeader'
 import CardContent from '@mui/material/CardContent'
+import Loader from 'src/@core/components/spinner/loader'
 
 const ImgStyled = styled('img')(({ theme }) => ({
   width: 120,
@@ -35,11 +36,13 @@ const ResetButtonStyled = styled(Button)<ButtonProps>(({ theme }) => ({
   }
 }))
 
-const PictUpload = () => {
-  const [imgFront, setImgFront] = useState<string>('/images/ncard.png')
-  const [imgBack, setImgBack] = useState<string>('/images/ncard.png')
-  const [frontData , setFrontData] = useState<any>()
-  const [backData , setBackData] = useState<any>()
+const PictUpload = ({dialogFunc , areImagesFilled} : {dialogFunc : any , areImagesFilled : any}) => {
+  const [imgFront, setImgFront] = useState<string>('/images/ncard.png');
+  const [imgBack, setImgBack] = useState<string>('/images/ncard.png');
+  const [frontData , setFrontData] = useState<any>();
+  const [backData , setBackData] = useState<any>();
+
+  const [loading , setLoading] = useState<boolean>();
 
   const handleFrontImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
@@ -64,35 +67,67 @@ const PictUpload = () => {
       reader.readAsDataURL(file)
     }
   }
-  
+
   const handleInputBackReset = () => {
     setImgBack('/images/ncard.png')
+    setBackData('')
   }
   const handleInputFrontReset = () => {
     setImgFront('/images/ncard.png')
+    setFrontData('')
   }
 
   const sendIdentFunc = async () => {
+    if (!frontData || !backData) {
+      return areImagesFilled(!frontData, !backData);
+    }
+  
     const formData = new FormData();
-    formData.append('nationalCardFront' , frontData)
-    formData.append('nationalCardBack' , backData)
-    const apiResponse = await fetch('https://api.zibal.ir/v1/facility/nationalCardOcr', {
+    formData.append('nationalCardFront', frontData);
+    formData.append('nationalCardBack', backData);
+  
+    setLoading(true);
+    
+    try {
+      const sendPictures = await fetch('https://api.zibal.ir/v1/facility/nationalCardOcr', {
         method: 'POST',
         headers: {
           'Authorization': 'Bearer 9361a1e1fbd64b8e87cf98abb6b665d3',
         },
-        body: formData,
+        body: formData
       });
-    const aaa = await apiResponse.json()
-    console.log(aaa)
-  }
   
+      if (!sendPictures.ok) {
+        const errorResponse = await sendPictures.json();
+        throw new Error(errorResponse.message || 'خطا در پردازش تصویر کارت ملی');
+      }
+  
+      const responseData = await sendPictures.json();
+      dialogFunc(responseData); 
+    } catch (error) {
+      console.error('Error in sendIdentFunc:', error);
+      dialogFunc({
+        message: 'خطایی در آپلود کارت ملی رخ داده است',
+        result: 21,
+        data: undefined
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+
+
+
   return (
     <Grid container spacing={6} style={{ marginRight: '0px', marginTop: '10px' }}>
       <Grid item xs={12}>
 
         <Grid item xs={12}>
-            <h3>بارگذاری عکس کارت ملی</h3>
+            <div style={{display : 'flex' , justifyContent : 'space-between' , alignItems : 'center'}}>
+              <h3>بارگذاری عکس کارت ملی</h3>
+              <h2 style={{padding: '5px 25px', borderRadius: '25px', boxShadow: '0px 0px 8px #c4c4c4'}}>1</h2>
+            </div>
         </Grid>
 
         <Card> 
@@ -154,11 +189,19 @@ const PictUpload = () => {
         </Card>
 
       </Grid>
-      <Grid style={{height :'200px' , padding : '10px'}} item xs={12}><div style={{display : 'flex' , justifyContent : 'center' , widows : '100%' }}>
-        <Button onClick={sendIdentFunc} style={{width : '300px'}} size='large' color='success' component='label' variant='contained'>
-                بررسی
-        </Button>
-      </div></Grid>
+      <Grid style={{marginBottom : '20px' , padding : '10px'}} item xs={12}>
+        <div style={{display : 'flex' , justifyContent : 'center' , widows : '100%' }}>
+          { 
+            loading 
+            ? <div style={{ marginTop : '-50px'}}> <Loader /> </div>
+            : <Button onClick={sendIdentFunc} style={{width : '300px'}} size='large' color='success' component='label' variant='contained'>
+                    بررسی
+            </Button>
+          }
+
+
+        </div>
+      </Grid>   
     </Grid>
   )
 }

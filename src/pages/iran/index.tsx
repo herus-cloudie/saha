@@ -27,7 +27,7 @@ import Loader from 'src/@core/components/spinner/loader'
 import { loginCredentialSchema } from 'src/constant'
 import DatePickerFunc from 'src/components/datePicker'
 import convertPersianDateToLatin from 'src/utils/dateConverter'
-import { IdentType, IranType } from 'src/context/types'
+import { IranType } from 'src/context/types'
 
 // ** Styled Components
 const LoginIllustrationWrapper = styled(Box)<BoxProps>(({ theme }) => ({
@@ -78,13 +78,11 @@ const Iran = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState('');
 
-  // ** Hooks
   const router = useRouter()
   const theme = useTheme()
   const { settings } = useSettings()
   const hidden = useMediaQuery(theme.breakpoints.down('md'))
 
-  // ** Vars
   const { skin } = settings
 
   const {
@@ -143,7 +141,7 @@ const Iran = () => {
           isDead : Data2.data.isDead,
           alive : Data2.data.alive,
           fatherName : Data2.data.fatherName,
-          matched : 'fdas',
+          matched : Data2.data.matched,
           nationalCode : Data2.data.nationalCode,
           role : 'user'
         })
@@ -168,6 +166,7 @@ const Iran = () => {
     const stringBirthDate = convertPersianDateToLatin(new Date(date).toLocaleDateString("fa-IR"))
     setFormData({...formData , birthDate : stringBirthDate as string})
   }
+
 
   return (
     <div dir="ltr">
@@ -220,8 +219,8 @@ const Iran = () => {
             {
               hidden ? 
               theme.palette.mode == 'light' 
-              ? <img alt='fadls' src='/images/1.png' width={330} className='step'/>
-              : <img alt='fadls' src='/images/1w.png' width={330} className='step'/>
+              ? <img alt='image' src='/images/1.png' width={330} className='step'/>
+              : <img alt='image' src='/images/1w.png' width={330} className='step'/>
               : null
             }
             </div>
