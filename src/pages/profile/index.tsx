@@ -1,5 +1,6 @@
-import { Grid } from '@mui/material'
+import { Card, Grid } from '@mui/material'
 import React, { useEffect, useState } from 'react'
+import PictUpload from 'src/components/pictUpload'
 import { IdentTypeWithJwt } from 'src/context/types'
 import parseCookieString from 'src/utils/parseCookieString'
 import ParseJwt from 'src/utils/ParseJwt'
@@ -35,39 +36,43 @@ const Profile = () => {
 
   return (
     <div>
-      <Grid container spacing={6} className='match-height'>
-        <Grid item xs={12}>
-          <h1>نمایه</h1>
+      <Card style={{padding : '0 30px 30px'}}>
+        <Grid container spacing={6} className='match-height'>
+            <Grid item xs={12}>
+              <h1>نمایه</h1>
+            </Grid>
+          
+            <Grid item xs={12} sm={6} xl={2.4}>
+            نام : <span>{userData.firstName}</span>
+            </Grid>
+            <Grid item xs={12} sm={6} xl={2.4}>
+            نام خانوادگی : <span>{userData.lastName}</span>
+            </Grid>
+            <Grid item xs={12} sm={6} xl={2.4}>
+            نام پدر : <span>{userData.fatherName}</span>
+            </Grid>
+            <Grid item xs={12} sm={6} xl={2.4}>
+            تاریخ تولد : <span>{userData.birthDate as string}</span>
+            </Grid>
+            <Grid item xs={12} sm={6} xl={2.4}>
+            ملیت : <span>{userData.nationality}</span>
+            </Grid>
+            <Grid item xs={12} sm={6} xl={2.4}>
+            محل کار: <span>{userData.workPlace}</span>
+            </Grid>
+            <Grid item xs={12} sm={6} xl={2.4}>
+            شماره تماس : <span>{userData.phoneNumber}</span>
+            </Grid>
+            <Grid item xs={12} sm={6} xl={2.4}>
+            سمت : <span>{userData.role == 'user' ? 'کارمند' : 'مدیر'}</span>
+            </Grid>
+            <Grid item xs={12} sm={6} xl={2.4}>
+            زیرگروه : <span>{userData.subgroup}</span>
+            </Grid>
+            <PictUpload />
+
         </Grid>
-        
-        <Grid item xs={12} sm={6} xl={2.4}>
-         نام : <span>{userData.firstName}</span>
-        </Grid>
-        <Grid item xs={12} sm={6} xl={2.4}>
-         نام خانوادگی : <span>{userData.lastName}</span>
-        </Grid>
-        <Grid item xs={12} sm={6} xl={2.4}>
-        نام پدر : <span>{userData.fatherName}</span>
-        </Grid>
-        <Grid item xs={12} sm={6} xl={2.4}>
-        تاریخ تولد : <span>{userData.birthDate as string}</span>
-        </Grid>
-        <Grid item xs={12} sm={6} xl={2.4}>
-         ملیت : <span>{userData.nationality}</span>
-        </Grid>
-        <Grid item xs={12} sm={6} xl={2.4}>
-         محل کار: <span>{userData.workPlace}</span>
-        </Grid>
-        <Grid item xs={12} sm={6} xl={2.4}>
-        شماره تماس : <span>{userData.phoneNumber}</span>
-        </Grid>
-        <Grid item xs={12} sm={6} xl={2.4}>
-        سمت : <span>{userData.role == 'user' ? 'کارمند' : 'مدیر'}</span>
-        </Grid>
-        <Grid item xs={12} sm={6} xl={2.4}>
-        زیرگروه : <span>{userData.subgroup}</span>
-        </Grid>
-      </Grid>
+      </Card>
     </div>
   )
 }

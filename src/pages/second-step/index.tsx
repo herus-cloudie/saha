@@ -26,7 +26,6 @@ import { loginCredentialSchema } from 'src/constant'
 import { Autocomplete, Card, FormControl } from '@mui/material'
 import parseCookieString from 'src/utils/parseCookieString'
 import ParseJwt from 'src/utils/ParseJwt'
-import { redirect } from 'next/dist/server/api-utils'
 import { useRouter } from 'next/router'
 
 // ** Styled Components
@@ -137,12 +136,13 @@ const SecondStep = () => {
       headers: {'Content-Type': 'application/json'}
     })
     const Data = await result.json();
+    
     if(Data.token){
+      
         setLoading(false);
-        document.cookie = `jwt = ${Data.token}; SameSite=None; Secure; Path=/`
+        document.cookie = `jwt = ${Data.token}; SameSite=None; Secure; Path=/; SameSite=None; Secure; Max-Age=${7 * 24 * 60 * 60}`;
         router.push('/profile')
     }
-
   }
 
   return (
@@ -292,7 +292,3 @@ SecondStep.guestGuard = true
 export default SecondStep
 
 
-
-{/* <input type='file' id='input' onChange={(e : any) => readXlsxFile(e.target.files[0]).then((rows) => {
-  console.log(rows)
-})}/> */}

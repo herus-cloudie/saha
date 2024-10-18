@@ -73,6 +73,25 @@ const TypographyStyled = styled(Typography)<TypographyProps>(({ theme }) => ({
   [theme.breakpoints.down('md')]: { marginTop: theme.spacing(8) }
 }))
 
+const defaultValues = {
+  firstName: '',
+  fatherName: '',
+  isDead: false,
+  lastName: '',
+  matched: true,
+  alive: true,
+  nationalCode: '',
+  image : '',
+  identPict : '',
+  phoneNumber : '',
+  workPlace : '',
+  nationality : 'ایرانی',
+  officiality : 'دارای شناسه اتباع',
+  birthDate : new Date(),
+  category : 'اصناف',
+  role : 'user',
+  subgroup : ''
+}
 
 const Iran = () => {
   
@@ -93,8 +112,10 @@ const Iran = () => {
     control,
   } = useForm({
     mode: 'onBlur',
+    defaultValues,
     resolver: yupResolver(loginCredentialSchema)
   })
+  const [subgroupOptions , setSubgroupOptions] = useState<string[]>(['کشور' , 'استان' , 'شهر' , 'اتحادیه' , 'واحد صنفی']);
 
   const [formData , setFormData] = useState<IdentType>({
     firstName: '',
@@ -104,8 +125,8 @@ const Iran = () => {
     matched: true,
     alive: true,
     nationalCode: '',
-    image : '',
-    identPict : '',
+    image : 'https://api.cns365.ir/img/profile.png',
+    identPict : 'https://api.cns365.ir/img/profile2.png',
     phoneNumber : '',
     workPlace : '',
     nationality : 'ایرانی',
@@ -117,16 +138,15 @@ const Iran = () => {
   });
 
   const sendReq = async () => {
-
-    // if(formData.)
-    // setLoading(true);
-    // const result = await fetch('https://api.cns365.ir/backend/api/addUser.php' , {
-    //   method: 'POST',
-    //   body: JSON.stringify(formData),
-    //   headers: {'Content-Type': 'application/json'}
-    // })
-    // const Data = await result.json();
-    // setLoading(false);
+    if(!formData.firstName || !formData.lastName || !formData.fatherName || !formData.nationalCode || !formData.phoneNumber || !formData.workPlace || !formData.subgroup) return setError('تمامی بخش ها را کامل کنید')
+    setLoading(true);
+    const result = await fetch('https://api.cns365.ir/api/api.php' , {
+      method: 'POST',
+      body: JSON.stringify(formData),
+      headers: {'Content-Type': 'application/json'}
+    })
+    const Data = await result.json();
+    setLoading(false);
   }
 
   const ChangeDateHandler = (e : any) => {
@@ -191,14 +211,14 @@ const Iran = () => {
                 }
               </div>
 
-              <Box sx={{ mb: 6 }} dir="rtl">
+              <Box sx={{ mt: 25 , mb : 8}} dir="rtl">
                 <span style={{fontSize : '12px'}}>اتباع</span>
                 <TypographyStyled variant='h5'>{`تکمیل اطلاعات`}</TypographyStyled>
                 <Typography variant='body2'>سامانه مدیریت هویت افراد</Typography>
               </Box>
               <form onSubmit={handleSubmit(sendReq)}>
                 <Autocomplete
-                    options={['بدون شناسه اتباع' , 'دارای شناسه اتباع']}
+                    options={[ 'دارای شناسه اتباع' , 'بدون شناسه اتباع']}
                     getOptionLabel={(option: any) => option}
                     value={formData.officiality}
                     className='comboAcc'
@@ -207,7 +227,39 @@ const Iran = () => {
                 />
                 {
                     formData.officiality == 'دارای شناسه اتباع' ?
-                    <>
+                    <>                       
+                       <FormControl fullWidth sx={{ mb: 4 }}>
+                            <Controller
+                            name='firstName'
+                            control={control}
+                            render={({ field: { onBlur } }) => (
+                                <TextField
+                                autoFocus
+                                label='نام'
+                                value={formData.firstName}
+                                onBlur={onBlur}
+                                onChange={(e) => setFormData({...formData , firstName : e.target.value})}
+                                placeholder=''
+                                />
+                            )}
+                            />
+                        </FormControl>
+                        <FormControl fullWidth sx={{ mb: 4 }}>
+                            <Controller
+                            name='lastName'
+                            control={control}
+                            render={({ field: { onBlur } }) => (
+                                <TextField
+                                autoFocus
+                                label='نام خانوادگی'
+                                value={formData.lastName}
+                                onBlur={onBlur}
+                                onChange={(e) => setFormData({...formData , lastName : e.target.value})}
+                                placeholder=''
+                                />
+                            )}
+                            />
+                        </FormControl>
                         <FormControl fullWidth sx={{ mb: 4 }}>
                             <Controller
                             name='nationalCode'
@@ -240,6 +292,44 @@ const Iran = () => {
                             )}
                             />
                         </FormControl>
+                        <FormControl fullWidth sx={{ mb: 4 }}>
+                            <Controller
+                            name='phoneNumber'
+                            control={control}
+                            render={({ field: { onBlur } }) => (
+                                <TextField
+                                autoFocus
+                                label='شماره موبایل'
+                                value={formData.phoneNumber}
+                                onBlur={onBlur}
+                                onChange={(e) => setFormData({...formData , phoneNumber : e.target.value})}
+                                placeholder=''
+                                />
+                            )}
+                            />
+                        </FormControl>
+                        <Autocomplete
+                          style={{marginTop : '10px'}}
+                          options={['حمل و نقل' , 'اصناف' , 'وزارت کشور']}
+                          getOptionLabel={(option: any) => option}
+                          value={formData.category}
+                          className='comboAcc'
+                          onChange={(e, newValue) => {
+                            setFormData({...formData , category : newValue as "اصناف" | "حمل و نقل" | "گردشگری"})
+                            if(newValue == 'اصناف') setSubgroupOptions(['کشور' , 'استان' , 'شهر' , 'اتحادیه' , 'واحد صنفی'])
+                            if(newValue == 'وزارت کشور') setSubgroupOptions([ 'واحد صنفی'])
+                            if(newValue == 'حمل و نقل') setSubgroupOptions(['کشور' , 'واحد صنفی'])
+                          }}
+                          renderInput={(params) => <TextField {...params} label={'دسته بندی'} variant="standard" />}
+                        />
+                        <Autocomplete
+                          options={subgroupOptions}
+                          getOptionLabel={(option: any) => option}
+                          value={formData.subgroup}
+                          className='comboAcc'
+                          onChange={(e, newValue) => setFormData({...formData , subgroup : newValue as string})}
+                          renderInput={(params) => <TextField {...params} label={'گروه بندی'} variant="standard" />}
+                         />
                         <DatePickerFunc value={formData.workPlace} ChangeDateHandler={ChangeDateHandler}/>
                     </>
                     : null               

@@ -13,8 +13,8 @@ const MainCharts = ({children} : {children ?: any}) => {
     const theme = useTheme();
 
     const { series, options } = chartData(theme);
-    const {balance , total_net_profit , profit_trades_percent , loss_trades_percent  , gross_profit , gross_loss ,total_win_count 
-      , total_trades , break_even , total_loss_count } = Data;
+    const {balance , total_net_profit , profit_trades_percent , loss_trades_percent  , gross_profit , gross_loss
+        ,total_win_count , total_trades , break_even , total_loss_count } = Data;
 
   return (
     <>

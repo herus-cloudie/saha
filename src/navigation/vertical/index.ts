@@ -2,27 +2,53 @@
 import { VerticalNavItemsType } from 'src/@core/layouts/types'
 
 const navigation = (): VerticalNavItemsType => {
+  
   return [
     {
-      title: 'داشبورد',
-      icon: 'mdi:view-dashboard-outline',
-      path: '/dashboards/main'
+      title: 'نمایه',
+      icon: 'mdi:account-circle-outline',
+      path: '/profile'
     },
     {
-      title: 'ژونال روزانه',
-      icon: 'mdi:book-outline',
-      path: '/dashboards/dailyJournal'
-    },
-
-    {
-      title: 'معاملات',
-      icon: "lucide:chart-candlestick",
-      path: '/dashboards/trades'
+      title: 'پشتیبانی',
+      icon: 'mdi:headset',
+      path: '/support'
     },
     {
-      sectionTitle: 'Rules and Reports'
+      title: 'راهنمایی',
+      icon: 'mdi:help-circle-outline',
+      path: '/guide'
     },
-    
+    {
+      title: 'سوالات متداول',
+      icon: 'mdi:frequently-asked-questions',
+      path: '/FandQ'
+    },
+    {
+      sectionTitle: 'مدیریت'
+    },
+    {
+      title: 'آپلود دستی',
+      icon: 'mdi:file-upload-outline',
+      path: '/upload/one'
+    },
+    {
+      title: 'آپلود گروهی',
+      icon: 'mdi:folder-upload-outline',
+      path: '/upload/group'
+    },
+    {
+      title: 'تایید شده‌ها',
+      icon: 'mdi:check-circle-outline',
+      path: '/accepted'
+    },
+    {
+      title: 'در انتظار تایید',
+      icon: 'mdi:clock-outline',
+      path: '/waiting'
+    }
+  ]
+  
     // {
     //   title: 'Playbook',
     //   icon: 'mdi:notebook-outline',
@@ -636,7 +662,7 @@ const navigation = (): VerticalNavItemsType => {
     //     }
     //   ]
     // }
-  ]
+
 }
 
 export default navigation

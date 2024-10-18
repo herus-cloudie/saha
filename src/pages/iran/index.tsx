@@ -150,10 +150,9 @@ const Iran = () => {
       })
       setLoading(false)
       const Data3 = await result3.json();
-      
       if(Data3.message == 'Registration successful' || Data3.message == "Login successful"){
         setError('')
-        document.cookie = `jwt = ${Data3.token}; SameSite=None; Secure; Path=/`
+        document.cookie = `jwt = ${Data3.token}; SameSite=None; Secure; Path=/; SameSite=None; Secure; Max-Age=${7 * 24 * 60 * 60}`;
         router.push('/second-step');
       } else setError('اطلاعات نادرست میباشد')
 
