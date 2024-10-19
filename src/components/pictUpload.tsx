@@ -129,8 +129,7 @@ const PictUpload = ({dialogFunc , userData , areImagesFilled} : {dialogFunc : an
   return (
     <Grid container spacing={6} style={{ marginRight: '0px', marginTop: '10px' }}>
       {
-        // the statement got returend 
-        state ?
+        !state ?
         <>
           <Grid item xs={12}>
 
