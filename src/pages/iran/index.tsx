@@ -28,6 +28,7 @@ import { loginCredentialSchema } from 'src/constant'
 import DatePickerFunc from 'src/components/datePicker'
 import convertPersianDateToLatin from 'src/utils/dateConverter'
 import { IranType } from 'src/context/types'
+import { CircularProgress } from '@mui/material'
 
 // ** Styled Components
 const LoginIllustrationWrapper = styled(Box)<BoxProps>(({ theme }) => ({
@@ -269,7 +270,9 @@ const Iran = () => {
               {error && <p style={{color : '#ff3d3d' , textAlign : 'center'}}>{error}</p>} 
               {loading ? 
                   <div style={{textAlign : 'center' , display : 'flex' , justifyContent : 'center' , margin : '-35px 0px 35px'}}>
-                    <Loader />
+                              <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+            <CircularProgress />
+          </Box>
                   </div>
                   : <Button onClick={sendReq} fullWidth size='large' type='submit' variant='contained' sx={{ mb: 7 }}>
                    برو به مرحله بعد

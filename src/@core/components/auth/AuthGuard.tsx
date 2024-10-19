@@ -7,6 +7,8 @@ import { useRouter } from 'next/router'
 // ** Hooks Import
 import { useSession } from 'next-auth/react'
 import Loader from '../spinner/loader'
+import { CircularProgress } from '@mui/material'
+import { Box } from '@mui/system'
 
 interface AuthGuardProps {
   children: ReactNode
@@ -50,7 +52,9 @@ const AuthGuard = (props: AuthGuardProps) => {
     return fallback
   }
 
-  return !state ? <>{children}</> : <Loader />
+  return !state ? <>{children}</> :           <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+            <CircularProgress />
+          </Box>
 }
 
 export default AuthGuard

@@ -23,7 +23,7 @@ import BlankLayout from 'src/@core/layouts/BlankLayout'
 import FooterIllustrationsV2 from 'src/views/pages/auth/FooterIllustrationsV2'
 import Loader from 'src/@core/components/spinner/loader'
 import { defaultBase64, loginCredentialSchema } from 'src/constant'
-import { Autocomplete, Card, FormControl } from '@mui/material'
+import { Autocomplete, Card, CircularProgress, FormControl } from '@mui/material'
 import parseCookieString from 'src/utils/parseCookieString'
 import ParseJwt from 'src/utils/ParseJwt'
 import { useRouter } from 'next/router'
@@ -249,7 +249,9 @@ const SecondStep = () => {
                   {error && <p style={{color : '#ff3d3d' , textAlign : 'center'}}>{error}</p>} 
                   {loading ? 
                       <div style={{textAlign : 'center' , display : 'flex' , justifyContent : 'center' , margin : '-35px 0px 35px'}}>
-                        <Loader />
+                        <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+                          <CircularProgress/>
+                        </Box>
                       </div>
                       : <Button onClick={sendReq} fullWidth size='large' type='submit' variant='contained' sx={{ mb: 7 }}>
                       برو به مرحله بعد

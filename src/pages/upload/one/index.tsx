@@ -1,4 +1,4 @@
-import { Button, Card, Dialog, DialogActions, DialogContent, Grid, Typography } from '@mui/material';
+import { Button, Card, CircularProgress, Dialog, DialogActions, DialogContent, Grid, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useState } from 'react'
 import IconifyIcon from 'src/@core/components/icon';
@@ -53,7 +53,7 @@ const OneUpload = () => {
     fatherName : "",
     lastName : "",
     phoneNumber : "",
-    birthDate : new Date(),
+    birthDate : convertPersianDateToLatin(new Date().toLocaleDateString("fa-IR")),
     officiality : "دارای شناسه اتباع",
     nationality : "ایرانی",
     workPlace : "",
@@ -282,7 +282,9 @@ const OneUpload = () => {
         {
           loading ? 
             <div style={{textAlign : 'center' , display : 'flex' , justifyContent : 'center' , margin : '-35px 0px 35px'}}>
-              <Loader />
+                        <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+            <CircularProgress />
+          </Box>
             </div>
             : <Grid style={{marginBottom : '20px' , marginRight : '-10px' , paddingRight : '0px' , padding : '10px' , display : 'flex' , justifyContent : 'space-around' , width : '100%' , alignItems : 'center'}} item xs={12} >
               <Button onClick={FirstReq} component='label' variant='contained' color='success'>

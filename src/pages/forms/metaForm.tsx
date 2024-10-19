@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Box, Button, Checkbox, FormControl, FormControlLabel, FormHelperText, TextField } from '@mui/material';
+import { Box, Button, Checkbox, CircularProgress, FormControl, FormControlLabel, FormHelperText, TextField } from '@mui/material';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { brokerCredentialSchema } from 'src/constant';
@@ -144,7 +144,9 @@ const MetaForm = ({setState} : any) => {
             {err && <p style={{marginTop : '-15px' , color : '#ff3d3d' , textAlign : 'center' , fontSize : '20px'}}>{err}</p>} 
             {loading ? 
               <div style={{textAlign : 'center' , display : 'flex' , justifyContent : 'center' , margin : '-45px 0 0'}}>
-                <Loader />
+                          <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+            <CircularProgress />
+          </Box>
               </div>
               :<Button fullWidth size='large' type='submit' variant='contained'>ارسال</Button>
             }

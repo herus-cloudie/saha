@@ -13,6 +13,7 @@ import CardContent from '@mui/material/CardContent'
 import Loader from 'src/@core/components/spinner/loader'
 import { IdentTypeWithJwt } from 'src/context/types'
 import Icon from 'src/@core/components/icon'
+import { CircularProgress } from '@mui/material'
 
 const ImgStyled = styled('img')(({ theme }) => ({
   width: 120,
@@ -203,7 +204,9 @@ const PictUpload = ({dialogFunc , userData , areImagesFilled} : {dialogFunc : an
           <div style={{display : 'flex' , justifyContent : 'center' , widows : '100%' }}>
             { 
               loading 
-              ? <div style={{ marginTop : '-45px'}}> <Loader /> </div>
+              ? <div style={{ marginTop : '-45px'}}>           <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+            <CircularProgress />
+          </Box> </div>
               : <Button onClick={sendIdentFunc} style={{width : '300px'}} size='large' color='success' component='label' variant='contained'>
                       بررسی
               </Button>

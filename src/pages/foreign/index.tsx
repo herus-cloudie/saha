@@ -25,7 +25,7 @@ import FooterIllustrationsV2 from 'src/views/pages/auth/FooterIllustrationsV2'
 import { useRouter } from 'next/navigation'
 import Loader from 'src/@core/components/spinner/loader'
 import { loginCredentialSchema } from 'src/constant'
-import { Autocomplete } from '@mui/material'
+import { Autocomplete, CircularProgress } from '@mui/material'
 import { IdentTypeWithJwt } from 'src/context/types'
 
 // ** Styled Components
@@ -139,7 +139,6 @@ const Iran = () => {
   });
 
   const sendReq = async () => { 
-     console.log(formData)
     if(!formData.firstName || !formData.lastName || !formData.fatherName || !formData.nationalCode || !formData.phoneNumber || !formData.workPlace || !formData.subgroup || !formData.address) return setError('تمامی بخش ها را کامل کنید')
     setError('')
 
@@ -434,7 +433,9 @@ const Iran = () => {
                 {
                   loading ? 
                     <div style={{textAlign : 'center' , display : 'flex' , justifyContent : 'center' , margin : '-35px 0px 35px'}}>
-                      <Loader />
+                                <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+            <CircularProgress />
+          </Box>
                     </div>
                     : <Button onClick={sendReq} fullWidth size='large' type='submit' variant='contained' sx={{ mb: 7 }}>
                       برو به مرحله بعد

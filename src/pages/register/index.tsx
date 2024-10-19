@@ -39,6 +39,7 @@ import { useSettings } from 'src/@core/hooks/useSettings'
 import FooterIllustrationsV2 from 'src/views/pages/auth/FooterIllustrationsV2'
 import { signUpType } from 'src/types/apps/userTypes'
 import { useRouter } from 'next/navigation'
+import { CircularProgress } from '@mui/material'
 
 // ** Styled Components
 const RegisterIllustrationWrapper = styled(Box)<BoxProps>(({ theme }) => ({
@@ -305,7 +306,9 @@ const Register = () => {
                   {error && <p style={{color : '#ff3d3d' , textAlign : 'center'}}>{error}</p>} 
                   {loading ? 
                   <div style={{textAlign : 'center' , display : 'flex' , justifyContent : 'center' , margin : '-35px 0px 35px'}}>
-                    <Loader />
+                              <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+            <CircularProgress />
+          </Box>
                   </div>
                   : <Button onClick={signUpHandler} fullWidth size='large' type='submit' variant='contained' sx={{ mb: 7 }}>
                     ایجاد حساب

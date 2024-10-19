@@ -1,4 +1,4 @@
-import { Button, Card, Dialog, DialogActions, DialogContent, FormControl, Grid, TextField, Typography } from '@mui/material'
+import { Button, Card, CircularProgress, Dialog, DialogActions, DialogContent, FormControl, Grid, TextField, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import React, { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
@@ -33,8 +33,6 @@ const Profile = () => {
     mode: 'onBlur'
   })
   
-
-
   const [userData , setUserData ] = useState<IdentTypeWithJwt>({
     id : 0,
     nationalCode : "",
@@ -194,6 +192,9 @@ const Profile = () => {
             نام پدر : <span>{userData.fatherName}</span>
             </Grid>
             <Grid item xs={12} sm={6} xl={2.4}>
+            کد ملی : <span>{userData.nationalCode}</span>
+            </Grid>
+            <Grid item xs={12} sm={6} xl={2.4}>
             تاریخ تولد : <span>{userData.birthDate as string}</span>
             </Grid>
             <Grid item xs={12} sm={6} xl={2.4}>
@@ -240,7 +241,9 @@ const Profile = () => {
               </Grid>
               <div style={{display : 'flex' , justifyContent : "center" , width : '100%' , paddingRight: '1.5rem' , flexDirection : 'column' , alignItems : 'center'}}>
                 { postalError && <h4 style={{color : 'red'}}>{postalError}</h4>}
-                 {loading ? <Loader />
+                 {loading ?           <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+            <CircularProgress/>
+          </Box>
                   : 
                   <Button onClick={sendPostalCode} style={{width : '300px'}} size='large' color='success' component='label' variant='contained'>
                       صحت سنجی کدپستی
