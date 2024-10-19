@@ -122,14 +122,15 @@ const PictUpload = ({dialogFunc , userData , areImagesFilled} : {dialogFunc : an
   
   const [state , setState ] = useState(false)
   useEffect(() => {
-    if(!userData.image) return
+    if(!userData.image || userData.image == 'https://api.cns365.ir/img/profile.png') return
     setState(true)
   } , [userData.image])
 
   return (
     <Grid container spacing={6} style={{ marginRight: '0px', marginTop: '10px' }}>
       {
-        !state ?
+        // the statement got returend 
+        state ?
         <>
           <Grid item xs={12}>
 

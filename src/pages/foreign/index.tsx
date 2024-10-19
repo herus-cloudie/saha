@@ -25,10 +25,8 @@ import FooterIllustrationsV2 from 'src/views/pages/auth/FooterIllustrationsV2'
 import { useRouter } from 'next/navigation'
 import Loader from 'src/@core/components/spinner/loader'
 import { loginCredentialSchema } from 'src/constant'
-import DatePickerFunc from 'src/components/datePicker'
-import convertPersianDateToLatin from 'src/utils/dateConverter'
 import { Autocomplete } from '@mui/material'
-import { IdentType, IdentTypeWithJwt } from 'src/context/types'
+import { IdentTypeWithJwt } from 'src/context/types'
 
 // ** Styled Components
 const LoginIllustrationWrapper = styled(Box)<BoxProps>(({ theme }) => ({
@@ -116,7 +114,6 @@ const Iran = () => {
     defaultValues,
     resolver: yupResolver(loginCredentialSchema)
   })
-  const [subgroupOptions , setSubgroupOptions] = useState<string[]>(['کشور' , 'استان' , 'شهر' , 'اتحادیه' , 'واحد صنفی']);
 
   const [formData , setFormData] = useState<IdentTypeWithJwt>({
     firstName: '',
@@ -154,16 +151,11 @@ const Iran = () => {
     })
     const Data = await result.json();
     if(Data.token) {
-      
+      document.cookie = `jwt = ${Data.token}; SameSite=None; Secure; Path=/; SameSite=None; Secure; Max-Age=${7 * 24 * 60 * 60}`;
       router.push('/second-step')
     }
    
     setLoading(false);
-  }
-
-  const ChangeDateHandler = (e : any) => {
-    const date = new Date(e);
-    setFormData({...formData , birthDate : date})
   }
 
   return (
@@ -306,22 +298,6 @@ const Iran = () => {
                         </FormControl>
                         <FormControl fullWidth sx={{ mb: 4 }}>
                             <Controller
-                            name='workPlace'
-                            control={control}
-                            render={({ field: { onBlur } }) => (
-                                <TextField
-                                autoFocus
-                                label='محل کار'
-                                value={formData.workPlace}
-                                onBlur={onBlur}
-                                onChange={(e) => setFormData({...formData , workPlace : e.target.value})}
-                                placeholder=''
-                                />
-                            )}
-                            />
-                        </FormControl>
-                        <FormControl fullWidth sx={{ mb: 4 }}>
-                            <Controller
                             name='phoneNumber'
                             control={control}
                             render={({ field: { onBlur } }) => (
@@ -352,47 +328,105 @@ const Iran = () => {
                             )}
                             />
                         </FormControl>
-                        <Autocomplete
-                          style={{marginTop : '10px'}}
-                          options={['حمل و نقل' , 'اصناف' , 'وزارت کشور']}
-                          getOptionLabel={(option: any) => option}
-                          value={formData.category}
-                          className='comboAcc'
-                          onChange={(e, newValue) => {
-                            setFormData({...formData , category : newValue as "اصناف" | "حمل و نقل" | "گردشگری"})
-                            if(newValue == 'اصناف') setSubgroupOptions(['کشور' , 'استان' , 'شهر' , 'اتحادیه' , 'واحد صنفی'])
-                            if(newValue == 'وزارت کشور') setSubgroupOptions([ 'واحد صنفی'])
-                            if(newValue == 'حمل و نقل') setSubgroupOptions(['کشور' , 'واحد صنفی'])
-                          }}
-                          renderInput={(params) => <TextField {...params} label={'دسته بندی'} variant="standard" />}
-                        />
-                        <Autocomplete
-                          options={subgroupOptions}
-                          getOptionLabel={(option: any) => option}
-                          value={formData.subgroup}
-                          className='comboAcc'
-                          onChange={(e, newValue) => setFormData({...formData , subgroup : newValue as string})}
-                          renderInput={(params) => <TextField {...params} label={'گروه بندی'} variant="standard" />}
-                         />
-                        <DatePickerFunc value={formData.workPlace} ChangeDateHandler={ChangeDateHandler}/>
                     </>
-                    : null               
-                    // <FormControl fullWidth sx={{ mb: 4 }}>
-                    //   <Controller
-                    //   name='workPlace'
-                    //   control={control}
-                    //   render={({ field: { onBlur } }) => (
-                    //       <TextField
-                    //       autoFocus
-                    //       label='محل کار'
-                    //       value={formData.workPlace}
-                    //       onBlur={onBlur}
-                    //       onChange={(e) => setFormData({...formData , workPlace : e.target.value})}
-                    //       placeholder=''
-                    //       />
-                    //   )}
-                    //   />
-                    // </FormControl>
+                    :  
+                    <>  <FormControl fullWidth sx={{ mb: 4 }}>
+                         <Controller
+                         name='firstName'
+                         control={control}
+                         render={({ field: { onBlur } }) => (
+                             <TextField
+                             autoFocus
+                             label='نام'
+                             value={formData.firstName}
+                             onBlur={onBlur}
+                             onChange={(e) => setFormData({...formData , firstName : e.target.value})}
+                             placeholder=''
+                             />
+                         )}
+                         />
+                     </FormControl>
+                     <FormControl fullWidth sx={{ mb: 4 }}>
+                         <Controller
+                         name='lastName'
+                         control={control}
+                         render={({ field: { onBlur } }) => (
+                             <TextField
+                             autoFocus
+                             label='نام خانوادگی'
+                             value={formData.lastName}
+                             onBlur={onBlur}
+                             onChange={(e) => setFormData({...formData , lastName : e.target.value})}
+                             placeholder=''
+                             />
+                         )}
+                         />
+                     </FormControl>
+                     <FormControl fullWidth sx={{ mb: 4 }}>
+                         <Controller
+                         name='fatherName'
+                         control={control}
+                         render={({ field: { onBlur } }) => (
+                             <TextField
+                             autoFocus
+                             label='نام پدر'
+                             value={formData.fatherName}
+                             onBlur={onBlur}
+                             onChange={(e) => setFormData({...formData , fatherName : e.target.value})}
+                             placeholder=''
+                             />
+                         )}
+                         />
+                     </FormControl>
+                     <FormControl fullWidth sx={{ mb: 4 }}>
+                         <Controller
+                         name='nationalCode'
+                         control={control}
+                         render={({ field: { onBlur } }) => (
+                             <TextField
+                             autoFocus
+                             label='شناسه اتباع'
+                             value={formData.nationalCode}
+                             onBlur={onBlur}
+                             onChange={(e) => setFormData({...formData , nationalCode : e.target.value})}
+                             placeholder=''
+                             />
+                         )}
+                         />
+                     </FormControl>
+                     <FormControl fullWidth sx={{ mb: 4 }}>
+                         <Controller
+                         name='phoneNumber'
+                         control={control}
+                         render={({ field: { onBlur } }) => (
+                             <TextField
+                             autoFocus
+                             label='شماره موبایل'
+                             value={formData.phoneNumber}
+                             onBlur={onBlur}
+                             onChange={(e) => setFormData({...formData , phoneNumber : e.target.value})}
+                             placeholder=''
+                             />
+                         )}
+                         />
+                     </FormControl>
+                     <FormControl fullWidth sx={{ mb: 4 }}>
+                         <Controller
+                         name='address'
+                         control={control}
+                         render={({ field: { onBlur } }) => (
+                             <TextField
+                             autoFocus
+                             label='محل سکونت'
+                             value={formData.address}
+                             onBlur={onBlur}
+                             onChange={(e) => setFormData({...formData , address : e.target.value})}
+                             placeholder=''
+                             />
+                         )}
+                         />
+                     </FormControl>
+                 </>               
                 }
                 
                 {error && <p style={{color : '#ff3d3d' , textAlign : 'center'}}>{error}</p>} 

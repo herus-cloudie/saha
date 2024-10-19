@@ -3,7 +3,7 @@
 import { HorizontalNavItemsType } from 'src/@core/layouts/types'
 
 const navigation = (): HorizontalNavItemsType => {
-  return [
+  return[
     {
       title: 'نمایه',
       icon: 'mdi:account-circle-outline',

@@ -23,8 +23,8 @@ const FooterContent = () => {
   return (
     <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between' }}>
       <Typography sx={{ mr: 2 }}>
-        تمامی حقوق این وبسایت متعلق به hesnical میباشد  |   
-        {`© ${new Date().getFullYear()} `}
+        تمامی حقوق این وبسایت متعلق به مها میباشد  |   
+        {`© 1403 `}
       </Typography>
 
       {/* {hidden ? null : (

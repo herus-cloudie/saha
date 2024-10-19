@@ -148,7 +148,7 @@ const Iran = () => {
       })
       setLoading(false)
       const Data3 = await result3.json();
-      if(Data3.message == 'Registration successful' || Data3.message == "Login successful"){
+      if(Data3.message == 'Registration successful' || Data3.message == "Login successful" || Data3.message == 'Profile updated successfully'){
         setError('')
         document.cookie = `jwt = ${Data3.token}; SameSite=None; Secure; Path=/; SameSite=None; Secure; Max-Age=${7 * 24 * 60 * 60}`;
         router.push('/second-step');
@@ -176,7 +176,8 @@ const Iran = () => {
           <LoginIllustrationWrapper>
             <LoginIllustration
               alt='login-illustration'
-              src={`/images/1.png`}
+              src={'/images/dark-step/002.png'}
+              width={600}
             />
           </LoginIllustrationWrapper>
           <FooterIllustrationsV2 />
@@ -210,17 +211,17 @@ const Iran = () => {
               </Typography>
               {
                 theme.palette.mode == 'light' 
-                ? <img alt='fadls' src='/images/logos/blue.png' width={35} style={{marginRight : '10px'}}/>
-                : <img alt='fadls' src='/images/logos/white.png' width={35} style={{marginRight : '10px'}}/>
+                ? <img alt='images' src='/images/logos/blue.png' width={35} style={{marginRight : '10px'}}/>
+                : <img alt='images' src='/images/logos/white.png' width={35} style={{marginRight : '10px'}}/>
               }
 
             </Box>
-            <div style={{display : 'flex' , justifyContent : 'center' , justifyItems : 'center'}}>
+            <div style={{display : 'flex' , justifyContent : 'center' , justifyItems : 'center' , marginBottom : '10px'}}>
             {
               hidden ? 
               theme.palette.mode == 'light' 
-              ? <img alt='image' src='/images/1.png' width={330} className='step'/>
-              : <img alt='image' src='/images/1w.png' width={330} className='step'/>
+              ? <img alt='image' src='/images/light-step/002.png' width={330} className='step'/>
+              : <img alt='image' src='/images/dark-step/002.png' width={330} className='step'/>
               : null
             }
             </div>

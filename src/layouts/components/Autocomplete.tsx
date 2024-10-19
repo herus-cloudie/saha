@@ -56,107 +56,101 @@ interface DefaultSuggestionsType {
   }[]
 }
 
+// [
+//   {
+//     suggestion: 'نمایه',
+//     icon: 'mdi:account-circle-outline',
+//     link: '/profile'
+//   },
+//   {
+//     suggestion: 'پشتیبانی',
+//     icon: 'mdi:headset',
+//     link: '/dashboards/trades'
+//   },
+//   {
+//     suggestion: 'راهنمایی',
+//     icon: 'mdi:help-circle-outline',
+//     link: '/dashboards/dailyJournal'
+//   },
+//   {
+//     suggestion: 'سوالات متداول',
+//     icon: 'mdi:frequently-asked-questions',
+//     link: '/dashboards/trades'
+//   },
+//   {
+//     suggestion: 'آپلود دستی',
+//     icon: 'mdi:file-upload-outline',
+//     link: '/dashboards/trades'
+//   },
+//   {
+//     suggestion: 'آپلود گروهی',
+//     icon: 'mdi:folder-upload-outline',
+//     link: '/dashboards/dailyJournal'
+//   },
+//   {
+//     suggestion: 'تایید شده‌ها',
+//     icon: 'mdi:check-circle-outline',
+//     link: '/dashboards/trades'
+//   },
+//   {
+//     titlinkle: 'در انتظار تایید',
+//     icon: 'mdi:clock-outline',
+//     link: '/dashboards/trades'
+//   }
+// ]
+
 const defaultSuggestionsData: DefaultSuggestionsType[] = [
+  
   {
-    category: 'Popular Searches',
+    category: 'کاربر عادی',
     suggestions: [
       {
-        icon: 'mdi:chart-donut',
-        suggestion: 'CRM',
-        link: '/dashboards/crm'
+        suggestion: 'نمایه',
+        icon: 'mdi:account-circle-outline',
+        link: '/profile'
       },
       {
-        icon: 'mdi:poll',
-        suggestion: 'Analytics',
-        link: '/dashboards/main'
+        suggestion: 'پشتیبانی',
+        icon: 'mdi:headset',
+        link: '/support'
       },
       {
-        icon: 'mdi:chart-bubble',
-        suggestion: 'eCommerce',
-        link: '/dashboards/ecommerce'
+        suggestion: 'راهنمایی',
+        icon: 'mdi:help-circle-outline',
+        link: '/guide'
       },
       {
-        icon: 'mdi:account-group',
-        suggestion: 'User List',
-        link: '/apps/user/list'
-      }
+        suggestion: 'سوالات متداول',
+        icon: 'mdi:frequently-asked-questions',
+        link: '/QandA'
+      },
     ]
   },
   {
-    category: 'Apps & Pages',
+    category: 'مدیریت',
     suggestions: [
       {
-        icon: 'mdi:calendar-blank',
-        suggestion: 'Calendar',
-        link: '/apps/calendar'
+        suggestion: 'آپلود دستی',
+        icon: 'mdi:file-upload-outline',
+        link: '/upload/one'
       },
       {
-        icon: 'mdi:format-list-numbered',
-        suggestion: 'Invoice List',
-        link: '/apps/invoice/list'
+        suggestion: 'آپلود گروهی',
+        icon: 'mdi:folder-upload-outline',
+        link: '/upload/group'
       },
       {
-        icon: 'mdi:currency-usd',
-        suggestion: 'Pricing',
-        link: '/pages/pricing'
+        suggestion: 'تایید شده‌ها',
+        icon: 'mdi:check-circle-outline',
+        link: '/accepted'
       },
       {
-        icon: 'mdi:account-cog-outline',
-        suggestion: 'Account Settings',
-        link: '/pages/account-settings/account'
+        suggestion: 'در انتظار تایید',
+        icon: 'mdi:clock-outline',
+        link: '/waiting'
       }
     ]
   },
-  {
-    category: 'User Interface',
-    suggestions: [
-      {
-        icon: 'mdi:format-text-variant-outline',
-        suggestion: 'Typography',
-        link: '/ui/typography'
-      },
-      {
-        icon: 'mdi:tab',
-        suggestion: 'Tabs',
-        link: '/components/tabs'
-      },
-      {
-        icon: 'mdi:gesture-tap-button',
-        suggestion: 'Buttons',
-        link: '/components/buttons'
-      },
-      {
-        icon: 'mdi:card-bulleted-settings-outline',
-        suggestion: 'Advanced Cards',
-        link: '/ui/cards/advanced'
-      }
-    ]
-  },
-  {
-    category: 'Forms & Tables',
-    suggestions: [
-      {
-        icon: 'mdi:format-list-checkbox',
-        suggestion: 'Select',
-        link: '/forms/form-elements/select'
-      },
-      {
-        icon: 'mdi:lastpass',
-        suggestion: 'Autocomplete',
-        link: '/forms/form-elements/autocomplete'
-      },
-      {
-        icon: 'mdi:view-grid-outline',
-        suggestion: 'Table',
-        link: '/tables/mui'
-      },
-      {
-        icon: 'mdi:calendar-range',
-        suggestion: 'Date Pickers',
-        link: '/forms/form-elements/pickers'
-      }
-    ]
-  }
 ]
 
 const categoryTitle: { [k: string]: string } = {

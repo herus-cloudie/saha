@@ -65,7 +65,8 @@ const Profile = () => {
   }, [userData.jwt]);
   
   const [open , setOpen ] = useState<boolean>(false)
-  const [postalError , setPostalError ] = useState<''>('')
+  const [postalError , setPostalError ] = useState<''>('');
+
   const [OCRData , setOCRData] = useState<OCRDataType>({
     message : '',
     result : 1,
@@ -176,7 +177,6 @@ const Profile = () => {
       
   }
 
-  console.log(userData)
   return (
     <div>
       <Card style={{padding : '0 30px 30px'}}>
@@ -277,7 +277,7 @@ const Profile = () => {
                             </div>
                         </Grid>
                     </Card>
-                  </Grid>
+                </Grid>
             }
             <Dialog fullWidth maxWidth='xs' open={open} onClose={() => setOpen(false)}>
               <DialogContent
