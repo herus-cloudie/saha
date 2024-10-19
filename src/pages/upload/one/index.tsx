@@ -8,14 +8,13 @@ import { IdentTypeWithJwt } from 'src/context/types';
 import TextField from '@mui/material/TextField'
 import FormControl from '@mui/material/FormControl'
 
-import Loader from 'src/@core/components/spinner/loader'
+
 import { Autocomplete } from '@mui/material'
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { loginCredentialSchema } from 'src/constant';
 import DatePickerFunc from 'src/components/datePicker';
 import convertPersianDateToLatin from 'src/utils/dateConverter';
-import { useRouter } from 'next/router';
 
 const defaultValues = {
   firstName: '',
@@ -39,7 +38,6 @@ const defaultValues = {
 }
 
 const OneUpload = () => {
-  const router = useRouter();
   const [open , setOpen] = useState<boolean>(false);
   const [loading , setLoading] = useState<boolean>(false);
   const [error, setError] = useState('');
@@ -282,7 +280,7 @@ const OneUpload = () => {
         {
           loading ? 
             <div style={{textAlign : 'center' , display : 'flex' , justifyContent : 'center' , margin : '-35px 0px 35px'}}>
-                        <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+                        <Box display="flex" justifyContent="center" alignItems="center" height="100px">
             <CircularProgress />
           </Box>
             </div>

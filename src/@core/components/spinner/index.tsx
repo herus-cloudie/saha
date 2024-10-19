@@ -1,6 +1,5 @@
 // ** MUI Imports
 import Box, { BoxProps } from '@mui/material/Box'
-import Loader from './loader'
 import { CircularProgress } from '@mui/material'
 
 const FallbackSpinner = ({ sx }: { sx?: BoxProps['sx'] }) => {
@@ -16,7 +15,7 @@ const FallbackSpinner = ({ sx }: { sx?: BoxProps['sx'] }) => {
         ...sx
       }}
     >
-                 <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+                 <Box display="flex" justifyContent="center" alignItems="center" height="100px">
             <CircularProgress />
           </Box>
     </Box>

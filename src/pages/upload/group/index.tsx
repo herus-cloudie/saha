@@ -5,19 +5,19 @@ import readXlsxFile from 'read-excel-file'
 import IconifyIcon from 'src/@core/components/icon';
 
 const GroupUpload = () => {
-    const [state , setState] = useState<object[]>();
     const [open , setOpen] = useState<boolean>(false);
-    const sendXlsx = async (state : any) => {
+    const sendXlsx = async (State : any) => {
         const sendReq = await fetch('https://api.cns365.ir/api/bulk.php' , {
             method: 'POST',
             headers: { 'Content-Type': 'application/json'},
-            body: JSON.stringify(state)
+            body: JSON.stringify(State)
           })
         const Data = await sendReq.json();
-        setState(Data.processed_records)
+
+        console.log(Data)
         setOpen(true)
-        console.log(state)
     }
+    
   return (
     <>
     <Grid container spacing={6} style={{ marginRight: '0px', marginTop: '10px' }}>

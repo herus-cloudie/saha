@@ -23,7 +23,7 @@ import BlankLayout from 'src/@core/layouts/BlankLayout'
 // ** Demo Imports
 import FooterIllustrationsV2 from 'src/views/pages/auth/FooterIllustrationsV2'
 import { useRouter } from 'next/navigation'
-import Loader from 'src/@core/components/spinner/loader'
+
 import { loginCredentialSchema } from 'src/constant'
 import { Autocomplete, CircularProgress } from '@mui/material'
 import { IdentTypeWithJwt } from 'src/context/types'
@@ -433,7 +433,7 @@ const Iran = () => {
                 {
                   loading ? 
                     <div style={{textAlign : 'center' , display : 'flex' , justifyContent : 'center' , margin : '-35px 0px 35px'}}>
-                                <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+                                <Box display="flex" justifyContent="center" alignItems="center" height="100px">
             <CircularProgress />
           </Box>
                     </div>

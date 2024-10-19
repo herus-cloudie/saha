@@ -1,4 +1,4 @@
-import { Button, Card, CircularProgress, Divider, Grid, Typography } from '@mui/material'
+import { Button, Card, CircularProgress, Grid, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import React, { useEffect, useState } from 'react'
 import { IdentTypeWithJwt } from 'src/context/types'
@@ -109,7 +109,7 @@ const Declined = () => {
     <div>
       {
         loading ? (
-          <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+          <Box display="flex" justifyContent="center" alignItems="center" height="100px">
             <CircularProgress />
           </Box>
         ) : (

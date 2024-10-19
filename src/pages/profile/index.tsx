@@ -3,9 +3,9 @@ import { Box } from '@mui/system'
 import React, { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import Icon from 'src/@core/components/icon'
-import Loader from 'src/@core/components/spinner/loader'
+
 import PictUpload from 'src/components/pictUpload'
-import { IdentType, IdentTypeWithJwt } from 'src/context/types'
+import {IdentTypeWithJwt } from 'src/context/types'
 import parseCookieString from 'src/utils/parseCookieString'
 import ParseJwt from 'src/utils/ParseJwt'
 
@@ -241,9 +241,10 @@ const Profile = () => {
               </Grid>
               <div style={{display : 'flex' , justifyContent : "center" , width : '100%' , paddingRight: '1.5rem' , flexDirection : 'column' , alignItems : 'center'}}>
                 { postalError && <h4 style={{color : 'red'}}>{postalError}</h4>}
-                 {loading ?           <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
-            <CircularProgress/>
-          </Box>
+                 {loading ?         
+                   <Box display="flex" justifyContent="center" alignItems="center" >
+                    <CircularProgress/>
+                  </Box>
                   : 
                   <Button onClick={sendPostalCode} style={{width : '300px'}} size='large' color='success' component='label' variant='contained'>
                       صحت سنجی کدپستی

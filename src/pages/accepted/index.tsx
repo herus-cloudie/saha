@@ -1,4 +1,4 @@
-import { Button, Card, CircularProgress, Divider, Grid, Typography } from '@mui/material'
+import { Button, Card, CircularProgress, Grid, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import React, { useEffect, useState } from 'react'
 import { IdentTypeWithJwt } from 'src/context/types'
@@ -102,7 +102,7 @@ const Accepted = () => {
     <div>
       {
         loading ? (
-          <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+          <Box display="flex" justifyContent="center" alignItems="center" height="100px">
             <CircularProgress />
           </Box>
         ) : (
@@ -111,7 +111,7 @@ const Accepted = () => {
               کارکنان تایید شده توسط شما
             </Typography>
             <Grid container spacing={7}>
-              {acceptedList.map((item, index) => (
+              {acceptedList?.map((item, index) => (
                 <Grid item xs={12} md={6} key={index}>
                   <Card sx={{ padding: '20px', backgroundColor: '#f9f9f9' }}>
                     <Grid container spacing={2}>

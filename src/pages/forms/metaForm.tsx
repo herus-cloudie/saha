@@ -6,7 +6,7 @@ import { brokerCredentialSchema } from 'src/constant';
 import { BrokerType } from 'src/types/forms/reactDatepickerTypes';
 import ComboBox from '../components/comboBox';
 import { useSession } from 'next-auth/react';
-import Loader from 'src/@core/components/spinner/loader';
+
 import { useTheme } from '@mui/material/styles';
 
 const MetaForm = ({setState} : any) => {
@@ -144,7 +144,7 @@ const MetaForm = ({setState} : any) => {
             {err && <p style={{marginTop : '-15px' , color : '#ff3d3d' , textAlign : 'center' , fontSize : '20px'}}>{err}</p>} 
             {loading ? 
               <div style={{textAlign : 'center' , display : 'flex' , justifyContent : 'center' , margin : '-45px 0 0'}}>
-                          <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+                          <Box display="flex" justifyContent="center" alignItems="center" height="100px">
             <CircularProgress />
           </Box>
               </div>

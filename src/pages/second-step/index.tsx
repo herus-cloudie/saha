@@ -21,7 +21,7 @@ import BlankLayout from 'src/@core/layouts/BlankLayout'
 
 // ** Demo Imports
 import FooterIllustrationsV2 from 'src/views/pages/auth/FooterIllustrationsV2'
-import Loader from 'src/@core/components/spinner/loader'
+
 import { defaultBase64, loginCredentialSchema } from 'src/constant'
 import { Autocomplete, Card, CircularProgress, FormControl } from '@mui/material'
 import parseCookieString from 'src/utils/parseCookieString'
@@ -249,7 +249,7 @@ const SecondStep = () => {
                   {error && <p style={{color : '#ff3d3d' , textAlign : 'center'}}>{error}</p>} 
                   {loading ? 
                       <div style={{textAlign : 'center' , display : 'flex' , justifyContent : 'center' , margin : '-35px 0px 35px'}}>
-                        <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+                        <Box display="flex" justifyContent="center" alignItems="center" height="100px">
                           <CircularProgress/>
                         </Box>
                       </div>

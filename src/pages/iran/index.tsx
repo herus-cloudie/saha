@@ -23,7 +23,7 @@ import BlankLayout from 'src/@core/layouts/BlankLayout'
 // ** Demo Imports
 import FooterIllustrationsV2 from 'src/views/pages/auth/FooterIllustrationsV2'
 import { useRouter } from 'next/navigation'
-import Loader from 'src/@core/components/spinner/loader'
+
 import { loginCredentialSchema } from 'src/constant'
 import DatePickerFunc from 'src/components/datePicker'
 import convertPersianDateToLatin from 'src/utils/dateConverter'
@@ -126,9 +126,9 @@ const Iran = () => {
       const Data2 = await result2.json();
 
       console.log(Data2)
-      if(!Data2.data.firstName) {
+      if(Data2.result == 6) {
         setLoading(false)
-        setError('مشکلی پیش آمده است')
+        setError(Data2.message)
 
         return;
       };
@@ -270,7 +270,7 @@ const Iran = () => {
               {error && <p style={{color : '#ff3d3d' , textAlign : 'center'}}>{error}</p>} 
               {loading ? 
                   <div style={{textAlign : 'center' , display : 'flex' , justifyContent : 'center' , margin : '-35px 0px 35px'}}>
-                              <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+                              <Box display="flex" justifyContent="center" alignItems="center" height="100px">
             <CircularProgress />
           </Box>
                   </div>

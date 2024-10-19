@@ -21,7 +21,7 @@ import Typography, { TypographyProps } from '@mui/material/Typography'
 import MuiFormControlLabel, { FormControlLabelProps } from '@mui/material/FormControlLabel'
 
 // ** Icon spinner
-import Loader from 'src/@core/components/spinner/loader'
+
 
 // ** Icon Imports
 import Icon from 'src/@core/components/icon'
@@ -306,7 +306,7 @@ const Register = () => {
                   {error && <p style={{color : '#ff3d3d' , textAlign : 'center'}}>{error}</p>} 
                   {loading ? 
                   <div style={{textAlign : 'center' , display : 'flex' , justifyContent : 'center' , margin : '-35px 0px 35px'}}>
-                              <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+                              <Box display="flex" justifyContent="center" alignItems="center" height="100px">
             <CircularProgress />
           </Box>
                   </div>
