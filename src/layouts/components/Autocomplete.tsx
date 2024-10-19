@@ -148,6 +148,11 @@ const defaultSuggestionsData: DefaultSuggestionsType[] = [
         suggestion: 'در انتظار تایید',
         icon: 'mdi:clock-outline',
         link: '/waiting'
+      },
+      {
+        suggestion: 'رد شده',
+        icon: 'mdi:clock-outline',
+        link: '/declined'
       }
     ]
   },

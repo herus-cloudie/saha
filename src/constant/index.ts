@@ -52,7 +52,7 @@ function chartData(theme : any){
     yaxis: {
         labels: { show: false }
     },
-    colors: [hexToRGBA('#72E128', 1),hexToRGBA('#FF4D49', 1)],
+    colors: [hexToRGBA('#72E128', 1),hexToRGBA('#C95427', 1)],
     grid: {
         borderColor: '#ffffff33',
         xaxis: {
@@ -120,7 +120,7 @@ function chartData(theme : any){
     yaxis: {
         labels: { show: false }
     },
-    colors: [hexToRGBA('#72E128', 1),hexToRGBA('#FF4D49', 1)],
+    colors: [hexToRGBA('#72E128', 1),hexToRGBA('#C95427', 1)],
     grid: {
         borderColor: theme.palette.divider,
         xaxis: {

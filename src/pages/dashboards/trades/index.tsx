@@ -145,7 +145,7 @@ const Trade = () => {
       : <ApexChartWrapper>
         <Grid container spacing={6} className='match-height'>  
           <Grid item xs={12} sm={6} xl={3}>
-              <ApexDonutChart title='Trade win' colors={[ '#72E128',  '#2c2cff','#FF4D49' ]} labels={['win', 'break even' , 'loss']} series={[7  , 2 , 18]} avrgNumb='25%'/> 
+              <ApexDonutChart title='Trade win' colors={[ '#72E128',  '#2c2cff','#C95427' ]} labels={['win', 'break even' , 'loss']} series={[7  , 2 , 18]} avrgNumb='25%'/> 
           </Grid>
           <Grid item xs={12} sm={6} xl={3}>
             <Card dir='ltr'>
@@ -168,7 +168,7 @@ const Trade = () => {
             />
           </Grid>
           <Grid item xs={12} sm={6} xl={3}>
-              <ApexDonutChart title='Profit Factor' colors={[ '#72E128' ,'#FF4D49']} labels={['win', 'loss']} series={[68 , 32]} avrgNumb='1.6'/> 
+              <ApexDonutChart title='Profit Factor' colors={[ '#72E128' ,'#C95427']} labels={['win', 'loss']} series={[68 , 32]} avrgNumb='1.6'/> 
           </Grid>
           
           <Grid item xs={12}>

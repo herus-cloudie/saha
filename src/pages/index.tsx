@@ -7,7 +7,7 @@ export default function HomePage(){
 export async function getServerSideProps() {
     return {
       redirect: {
-        destination: '/dashboards/main',
+        destination: '/profile',
         permanent: false,
       },
     }

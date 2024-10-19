@@ -38,8 +38,8 @@ const DefaultPalette = (mode: Palette['mode'], skin: Skin): Palette => {
       white: whiteColor
     },
     primary: {
-      light: '#787EFF',
-      main: '#666CFF',
+      light: '#08554E',
+      main: '#08554E',
       dark: '#5A5FE0',
       contrastText: whiteColor
     },
@@ -51,7 +51,7 @@ const DefaultPalette = (mode: Palette['mode'], skin: Skin): Palette => {
     },
     error: {
       light: '#FF625F',
-      main: '#FF4D49',
+      main: '#C95427',
       dark: '#E04440',
       contrastText: whiteColor
     },
@@ -70,7 +70,7 @@ const DefaultPalette = (mode: Palette['mode'], skin: Skin): Palette => {
     success: {
       light: '#83E542',
       main: '#72E128',
-      dark: '#64C623',
+      dark: '#08554E',
       contrastText: whiteColor
     },
     grey: {

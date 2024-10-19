@@ -14,7 +14,7 @@ const searchData: AppBarSearchType[] = [
   },
   {
     id: 2,
-    url: '/dashboards/main',
+    url: '/profile',
     icon: 'mdi:chart-timeline-variant',
     title: 'Analytics Dashboard',
     category: 'dashboards'

@@ -32,7 +32,7 @@ interface UserProfile {
   postal_code: string;
 }
 
-const Accepted = () => {  
+const Declined = () => {  
   const [loading , setLoading] = useState<boolean>(false);
   const [userData , setUserData ] = useState<IdentTypeWithJwt>({
     id : 0,
@@ -58,30 +58,36 @@ const Accepted = () => {
     jwt : ""
   });
 
-  const [acceptedList , setAcceptedList] = useState<UserProfile[]>([])
-
+  const [declinedList , setDeclinedList] = useState<UserProfile[]>([])
+  const [isListEmpty , setIsListEmpty] = useState<boolean>(true)
+  
   useEffect(() => {
-    const getAcceptedUsers = async () => {
+    const getDeclinedUsers = async () => {
       setLoading(true)
-      const sendPostal = await fetch('https://api.cns365.ir/api/correct.php', {
+      const sendPostal = await fetch('https://api.cns365.ir/api/false.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json'},
         body: JSON.stringify({role: 'shop' , national_code: userData.nationalCode})
       });
       const Data = await sendPostal.json();
-      setAcceptedList(Data.accepted_users);
+      console.log(Data)
+      if(Data.declined_users){
+          setDeclinedList(Data.declined_users);
+          setLoading(false)
+      }
+      setIsListEmpty(false)
       setLoading(false)
     }
 
-    if(userData.nationalCode) getAcceptedUsers();
+    if(userData.nationalCode) getDeclinedUsers();
   }, [userData.nationalCode])
 
   useEffect(() => {
     const {jwt} =  parseCookieString(document.cookie)
     setUserData(ParseJwt(jwt))
   }, [userData.jwt]);
-
-  const handleDecline = async (targetNationalCode : string) => {
+  
+  const handleAccept = async (targetNationalCode : string) => {
     const getDeclinedReq = await fetch('https://api.cns365.ir/api/updatestatus.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json'},
@@ -89,15 +95,16 @@ const Accepted = () => {
         role: 'shop' ,
         national_code: userData.nationalCode ,
         target_national_code: targetNationalCode,
-        status: 'declined'
+        status: 'accepted'
       })
     });
     const Data = await getDeclinedReq.json();
     console.log(Data)
-    const newData = acceptedList.filter(item => item.national_code != targetNationalCode)
-    setAcceptedList(newData)
+    const newData = declinedList.filter(item => item.national_code != targetNationalCode)
+    setDeclinedList(newData)
   }
 
+ 
   return (
     <div>
       {
@@ -108,58 +115,65 @@ const Accepted = () => {
         ) : (
           <Card sx={{ padding: '30px' }}>
             <Typography variant="h4" marginBottom={'30px'} gutterBottom>
-              کارکنان تایید شده توسط شما
+             کارکنان رد شده توسط شما
             </Typography>
             <Grid container spacing={7}>
-              {acceptedList.map((item, index) => (
+              {
+              !isListEmpty
+               ? declinedList.map((item, index) => (
                 <Grid item xs={12} md={6} key={index}>
                   <Card sx={{ padding: '20px', backgroundColor: '#f9f9f9' }}>
                     <Grid container spacing={2}>
                       <Grid item xs={12} sm={6}>
-                        <Typography marginTop={'2px'} variant="body1"><strong>نام:</strong> {item.first_name}</Typography>
+                        <Typography variant="body1"><strong>نام:</strong> {item.first_name}</Typography>
                       </Grid>
                       <Grid item xs={12} sm={6}>
-                        <Typography marginTop={'2px'} variant="body1"><strong>نام خانوادگی:</strong> {item.last_name}</Typography>
+                        <Typography variant="body1"><strong>نام خانوادگی:</strong> {item.last_name}</Typography>
                       </Grid>
                       <Grid item xs={12} sm={6}>
-                        <Typography marginTop={'2px'} variant="body1"><strong>نام پدر:</strong> {item.father_name}</Typography>
+                        <Typography variant="body1"><strong>نام پدر:</strong> {item.father_name}</Typography>
                       </Grid>
                       <Grid item xs={12} sm={6}>
-                        <Typography marginTop={'2px'} variant="body1"><strong>تاریخ تولد:</strong> {item.birth_date}</Typography>
+                        <Typography variant="body1"><strong>تاریخ تولد:</strong> {item.birth_date}</Typography>
                       </Grid>
                       <Grid item xs={12} sm={6}>
-                        <Typography marginTop={'2px'} variant="body1"><strong>ملیت:</strong> {item.nationality}</Typography>
+                        <Typography variant="body1"><strong>ملیت:</strong> {item.nationality}</Typography>
                       </Grid>
                       <Grid item xs={12} sm={6}>
-                        <Typography marginTop={'2px'} variant="body1"><strong>محل کار:</strong> {item.work_place}</Typography>
+                        <Typography variant="body1"><strong>محل کار:</strong> {item.work_place}</Typography>
                       </Grid>
                       <Grid item xs={12} sm={6}>
-                        <Typography marginTop={'2px'} variant="body1"><strong>شماره تماس:</strong> {item.phone_number}</Typography>
+                        <Typography variant="body1"><strong>شماره تماس:</strong> {item.phone_number}</Typography>
                       </Grid>
                       <Grid item xs={12} sm={6}>
-                        <Typography marginTop={'2px'} variant="body1"><strong>سمت:</strong> {item.role === 'user' ? 'کارمند' : 'مدیر'}</Typography>
+                        <Typography variant="body1"><strong>سمت:</strong> {item.role === 'user' ? 'کارمند' : 'مدیر'}</Typography>
                       </Grid>
                       <Grid item xs={12} sm={6}>
-                        <Typography marginTop={'2px'} variant="body1"><strong>زیرگروه:</strong> {item.subgroup || 'ندارد'}</Typography>
+                        <Typography variant="body1"><strong>زیرگروه:</strong> {item.subgroup || 'ندارد'}</Typography>
                       </Grid>
-                      
+
                       <Grid item xs={12} sm={12} mt={2}>
                         <Box display="flex" justifyContent="start" gap={'30px'}>
-                          <Button variant="contained" color="error"  size='large' onClick={() => handleDecline(item.national_code)}>
-                            تغییر وضعیت به رد شده
+                          <Button variant="contained" color="success" onClick={() => handleAccept(item.national_code)}>
+                            تایید
                           </Button>
                         </Box>
                       </Grid>
                     </Grid>
                   </Card>
                 </Grid>
-              ))}
+              ))
+              : 
+              <div style={{display : 'flex' , justifyContent : 'center'}}>
+                <h2 style={{textAlign: 'center',marginRight: '40px'}}>هنوز کارمندی جهت تایید، فرمی ارسال نکرده است</h2>
+              </div>
+              }
             </Grid>
           </Card>
         )
-      }
+      } 
     </div>
   )
 }
 
-export default Accepted;
+export default Declined;

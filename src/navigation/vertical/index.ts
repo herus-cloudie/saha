@@ -46,6 +46,11 @@ const navigation = (): VerticalNavItemsType => {
       title: 'در انتظار تایید',
       icon: 'mdi:clock-outline',
       path: '/waiting'
+    },
+    {
+      title: 'رد شده',
+      icon: 'mdi:clock-outline',
+      path: '/declined'
     }
   ]
   

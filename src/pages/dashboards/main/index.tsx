@@ -56,7 +56,7 @@ const AnalyticsDashboard = () => {
           <Grid container spacing={6} className='match-height'>
             <MainCharts>
             <Grid item xs={12} sm={6} xl={2.4}>
-             <ApexDonutChart title='Day win' colors={['#72E128',  '#FF4D49']} labels={['win', 'loss']} series={[positiveProfit.length , negativeProfit.length]} avrgNumb={positiveProfit.length.toString()} />
+             <ApexDonutChart title='Day win' colors={['#72E128',  '#C95427']} labels={['win', 'loss']} series={[positiveProfit.length , negativeProfit.length]} avrgNumb={positiveProfit.length.toString()} />
             </Grid>
             </MainCharts>
             <Grid item xs={12} sm={6} lg={6} xl={4}>
