@@ -18,7 +18,7 @@ const CardStatsVertical = (props: CardStatsVerticalProps) => {
   // ** Props
   const { title, icon, stats, chipText, trendNumber, trend = 'positive' } = props
   const dynamicStyleIcon = trend == 'positive' ? 'success' : 'error' ;
-  const dynamicStyleNumb = trend == 'positive' ? '#72E128' : 'red' ;
+  const dynamicStyleNumb = trend == 'positive' ? '#387671' : 'red' ;
   
   return (
     <Card>

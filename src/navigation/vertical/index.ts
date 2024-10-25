@@ -5,9 +5,14 @@ const navigation = (): VerticalNavItemsType => {
   
   return [
     {
-      title: 'نمایه',
+      title: 'اطلاعات شخصی',
       icon: 'mdi:account-circle-outline',
       path: '/profile'
+    },
+    {
+      title: 'اطلاعات کاری',
+      icon: 'ic:outline-work',
+      path: '/work'
     },
     {
       title: 'پشتیبانی',
@@ -49,7 +54,7 @@ const navigation = (): VerticalNavItemsType => {
     },
     {
       title: 'رد شده',
-      icon: 'mdi:clock-outline',
+      icon: 'hugeicons:multiplication-sign',
       path: '/declined'
     }
   ]

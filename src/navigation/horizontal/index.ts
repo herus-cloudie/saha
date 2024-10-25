@@ -5,9 +5,14 @@ import { HorizontalNavItemsType } from 'src/@core/layouts/types'
 const navigation = (): HorizontalNavItemsType => {
   return[
     {
-      title: 'نمایه',
+      title: 'اطلاعات شخصی',
       icon: 'mdi:account-circle-outline',
       path: '/profile'
+    },
+    {
+      title: 'اطلاعات کاری',
+      icon: 'ic:outline-work',
+      path: '/work'
     },
     {
       title: 'پشتیبانی',

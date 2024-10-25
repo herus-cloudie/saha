@@ -1,10 +1,15 @@
+'use client'
+
 import { Button, Card, CircularProgress, Dialog, DialogActions, DialogContent, FormControl, Grid, TextField, Typography } from '@mui/material'
 import { Box } from '@mui/system'
+import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import Icon from 'src/@core/components/icon'
+import Loader from 'src/@core/components/spinner/loader'
 
 import PictUpload from 'src/components/pictUpload'
+import ProfileUpload from 'src/components/profileUpload'
 import {IdentTypeWithJwt } from 'src/context/types'
 import parseCookieString from 'src/utils/parseCookieString'
 import ParseJwt from 'src/utils/ParseJwt'
@@ -32,8 +37,10 @@ const Profile = () => {
   } = useForm({
     mode: 'onBlur'
   })
-  
-  const [userData , setUserData ] = useState<IdentTypeWithJwt>({
+
+  const router = useRouter()
+
+  const [cookieData , setCookieData ] = useState<IdentTypeWithJwt>({
     id : 0,
     nationalCode : "",
     firstName : "",
@@ -54,17 +61,19 @@ const Profile = () => {
     matched : 1,
     alive : 1,
     role : "user",
-    jwt : ""
-  })
+    jwt : "",
+    senfCode : '',
+    position : ''
+  });
 
-  useEffect(() => {
-    const {jwt} =  parseCookieString(document.cookie)
-    setUserData(ParseJwt(jwt))
-  }, [userData.jwt]);
-  
-  const [open , setOpen ] = useState<boolean>(false)
+  const [open , setOpen ] = useState<boolean>(false);
   const [postalError , setPostalError ] = useState<''>('');
-
+  const [postalCode , setPostalCode] = useState<string | number>();
+  const [loading , setLoading] = useState<boolean>(false);
+  const [userData, setUserData] = useState<IdentTypeWithJwt | null>(null)
+  const [mainLoader , setMainLoader] = useState(false);
+  const [isMounted, setIsMounted] = useState(false)
+  const [identStatus, setIdentState] = useState<string>('false')
   const [OCRData , setOCRData] = useState<OCRDataType>({
     message : '',
     result : 1,
@@ -83,15 +92,46 @@ const Profile = () => {
     },
   });
 
-  const [postalCode , setPostalCode] = useState<string | number>();
-  const [loading , setLoading] = useState<boolean>(false);
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
+
+  useEffect(() => {
+    const fillJwt = async () => {
+      const { jwt , identStatus } = parseCookieString(document.cookie)
+      if (jwt) {
+        const parsedData = ParseJwt(jwt)
+        setUserData(parsedData)
+        setCookieData(parsedData)
+        setIdentState(identStatus)
+      }
+      setMainLoader(false) 
+    }
+    fillJwt()
+  }, []);
+  
+
+  useEffect(() => {
+    if (isMounted) {
+      // if(userData?.nationalCode){
+      //   // if(!userData?.workPlace){
+      //   //   router.push('/second-step')
+      //   // } else return;
+      // } else router.push('/nationality')
+    }
+  }, [isMounted, userData , cookieData , router])
+
+  if (mainLoader) {
+    return <Loader />
+  }
+
 
   const dialogFunc = async (data: OCRDataType) => {
     try {
       setOCRData(data);
   
       if (data.result === 1) {
-        if (userData.nationalCode !== data.data?.front.nationalCode) {
+        if (cookieData.nationalCode !== data.data?.front.nationalCode) {
           return setOCRData({
             ...OCRData,
             message: 'عدم همخوانی اطلاعات کارت ملی آپلود شده با اطلاعات حساب کاربری',
@@ -104,10 +144,10 @@ const Profile = () => {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ 
             image: `data:image/png;base64,${data.data?.front?.facePhoto}`,
-            nationalCode: userData.nationalCode,
-            category : userData.category,
-            subgroup : userData.subgroup,
-            workPlace : userData.workPlace,
+            nationalCode: cookieData.nationalCode,
+            category : cookieData.category,
+            subgroup : cookieData.subgroup,
+            workPlace : cookieData.workPlace,
           })
         });
   
@@ -117,8 +157,9 @@ const Profile = () => {
           throw new Error(updatedResponse.message || 'خطا در به روزرسانی تصویر');
         }
 
-        setUserData({...userData , jwt : updatedResponse.token})
+        setCookieData({...cookieData , jwt : updatedResponse.token})
         document.cookie = `jwt = ${updatedResponse.token}; SameSite=None; Secure; Path=/; SameSite=None; Secure; Max-Age=${7 * 24 * 60 * 60}`;
+        document.cookie = `identStatus = true; SameSite=None; Secure; Path=/; SameSite=None; Secure; Max-Age=${7 * 24 * 60 * 60}`;
       
       } else {
         setOCRData({ ...OCRData, message: data.message, result: 21 });
@@ -153,19 +194,23 @@ const Profile = () => {
 
     const Data = await sendPostal.json();
     
-    if(Data.result == 6) return setPostalError(Data.message)
-    setUserData({...userData , address : `${Data.data.address.town}, ${Data.data.address.district}, ${Data.data.address.street}, ${Data.data.address.street2}, پلاک ${Data.data.address.number}, طبقه ${Data.data.address.floor}, واحد ${Data.data.address.sideFloor}`})
+    if(Data.result == 6){
+      setPostalError(Data.message)
+      setLoading(false);
+      return 
+    } 
+    setCookieData({...cookieData , address : `${Data.data.address.town}, ${Data.data.address.district}, ${Data.data.address.street}, ${Data.data.address.street2}, پلاک ${Data.data.address.number}, طبقه ${Data.data.address.floor}, واحد ${Data.data.address.sideFloor}`})
 
     const updateAddress = await fetch('https://api.cns365.ir/api/api.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ 
         address : `${Data.data.address.town}, ${Data.data.address.district}, ${Data.data.address.street}, ${Data.data.address.street2}, پلاک ${Data.data.address.number}, طبقه ${Data.data.address.floor}, واحد ${Data.data.address.sideFloor}`,
-        category : userData.category,
-        subgroup : userData.subgroup,
-        workPlace : userData.workPlace,
+        category : cookieData.category,
+        subgroup : cookieData.subgroup,
+        workPlace : cookieData.workPlace,
         postal_code : postalCode,
-        nationalCode : userData.nationalCode
+        nationalCode : cookieData.nationalCode
       })
     });
     
@@ -180,89 +225,81 @@ const Profile = () => {
       <Card style={{padding : '0 30px 30px'}}>
         <Grid container spacing={6} className='match-height'>
             <Grid item xs={12}>
-              <h1>نمایه</h1>
+              <h1>اطلاعات شخصی</h1>
             </Grid>
-            <Grid item xs={12} sm={6} xl={2.4}>
-            نام : <span>{userData.firstName}</span>
+            <Grid item xs={12} sm={6} xl={4}>
+            نام : <span>{cookieData.firstName}</span>
             </Grid>
-            <Grid item xs={12} sm={6} xl={2.4}>
-            نام خانوادگی : <span>{userData.lastName}</span>
+            <Grid item xs={12} sm={6} xl={4}>
+            نام خانوادگی : <span>{cookieData.lastName}</span>
             </Grid>
-            <Grid item xs={12} sm={6} xl={2.4}>
-            نام پدر : <span>{userData.fatherName}</span>
+            <Grid item xs={12} sm={6} xl={4}>
+            نام پدر : <span>{cookieData.fatherName}</span>
             </Grid>
-            <Grid item xs={12} sm={6} xl={2.4}>
-            کد ملی : <span>{userData.nationalCode}</span>
+            <Grid item xs={12} sm={6} xl={4}>
+            کد ملی : <span>{cookieData.nationalCode}</span>
             </Grid>
-            <Grid item xs={12} sm={6} xl={2.4}>
-            تاریخ تولد : <span>{userData.birthDate as string}</span>
+            <Grid item xs={12} sm={6} xl={4}>
+            تاریخ تولد : <span>{cookieData.birthDate as string}</span>
             </Grid>
-            <Grid item xs={12} sm={6} xl={2.4}>
-            ملیت : <span>{userData.nationality}</span>
+            <Grid item xs={12} sm={6} xl={4}>
+            شماره تماس : <span>{cookieData.phoneNumber}</span>
             </Grid>
-            <Grid item xs={12} sm={6} xl={2.4}>
-            محل کار: <span>{userData.workPlace}</span>
+            <Grid item xs={12} xl={6}>
+              <ProfileUpload identStatus={identStatus} areImagesFilled={areImagesFilled} dialogFunc={dialogFunc}/>
             </Grid>
-            <Grid item xs={12} sm={6} xl={2.4}>
-            شماره تماس : <span>{userData.phoneNumber}</span>
+            <Grid item xs={12} xl={6}>
+              <PictUpload identStatus={identStatus} areImagesFilled={areImagesFilled} dialogFunc={dialogFunc}/>
             </Grid>
-            <Grid item xs={12} sm={6} xl={2.4}>
-            سمت : <span>{userData.role == 'user' ? 'کارمند' : 'مدیر'}</span>
-            </Grid>
-            <Grid item xs={12} sm={6} xl={2.4}>
-            زیرگروه : <span>{userData.subgroup}</span>
-            </Grid>
-            <PictUpload userData={userData} areImagesFilled={areImagesFilled} dialogFunc={dialogFunc}/>
             {
-              !userData.address ? 
+              !cookieData.address ? 
               <>
-              <Grid style={!userData.image ? {filter : 'blur(1px)'} : {filter : 'blur(0px)'}} item xs={12}>
-                <div style={{display : 'flex' , justifyContent : 'space-between' , alignItems : 'center'}}>
-                  <h3>کد پستی</h3>
-                  <h2 style={{padding: '5px 25px', borderRadius: '25px', boxShadow: '0px 0px 8px #c4c4c4'}}>2</h2>
-                </div>
-                <FormControl fullWidth sx={{ mb: 4 }}>
-                    <Controller
-                      name='nationalCode'
-                      control={control}
-                      render={({ field: { onBlur } }) => (
-                        <TextField
-                          disabled={!userData.image ? true : false}
-                          autoFocus
-                          label='کد پستی'
-                          value={postalCode}
-                          onBlur={onBlur}
-                          onChange={(e) => setPostalCode(e.target.value)}
-                          placeholder='10 رقم'
-                        />
-                      )}
-                    />
-                </FormControl>
-              </Grid>
-              <div style={{display : 'flex' , justifyContent : "center" , width : '100%' , paddingRight: '1.5rem' , flexDirection : 'column' , alignItems : 'center'}}>
-                { postalError && <h4 style={{color : 'red'}}>{postalError}</h4>}
-                 {loading ?         
-                   <Box display="flex" justifyContent="center" alignItems="center" >
-                    <CircularProgress/>
-                  </Box>
-                  : 
-                  <Button onClick={sendPostalCode} style={{width : '300px'}} size='large' color='success' component='label' variant='contained'>
-                      صحت سنجی کدپستی
-                  </Button> 
-                  }
-              </div> 
+                <Grid item xs={12}>
+                  <div style={{display : 'flex' , justifyContent : 'space-between' , alignItems : 'center'}}>
+                    <h3>کد پستی</h3>
+                    <h2 style={{padding: '5px 25px', borderRadius: '25px', boxShadow: '0px 0px 8px #c4c4c4'}}>3</h2>
+                  </div>
+                  <FormControl fullWidth sx={{ mb: 4 }}>
+                      <Controller
+                        name='nationalCode'
+                        control={control}
+                        render={({ field: { onBlur } }) => (
+                          <TextField
+                            autoFocus
+                            label='کد پستی'
+                            value={postalCode}
+                            onBlur={onBlur}
+                            onChange={(e) => setPostalCode(e.target.value)}
+                            placeholder='10 رقم'
+                          />
+                        )}
+                      />
+                  </FormControl>
+                </Grid>
+                <div style={{display : 'flex' , justifyContent : "center" , width : '100%' , paddingRight: '1.5rem' , flexDirection : 'column' , alignItems : 'center'}}>
+                  { postalError && <h4 style={{color : 'red'}}>{postalError}</h4>}
+                  {loading ?         
+                    <Box display="flex" justifyContent="center" alignItems="center" >
+                      <CircularProgress/>
+                    </Box>
+                    : 
+                    <Button onClick={sendPostalCode} style={{width : '300px'}} size='large' color='success' component='label' variant='contained'>
+                        صحت سنجی کدپستی
+                    </Button> 
+                    }
+                </div> 
               </> : 
-               <Grid item xs={12}>
-                    <Card style={{padding : '20px'}}>
+              <Grid item xs={12}>
+                    <Card style={{padding : '20px' , backgroundColor: '#15d10021'}}>
                       <Grid item xs={12}>
                             <div style={{display : 'flex' , justifyContent : 'space-between' , alignItems : 'center'}}>
-                              <h3>کد پستی و  آدرس</h3>
-                              <h2 style={{padding: '5px 25px', borderRadius: '25px', boxShadow: '0px 0px 8px #c4c4c4'}}>2</h2>
+                              <h3>کد پستی و  آدرس سکونت</h3>
+                              <h2 style={{padding: '5px 25px', borderRadius: '25px', boxShadow: '0px 0px 8px #c4c4c4'}}>3</h2>
                               
                             </div>
                             <div style={{display : 'flex' , justifyContent : 'space-around' , flexDirection : 'column' , alignItems : 'center'}}>
-                                <h3>کد پستی : {userData.postal_code}</h3>
-                                <h3>آدرس: {userData.address}</h3>
+                                <h3>کد پستی : {cookieData.postal_code}</h3>
+                                <h3>آدرس: {cookieData.address}</h3>
                                 <Box
                                   sx={{
                                     display: 'flex',
@@ -281,7 +318,7 @@ const Profile = () => {
                             </div>
                         </Grid>
                     </Card>
-                </Grid>
+              </Grid>
             }
             <Dialog fullWidth maxWidth='xs' open={open} onClose={() => setOpen(false)}>
               <DialogContent

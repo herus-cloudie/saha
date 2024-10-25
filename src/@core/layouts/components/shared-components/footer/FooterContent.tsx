@@ -23,7 +23,7 @@ const FooterContent = () => {
   return (
     <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between' }}>
       <Typography sx={{ mr: 2 }}>
-        تمامی حقوق این وبسایت متعلق به مها میباشد  |   
+        تمامی حقوق این وبسایت متعلق به اتاق اصناف کرمانشاه میباشد  |   
         {`© 1403 `}
       </Typography>
 

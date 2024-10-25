@@ -12,7 +12,11 @@ body {
 #__next {
   height: 100%;
 }
-
+@media (min-width : 1440px) {
+  .profilePadding{
+    padding-bottom: 213px !important;
+  }
+}
 code {
   font-family: peyda !important;
   padding: 0.1rem 0.4rem;

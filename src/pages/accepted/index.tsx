@@ -113,7 +113,7 @@ const Accepted = () => {
             <Grid container spacing={7}>
               {acceptedList?.map((item, index) => (
                 <Grid item xs={12} md={6} key={index}>
-                  <Card sx={{ padding: '20px', backgroundColor: '#f9f9f9' }}>
+                  <Card sx={{ padding: '20px' }}>
                     <Grid container spacing={2}>
                       <Grid item xs={12} sm={6}>
                         <Typography marginTop={'2px'} variant="body1"><strong>نام:</strong> {item.first_name}</Typography>
@@ -126,9 +126,6 @@ const Accepted = () => {
                       </Grid>
                       <Grid item xs={12} sm={6}>
                         <Typography marginTop={'2px'} variant="body1"><strong>تاریخ تولد:</strong> {item.birth_date}</Typography>
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <Typography marginTop={'2px'} variant="body1"><strong>ملیت:</strong> {item.nationality}</Typography>
                       </Grid>
                       <Grid item xs={12} sm={6}>
                         <Typography marginTop={'2px'} variant="body1"><strong>محل کار:</strong> {item.work_place}</Typography>

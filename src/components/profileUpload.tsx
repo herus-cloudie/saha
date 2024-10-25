@@ -28,21 +28,10 @@ const ButtonStyled = styled(Button)<ButtonProps & { component?: ElementType; htm
   }
 }))
 
-const ResetButtonStyled = styled(Button)<ButtonProps>(({ theme }) => ({
-  marginLeft: theme.spacing(4),
-  [theme.breakpoints.down('sm')]: {
-    width: '100%',
-    marginLeft: 0,
-    textAlign: 'center',
-    marginTop: theme.spacing(4)
-  }
-}))
 
-const PictUpload = ({dialogFunc , identStatus , areImagesFilled} : {dialogFunc : any ,identStatus : string, areImagesFilled : any}) => {
-  const [imgFront, setImgFront] = useState<string>('/images/ncard.png');
-  const [imgBack, setImgBack] = useState<string>('/images/ncard.png');
+const ProfileUpload = ({dialogFunc , identStatus , areImagesFilled} : {dialogFunc : any ,identStatus : string, areImagesFilled : any}) => {
+  const [imgFront, setImgFront] = useState<string>('https://api.cns365.ir/img/profile.png');
   const [frontData , setFrontData] = useState<any>();
-  const [backData , setBackData] = useState<any>();
 
   const [loading , setLoading] = useState<boolean>();
 
@@ -58,27 +47,13 @@ const PictUpload = ({dialogFunc , identStatus , areImagesFilled} : {dialogFunc :
     }
   }
 
-  const handleBackImageChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
-    setBackData(file)
-    if (file) {
-      const reader = new FileReader()
-      reader.onload = () => {
-        setImgBack(reader.result as string)
-      }
-      reader.readAsDataURL(file)
-    }
-  }
-
-
   const sendIdentFunc = async () => {
-    if (!frontData || !backData) {
-      return areImagesFilled(!frontData, !backData);
+    if (!frontData) {
+      return areImagesFilled(!frontData,);
     }
   
     const formData = new FormData();
     formData.append('nationalCardFront', frontData);
-    formData.append('nationalCardBack', backData);
   
     setLoading(true);
     
@@ -112,85 +87,56 @@ const PictUpload = ({dialogFunc , identStatus , areImagesFilled} : {dialogFunc :
     }
   };
   
-
-
   return (
-    <Grid container spacing={6} style={{ marginTop: '10px' }}>
+    <Grid container spacing={6} style={{ marginTop: '10px'  }}>
       {
-        !(identStatus == 'true') ?
+        !(identStatus == 'false') ?
         <>
           <Grid item xs={12}>
+            <Grid item xs={12}>
+                <div style={{display : 'flex' , justifyContent : 'space-between' , alignItems : 'center'}}>
+                    <h3>بروزرسانی عکس پروفایل</h3>
+                    <h2 style={{padding: '5px 25px', borderRadius: '25px', boxShadow: '0px 0px 8px #c4c4c4' }}>1</h2>
+                </div>
+            </Grid>
 
-          <Grid item xs={12}>
-              <div style={{display : 'flex' , justifyContent : 'space-between' , alignItems : 'center'}}>
-                <h3>بارگذاری عکس کارت ملی</h3>
-                <h2 style={{padding: '5px 25px', borderRadius: '25px', boxShadow: '0px 0px 8px #c4c4c4'}}>2</h2>
-              </div>
-          </Grid>
-
-          <Card> 
-
-              <Grid  item xs={12}>
-              <CardHeader title='روی کارت' />
-              <form>
-                  <CardContent sx={{ pt: 0 }}>
-                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                      <ImgStyled src={imgFront} alt='Profile Pic' />
-                      <div>
-                      <ButtonStyled component='label' variant='contained'>
-                          تصویر خود را آپلود کنید
-                          <input
-                          hidden
-                          type='file'
-                          accept='image/png, image/jpeg'
-                          onChange={handleFrontImageChange}
-                          />
-                      </ButtonStyled>
-                      <Typography sx={{ mt: 5, color: 'text.disabled' }}>حداکثر حجم عکس 5 مگابایت</Typography>
-                      </div>
-                  </Box>
-                  </CardContent>
-                  <Divider />
-              </form>
-              </Grid>
-
-              <Grid item xs={12}>
-                <CardHeader title='پشت کارت' />
+            <Card> 
+                <Grid  item xs={12}>
+                <CardHeader title='عکس پروفایل شما' />
                 <form>
-                    <CardContent sx={{ pt: 0 }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <ImgStyled src={imgBack} alt='Profile Pic' />
-                        <div>
-                        <ButtonStyled component='label' variant='contained'>
-                            تصویر خود را آپلود کنید
-                            <input
-                            hidden
-                            type='file'
-                            accept='image/png, image/jpeg'
-                            onChange={handleBackImageChange}
-                            />
+                    <CardContent className='profilePadding'>
+                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                            <ImgStyled src={imgFront} alt='Profile Pic' />
+                            <div>
+                            <ButtonStyled component='label' variant='contained'>
+                              پروفایل خود را آپلود کنید
+                                <input
+                                hidden
+                                type='file'
+                                accept='image/png, image/jpeg'
+                                onChange={handleFrontImageChange}
+                                />
                             </ButtonStyled>
-
-                        <Typography sx={{ mt: 5, color: 'text.disabled' }}>حداکثر حجم عکس 5 مگابایت</Typography>
-                        </div>
-                    </Box>
+                            <Typography sx={{ mt: 5, color: 'text.disabled' }}>حداکثر حجم عکس 5 مگابایت</Typography>
+                            </div>
+                        </Box>
                     </CardContent>
                     <Divider />
                 </form>
-              </Grid>
-
-          </Card>
-
+                </Grid>
+            </Card>
         </Grid>
         <Grid style={{marginBottom : '20px' , padding : '10px'}} item xs={12}>
           <div style={{display : 'flex' , justifyContent : 'center' , widows : '100%' }}>
             { 
               loading 
-              ? <div style={{ marginTop : '-45px'}}>           <Box display="flex" justifyContent="center" alignItems="center" height="100px">
-            <CircularProgress />
-          </Box> </div>
+              ? <div style={{ marginTop : '-45px'}}> 
+                <Box display="flex" justifyContent="center" alignItems="center" height="100px">
+                    <CircularProgress />
+                </Box>
+              </div>
               : <Button onClick={sendIdentFunc} style={{width : '300px'}} size='large' color='success' component='label' variant='contained'>
-                      بررسی
+                      بروزرسانی
               </Button>
             }
           </div>
@@ -198,14 +144,14 @@ const PictUpload = ({dialogFunc , identStatus , areImagesFilled} : {dialogFunc :
         </>
         
        : <Grid item xs={12}>
-          <Card style={{padding : '20px' , backgroundColor: '#15d10021'}}>
+          <Card style={{padding : '20px' , backgroundColor: '#15d10021'}} >
             <Grid item xs={12}>
                   <div style={{display : 'flex' , justifyContent : 'space-between' , alignItems : 'center'}}>
-                    <h3>بارگذاری عکس کارت ملی</h3>
-                    <h2 style={{padding: '5px 25px', borderRadius: '25px', boxShadow: '0px 0px 8px #c4c4c4' }}>2</h2>
+                  <h3>بروزرسانی عکس پروفایل</h3>
+                    <h2 style={{padding: '5px 25px', borderRadius: '25px', boxShadow: '0px 0px 8px #c4c4c4'}}>1</h2>
                   </div>
                   <div style={{display : 'flex' , justifyContent : 'space-around' , flexDirection : 'column' , alignItems : 'center'}}>
-                    <h3>عکس کارت ملی شما ثبت و تایید شده است</h3>
+                    <h3> عکس پروفایل شما ثبت شده است</h3>
                       <Box
                         sx={{
                           display: 'flex',
@@ -230,5 +176,5 @@ const PictUpload = ({dialogFunc , identStatus , areImagesFilled} : {dialogFunc :
   )
 }
 
-export default PictUpload
+export default ProfileUpload
 

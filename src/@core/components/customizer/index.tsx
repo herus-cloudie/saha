@@ -112,9 +112,9 @@ const Customizer = () => {
           }}
         >
           <Typography variant='h6' sx={{ fontWeight: 600, textTransform: 'uppercase' }}>
-          سفارشی ساز تم
+          شخصی ساز تم
           </Typography>
-          <Typography sx={{ color: 'text.secondary' }}>سفارشی سازی و اعمال در لحظه</Typography>
+          <Typography sx={{ color: 'text.secondary' }}>شخصی سازی و اعمال در لحظه</Typography>
           <IconButton
             onClick={() => setOpen(false)}
             sx={{
@@ -233,83 +233,6 @@ const Customizer = () => {
             </div>
           </CustomizerSpacing>
 
-          <Divider sx={{ m: '0 !important' }} />
-
-          <CustomizerSpacing className='customizer-body'>
-            <Typography
-              component='p'
-              variant='caption'
-              sx={{ mb: 4, color: 'text.disabled', textTransform: 'uppercase' }}
-            >
-              چیدمان
-            </Typography>
-
-            {/* Content Width */}
-            <Box sx={{ mb: 4 }}>
-              <Typography>عرض محتوا</Typography>
-              <RadioGroup
-                row
-                value={contentWidth}
-                onChange={e => handleChange('contentWidth', e.target.value as Settings['contentWidth'])}
-                sx={{ '& .MuiFormControlLabel-label': { fontSize: '.875rem', color: 'text.secondary' } }}
-              >
-                <FormControlLabel value='full' label='کامل' control={<Radio />} />
-                <FormControlLabel value='boxed' label='جعبه بندی' control={<Radio />} />
-              </RadioGroup>
-            </Box>
-
-            {/* AppBar */}
-            <Box sx={{ mb: 4 }}>
-              <Typography> نوار برنامه</Typography>
-              <RadioGroup
-                row
-                value={appBar}
-                onChange={e => handleChange('appBar', e.target.value as Settings['appBar'])}
-                sx={{ '& .MuiFormControlLabel-label': { fontSize: '.875rem', color: 'text.secondary' } }}
-              >
-                <FormControlLabel value='fixed' label='متحرک' control={<Radio />} />
-                <FormControlLabel value='static' label='ثابت' control={<Radio />} />
-                {layout === 'horizontal' ? null : (
-                  <FormControlLabel value='hidden' label='مخفی' control={<Radio />} />
-                )}
-              </RadioGroup>
-            </Box>
-
-            {/* Footer */}
-            <Box sx={{ mb: 4 }}>
-              <Typography>حاشیه پایین</Typography>
-              <RadioGroup
-                row
-                value={footer}
-                onChange={e => handleChange('footer', e.target.value as Settings['footer'])}
-                sx={{ '& .MuiFormControlLabel-label': { fontSize: '.875rem', color: 'text.secondary' } }}
-              >
-                <FormControlLabel value='fixed' label='متحرک' control={<Radio />} />
-                <FormControlLabel value='static' label='ثابت' control={<Radio />} />
-                <FormControlLabel value='hidden' label='مخفی' control={<Radio />} />
-              </RadioGroup>
-            </Box>
-
-            {/* AppBar Blur */}
-            <Box sx={{ mb: 4, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <Typography>AppBar Blur</Typography>
-              <Switch
-                name='appBarBlur'
-                checked={appBarBlur}
-                onChange={(e: any) => handleChange('appBarBlur', e.target.checked)}
-              />
-            </Box>
-
-            {/* RTL */}
-            {/* <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <Typography>RTL</Typography>
-              <Switch
-                name='direction'
-                checked={direction === 'rtl'}
-                onChange={e => handleChange('direction', e.target.checked ? 'rtl' : 'rtl')}
-              />
-            </Box> */}
-          </CustomizerSpacing>
 
           <Divider sx={{ m: '0 !important' }} />
 
@@ -342,23 +265,6 @@ const Customizer = () => {
               </RadioGroup>
             </Box>
 
-            {/* Menu Toggle */}
-            {navHidden || layout === 'horizontal' ? null : (
-              <Box sx={{ mb: 4 }}>
-                <Typography>تغییر منو</Typography>
-                <RadioGroup
-                  row
-                  value={verticalNavToggleType}
-                  onChange={e =>
-                    handleChange('verticalNavToggleType', e.target.value as Settings['verticalNavToggleType'])
-                  }
-                  sx={{ '& .MuiFormControlLabel-label': { fontSize: '.875rem', color: 'text.secondary' } }}
-                >
-                  <FormControlLabel value='accordion' label='آکوردئون ' control={<Radio />} />
-                  <FormControlLabel value='collapse' label='از بین بردن' control={<Radio />} />
-                </RadioGroup>
-              </Box>
-            )}
 
             {/* Menu Collapsed */}
             {navHidden || layout === 'horizontal' ? null : (

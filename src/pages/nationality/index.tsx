@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, ReactNode } from 'react'
+import { useState, ReactNode, useEffect } from 'react'
 
 // ** MUI Components
 import Button from '@mui/material/Button'
@@ -18,8 +18,12 @@ import BlankLayout from 'src/@core/layouts/BlankLayout'
 
 // ** Demo Imports
 import FooterIllustrationsV2 from 'src/views/pages/auth/FooterIllustrationsV2'
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/router'
 import { Autocomplete } from '@mui/material'
+import { IdentTypeWithJwt } from 'src/context/types'
+import parseCookieString from 'src/utils/parseCookieString'
+import ParseJwt from 'src/utils/ParseJwt'
+import Loader from 'src/@core/components/spinner/loader'
 
 // ** Styled Components
 const LoginIllustrationWrapper = styled(Box)<BoxProps>(({ theme }) => ({
@@ -71,13 +75,41 @@ const LoginPage = () => {
   const { settings } = useSettings()
   const hidden = useMediaQuery(theme.breakpoints.down('md'))
 
-  const { skin } = settings
+  const { skin } = settings;
 
-  const [nationality , setNationality] = useState<'ایران' | 'اتباع'>('ایران');
+
+  const [nationality, setNationality] = useState<'ایران' | 'اتباع'>('ایران')
+  const [userData, setUserData] = useState<IdentTypeWithJwt | null>(null)
+  const [loading, setLoading] = useState(true) 
+
+  useEffect(() => {
+    const fillJwt = async () => {
+      const { jwt } = parseCookieString(document.cookie)
+      if (jwt) {
+        const parsedData = ParseJwt(jwt)
+        setUserData(parsedData)
+      }
+      setLoading(false) 
+    }
+    fillJwt()
+  }, [])
 
   const sendReq = () => {
-    if(nationality == 'ایران') return router.push('/iran')
-    else router.push('/foreign') 
+    if (nationality === 'ایران') {
+      router.push('/iran')
+    } else {
+      router.push('/foreign')
+    }
+  }
+
+  if (loading) {
+    return <Loader />
+  }
+
+  if(userData?.nationalCode){
+    if(userData?.workPlace){
+      router.push('/profile')
+    }else router.push('/second-step')
   }
 
   return (
@@ -88,7 +120,8 @@ const LoginPage = () => {
           <LoginIllustrationWrapper>
             <LoginIllustration
               alt='login-illustration'
-              src={`/images/1.png`}
+              src={`/images/step1.png`}
+              width={500}
             />
           </LoginIllustrationWrapper>
           <FooterIllustrationsV2 />
@@ -117,29 +150,24 @@ const LoginPage = () => {
               }}
             >
               
-              <Typography variant='h6' sx={{ ml: 2, lineHeight: 1, fontWeight: 700, fontSize: '1.5rem !important' }}>
-                مها
-              </Typography>
               {
                 theme.palette.mode == 'light' 
-                ? <img alt='fadls' src='/images/logos/blue.png' width={35} style={{marginRight : '10px'}}/>
-                : <img alt='fadls' src='/images/logos/white.png' width={35} style={{marginRight : '10px'}}/>
+                ? <img alt='image' src='/images/kermanali.png' width={150} style={{marginRight : '10px'}}/>
+                : <img  alt='image' src='/images/kermanali.png' width={150} style={{marginRight : '10px' , filter : 'invert(1)'}}/>
               }
 
             </Box>
             <div style={{display : 'flex' , justifyContent : 'center' , justifyItems : 'center'}}>
             {
-              hidden ? 
-              theme.palette.mode == 'light' 
-              ? <img alt='fadls' src='/images/1.png' width={330} className='step'/>
-              : <img alt='fadls' src='/images/1w.png' width={330} className='step'/>
-              : null
-            }
+            hidden 
+            ?  <img alt='img' src='/images/step2.png' width={330} className='step'/>
+            : null
+          }
             </div>
 
             <Box sx={{ mb: 6 }} dir="rtl">
-              <TypographyStyled variant='h5'>{`به مها خوش آمدید 👋🏻`}</TypographyStyled>
-              <Typography variant='body2'>سامانه مدیریت هویت افراد</Typography>
+              <TypographyStyled variant='h5'>{`به اتاق اصناف کرمانشاه خوش آمدید`}</TypographyStyled>
+              <Typography variant='body2'>سامانه هوشمند صدور کارت شناسایی شاغلین واحدین صنفی</Typography>
             </Box>
             <Autocomplete
                 options={['ایران' , 'اتباع']}

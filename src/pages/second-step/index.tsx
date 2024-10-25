@@ -1,4 +1,5 @@
-// ** React Imports
+'use client'
+
 import { useState, ReactNode, useEffect } from 'react'
 
 import Button from '@mui/material/Button'
@@ -27,6 +28,8 @@ import { Autocomplete, Card, CircularProgress, FormControl } from '@mui/material
 import parseCookieString from 'src/utils/parseCookieString'
 import ParseJwt from 'src/utils/ParseJwt'
 import { useRouter } from 'next/router'
+import { IdentTypeWithJwt } from 'src/context/types'
+import Loader from 'src/@core/components/spinner/loader'
 
 // ** Styled Components
 const LoginIllustrationWrapper = styled(Box)<BoxProps>(({ theme }) => ({
@@ -71,15 +74,22 @@ const TypographyStyled = styled(Typography)<TypographyProps>(({ theme }) => ({
   [theme.breakpoints.down('md')]: { marginTop: theme.spacing(8) }
 }))
 
-const defaultValues = {
-  workPlace : ''
-}
 
 const SecondStep = () => {
-  
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState('');
-  const [isDataValid , setIsDataValid] = useState(false);
+
+  const {
+    control,
+  } = useForm({
+    mode: 'onBlur',
+    resolver: yupResolver(loginCredentialSchema)
+  })
+
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
+
+
   const router = useRouter()
   const theme = useTheme()
   const { settings } = useSettings()
@@ -87,8 +97,6 @@ const SecondStep = () => {
 
   // ** Vars
   const { skin } = settings;
-  
-  const [subgroupOptions , setSubgroupOptions] = useState<string[]>(['کشور' , 'استان' , 'شهر' , 'اتحادیه' , 'واحد صنفی']);
   const [cookieData , setCookieData] = useState({
     alive: 1,
     birthDate: '',
@@ -102,188 +110,195 @@ const SecondStep = () => {
     nationality: "",
     officiality: 'دارای شناسه اتباع',
     phoneNumber: "",
-    role: ""
-  });
-
-  const [formData , setFormData] = useState({
-    category : 'اصناف',
+    role: "",
+    position : '',
+    senfCode : '',
+    city : '',
+    province : '',
     subgroup : '',
-    image : defaultBase64,
-    identPict : '',
-    workPlace : '',
+    category : '',
   });
+  const [OTP , setOTP] = useState<any>();
+
+  const [userData, setUserData] = useState<IdentTypeWithJwt | null>(null)
+  const [mainLoader , setMainLoader] = useState(false);
+  const [loading , setLoading] = useState(false);
+  const [isOTPVerified , setIsOTPVerified] = useState(false);
+  const [error , setError] = useState<string>('');
 
   useEffect(() => {
-    const {jwt} =  parseCookieString(document.cookie)
-    setCookieData(ParseJwt(jwt))
-  }, []);
-
-  const {
-    handleSubmit,
-    control
-  } = useForm({
-    defaultValues,
-    mode: 'onBlur',
-    resolver: yupResolver(loginCredentialSchema)
-  })
-
-  const sendReq = async () => {
-    if(!formData.category  || !formData.subgroup || !formData.workPlace) return setError('لطفا تمامی ورودی ها را پر کنید' )
-    setLoading(true);
-    const result = await fetch('https://api.cns365.ir/api/api.php' , {
-      method: 'POST',
-      body: JSON.stringify({...formData , nationalCode : cookieData.nationalCode}),
-      headers: {'Content-Type': 'application/json'}
-    })
-    const Data = await result.json();
-    
-    if(Data.token){
-      
-        setLoading(false);
-        document.cookie = `jwt = ${Data.token}; SameSite=None; Secure; Path=/; SameSite=None; Secure; Max-Age=${7 * 24 * 60 * 60}`;
-        router.push('/profile')
+    if (isMounted) {
+      if(userData?.nationalCode){
+        if(userData?.workPlace){
+          router.push('/profile')
+        } else return
+      } else router.push('/nationality')
     }
+  }, [isMounted, userData , router])
+
+  useEffect(() => {
+    const fillJwt = async () => {
+      const { jwt } = parseCookieString(document.cookie)
+      if (jwt) {
+        const parsedData = ParseJwt(jwt)
+        setUserData(parsedData)
+        setCookieData(parsedData)
+        const sendReq = await fetch('https://api.cns365.ir/api/send_otp.php' , {
+          method : 'POST',
+          body : JSON.stringify({phone_number: parsedData.phoneNumber}),
+          headers: {'Content-Type': 'application/json'},
+        })
+        const result = await sendReq.json();
+        console.log(result)
+      }
+      setMainLoader(false) 
+    }
+    fillJwt()
+  }, []);
+  
+  if (mainLoader) {
+    return <Loader />
   }
 
-  return (
+  const compareOTP = async () => {
+    setLoading(true)
+    const sendReq = await fetch('https://api.cns365.ir/api/verify_otp.php' , {
+      method : 'POST',
+      body : JSON.stringify({ phone_number: cookieData.phoneNumber, otp_code: OTP}),
+      headers: {'Content-Type': 'application/json'},
+    })
+    const result = await sendReq.json();
+    if(result.success) {
+      setIsOTPVerified(true)
+      setLoading(false)
+      setError('')
+    }
+    setError('کد وارد شده نامعتیر است')
+    setLoading(false)
+    console.log(result)
+  }
+
+  return ( 
     <div dir="ltr">
       <Box className='content-right'>
-      {!hidden ? (
-        <Box sx={{ flex: 1, display: 'flex', position: 'relative', alignItems: 'center', justifyContent: 'center' }}>
-          <LoginIllustrationWrapper>
-            <LoginIllustration
-              alt='login-illustration'
-              src={`/images/1.png`}
-            />
-          </LoginIllustrationWrapper>
-          <FooterIllustrationsV2 />
-        </Box>
-      ) : null}
-      <RightWrapper sx={skin === 'bordered' && !hidden ? { borderLeft: `1px solid ${theme.palette.divider}` } : {}}>
-        <Box
-          sx={{
-            p: 7,
-            height: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: 'background.paper'
-          }}
-        >
-          <BoxWrapper>
-            <Box
-              sx={{
-                top: 30,
-                left: 40,
-                display: 'flex',
-                position: 'absolute',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}
-            >
-              
-              <Typography variant='h6' sx={{ ml: 2, lineHeight: 1, fontWeight: 700, fontSize: '1.5rem !important' }}>
-                مها
-              </Typography>
-              {
-                theme.palette.mode == 'light' 
-                ? <img alt='fadls' src='/images/logos/blue.png' width={35} style={{marginRight : '10px'}}/>
-                : <img alt='fadls' src='/images/logos/white.png' width={35} style={{marginRight : '10px'}}/>
-              }
-
-            </Box>
-            <div style={{display : 'flex' , justifyContent : 'center' , justifyItems : 'center'}}>
+    {!hidden ? (
+      <Box sx={{ flex: 1, display: 'flex', position: 'relative', alignItems: 'center', justifyContent: 'center' }}>
+        <LoginIllustrationWrapper>
+          <LoginIllustration
+            alt='/images/step2.png'
+            src={`/images/step3.png`}
+            width={500}
+          />
+        </LoginIllustrationWrapper>
+        <FooterIllustrationsV2 />
+      </Box>
+    ) : null}
+    <RightWrapper sx={skin === 'bordered' && !hidden ? { borderLeft: `1px solid ${theme.palette.divider}` } : {}}>
+      <Box
+        sx={{
+          p: 7,
+          height: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: 'background.paper'
+        }}
+      >
+        <BoxWrapper>
+          <Box
+            sx={{
+              top: 30,
+              left: 40,
+              display: 'flex',
+              position: 'absolute',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            
             {
-              hidden ? 
               theme.palette.mode == 'light' 
-              ? <img alt='img' src='/images/2.png' width={330} className='step'/>
-              : <img alt='img' src='/images/2w.png' width={330} className='step'/>
-              : null
+              ? <img alt='image' src='/images/kermanali.png' width={150} style={{marginRight : '10px'}}/>
+              : <img  alt='image' src='/images/kermanali.png' width={150} style={{marginRight : '10px' , filter : 'invert(1)'}}/>
             }
-            </div>
-            {isDataValid ?
-             <>
-              <Box sx={{ mb: 6 }} dir="rtl">
-                <TypographyStyled variant='h5'>سامانه مدیریت هویت افراد</TypographyStyled>
-                <Typography variant='body2'>لطفا با کمال صداقت موارد زیر را انتخاب کنید</Typography>
-              </Box>    
-                <form onSubmit={handleSubmit(sendReq)}>
-                <Autocomplete
-                  options={['حمل و نقل' , 'اصناف' , 'وزارت کشور']}
-                  getOptionLabel={(option: any) => option}
-                  value={formData.category}
-                  className='comboAcc'
-                  onChange={(e, newValue) => {
-                    setFormData({...formData , category : newValue as string})
-                    if(newValue == 'اصناف') setSubgroupOptions(['کشور' , 'استان' , 'شهر' , 'اتحادیه' , 'واحد صنفی'])
-                    if(newValue == 'وزارت کشور') setSubgroupOptions([ 'واحد صنفی'])
-                    if(newValue == 'حمل و نقل') setSubgroupOptions(['کشور' , 'واحد صنفی'])
-                  }}
-                  renderInput={(params) => <TextField {...params} label={'دسته بندی'} variant="standard" />}
-                />
-                <Autocomplete
-                  options={subgroupOptions}
-                  getOptionLabel={(option: any) => option}
-                  value={formData.subgroup}
-                  className='comboAcc'
-                  onChange={(e, newValue) => setFormData({...formData , subgroup : newValue as string})}
-                  renderInput={(params) => <TextField {...params} label={'گروه بندی'} variant="standard" />}
-                />
-              <FormControl fullWidth sx={{ mb: 10 }}>
-                <Controller
-                  control={control}
-                  name='workPlace'
-                  render={({ field: { onBlur } }) => (
-                    <TextField
-                      autoFocus
-                      label='محل کار'
-                      value={formData.workPlace}
-                      onBlur={onBlur}
-                      onChange={(e) => setFormData({...formData , workPlace : e.target.value})}
-                      placeholder='‌میدان آزادی، کوچه ...' 
-                      dir='rtl'
-                    />
-                  )}
-                />
-              </FormControl>
-                  {error && <p style={{color : '#ff3d3d' , textAlign : 'center'}}>{error}</p>} 
-                  {loading ? 
-                      <div style={{textAlign : 'center' , display : 'flex' , justifyContent : 'center' , margin : '-35px 0px 35px'}}>
-                        <Box display="flex" justifyContent="center" alignItems="center" height="100px">
-                          <CircularProgress/>
-                        </Box>
-                      </div>
-                      : <Button onClick={sendReq} fullWidth size='large' type='submit' variant='contained' sx={{ mb: 7 }}>
-                      برو به مرحله بعد
-                      </Button>
-                  }
-                </form>
-              </>
-              : <div dir='rtl'>
-                  <Box sx={{ mb: 6 }} dir="rtl">
-                    <TypographyStyled variant='h5'>تایید اطلاعات هویتی</TypographyStyled>
-                    <Typography variant='body2'>
+            
+          </Box>
+          <div style={{display : 'flex' , justifyContent : 'center' , justifyItems : 'center'}}>
+          {
+            hidden 
+            ?  <img alt='img' src='/images/step3.png' width={330} className='step'/>
+            : null
+          }
+          </div>
+          <div dir='rtl'>
+            {
+              isOTPVerified ? 
+              <>
+                <Box sx={{ mb: 6 }} dir="rtl">
+                  <TypographyStyled variant='h5'>تایید اطلاعات هویتی</TypographyStyled>
+                  <Typography variant='body2' style={{display : 'flex' , alignItems : 'center'}}>
+                      <div style={{marginLeft : '10px'}}>
                         آقای <span>{cookieData.lastName} اطلاعات زیر را تایید میکنید؟</span>
-                      <Button style={{marginRight : '10px !important'}} variant='outlined' color='error' size='small'>مغایرت</Button>
+                      </div>
+                  </Typography>
+                </Box>
+                <Card style={{padding : '5px 20px'}} >
+                  <p>نام : <span>{cookieData.firstName}</span></p>
+                  <p>نام خانوادگی : <span>{cookieData.lastName}</span></p>
+                  <p>کدملی : <span>{cookieData.nationalCode}</span></p>
+                  <p>نام پدر : <span>{cookieData.fatherName}</span></p>
+                  <p>اتحادیه :<span> {cookieData.category}</span></p>
+                  <p>رسته : <span>{cookieData.subgroup}</span></p>
+                  <p>سمت : <span>{cookieData.position}</span></p>
+                  <p>کدصنفی : <span>{cookieData.senfCode}</span></p>
+                </Card>
+                <div style={{display : 'flex' , justifyContent : 'center'}}>
+                  <Button onClick={() => router.push('/profile')} color='primary' size='large' variant='contained' style={{ marginTop : '20px'}}>تایید</Button>
+                </div>
+              </>
+              : <Card style={{padding : '20px' , marginTop : '20px'}}>
+                  <Box sx={{ mb: 6 }} dir="rtl">
+                    <TypographyStyled variant='h6'>کد ارسال شده به گوشی خود را وارد کنید</TypographyStyled>
+                     <Typography variant='body2' style={{display : 'flex' , alignItems : 'center'}}>
                     </Typography>
                   </Box>
-                  <Card style={{padding : '5px 20px'}} >
-                    <p>نام : <span>{cookieData.firstName}</span></p>
-                    <p>نام خانوادگی : <span>{cookieData.lastName}</span></p>
-                    <p>کدملی : <span>{cookieData.nationalCode}</span></p>
-                    <p>نام پدر : <span>{cookieData.fatherName}</span></p>
-                  </Card>
-                  <div style={{display : 'flex' , justifyContent : 'center'}}>
-                     <Button onClick={() => setIsDataValid(true)} color='primary' size='large' variant='contained' style={{ marginTop : '20px'}}>تایید</Button>
-                  </div>
-                </div>
-            }
+                  <FormControl fullWidth sx={{ mb: 4 }}>
+                    <Controller
+                      name='nationalCode'
+                      control={control}
+                      render={({ field: { onBlur } }) => (
+                        <TextField
+                          autoFocus
+                          label='کد تایید'
+                          value={OTP}
+                          onBlur={onBlur}
+                          onChange={(e) => setOTP(e.target.value)}
+                          placeholder='شش زقم'
+                        />
+                      )}
+                    />
+                  </FormControl>
+                  {error && <p style={{color : '#ff3d3d' , textAlign : 'center'}}>{error}</p>} 
+                  {
+                    loading ?            
+                    <Box display="flex" justifyContent="center" alignItems="center" height="100px">
+                      <CircularProgress />
+                    </Box>
+                    : <div style={{display : 'flex' , justifyContent : 'center'}}>
+                        <Button onClick={compareOTP} color='primary' size='large' variant='contained' style={{ marginTop : '20px'}}>تایید</Button>
+                      </div>
+                  
+                  }
+              </Card>
 
-          </BoxWrapper>
-        </Box>
-      </RightWrapper>
+            }
+          </div>
+        </BoxWrapper>
+      </Box>
+    </RightWrapper>
       </Box>
     </div>
+    
   )
 }
 

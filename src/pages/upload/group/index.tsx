@@ -37,7 +37,7 @@ const GroupUpload = () => {
           />
         </Button> 
         <a href='https://api.cns365.ir/uploads/sample.xlsx' >
-          <Button component='label' variant='contained' color='success'>
+          <Button component='label' variant='contained' style={{backgroundColor : '#DB8669'}}>
             دانلود نمونه فایل
           </Button>
          </a>

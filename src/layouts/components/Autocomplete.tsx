@@ -58,7 +58,7 @@ interface DefaultSuggestionsType {
 
 // [
 //   {
-//     suggestion: 'نمایه',
+//     suggestion: 'اطلاعات شخصی',
 //     icon: 'mdi:account-circle-outline',
 //     link: '/profile'
 //   },
@@ -105,9 +105,14 @@ const defaultSuggestionsData: DefaultSuggestionsType[] = [
     category: 'کاربر عادی',
     suggestions: [
       {
-        suggestion: 'نمایه',
+        suggestion: 'اطلاعات شخصی',
         icon: 'mdi:account-circle-outline',
         link: '/profile'
+      },
+      {
+        suggestion: 'اطلاعات کاری',
+        icon: 'ic:outline-work',
+        link: '/work'
       },
       {
         suggestion: 'پشتیبانی',
@@ -151,7 +156,7 @@ const defaultSuggestionsData: DefaultSuggestionsType[] = [
       },
       {
         suggestion: 'رد شده',
-        icon: 'mdi:clock-outline',
+        icon: 'hugeicons:multiplication-sign',
         link: '/declined'
       }
     ]

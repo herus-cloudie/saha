@@ -104,10 +104,10 @@ const App = (props: ExtendedAppProps) => {
     <Provider store={store}>
       <CacheProvider value={emotionCache}>
         <Head>
-          <title>{'مها - سامانه مدیریت هویت افراد'}</title>
+          <title>{'اتاق اصناف کرمانشاه - سامانه مدیریت هویت افراد'}</title>
           <meta
             name='description'
-            content={'مها - سامانه مدیریت هویت افراد'}
+            content={'اتاق اصناف کرمانشاه - سامانه مدیریت هویت افراد'}
           />
           <meta name='keywords' content='Material Design, MUI, Admin Template, React Admin Template' />
           <meta name='viewport' content='initial-scale=1, width=device-width' />

@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, ReactNode } from 'react'
+import { useState, ReactNode, useEffect } from 'react'
 
 // ** MUI Components
 import Button from '@mui/material/Button'
@@ -22,11 +22,14 @@ import BlankLayout from 'src/@core/layouts/BlankLayout'
 
 // ** Demo Imports
 import FooterIllustrationsV2 from 'src/views/pages/auth/FooterIllustrationsV2'
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/router'
 
 import { loginCredentialSchema } from 'src/constant'
 import { Autocomplete, CircularProgress } from '@mui/material'
 import { IdentTypeWithJwt } from 'src/context/types'
+import parseCookieString from 'src/utils/parseCookieString'
+import ParseJwt from 'src/utils/ParseJwt'
+import Loader from 'src/@core/components/spinner/loader'
 
 // ** Styled Components
 const LoginIllustrationWrapper = styled(Box)<BoxProps>(({ theme }) => ({
@@ -137,6 +140,30 @@ const Iran = () => {
     address : '',
     jwt : ''
   });
+  const [userData, setUserData] = useState<IdentTypeWithJwt | null>(null)
+  const [mainLoader , setMainLoader] = useState(false);
+
+  useEffect(() => {
+    const fillJwt = async () => {
+      const { jwt } = parseCookieString(document.cookie)
+      if (jwt) {
+        const parsedData = ParseJwt(jwt)
+        setUserData(parsedData)
+      }
+      setMainLoader(false) 
+    }
+    fillJwt()
+  }, []);
+  
+  if (mainLoader) {
+    return <Loader />
+  }
+
+  if(userData?.nationalCode){
+    if(userData?.workPlace){
+      router.push('/profile')
+    }else router.push('/second-step')
+  }
 
   const sendReq = async () => { 
     if(!formData.firstName || !formData.lastName || !formData.fatherName || !formData.nationalCode || !formData.phoneNumber || !formData.workPlace || !formData.subgroup || !formData.address) return setError('تمامی بخش ها را کامل کنید')
@@ -194,14 +221,11 @@ const Iran = () => {
                 }}
               >
                 
-                <Typography variant='h6' sx={{ ml: 2, lineHeight: 1, fontWeight: 700, fontSize: '1.5rem !important' }}>
-                  مها
-                </Typography>
-                {
-                  theme.palette.mode == 'light' 
-                  ? <img alt='img' src='/images/logos/blue.png' width={35} style={{marginRight : '10px'}}/>
-                  : <img alt='img' src='/images/logos/white.png' width={35} style={{marginRight : '10px'}}/>
-                }
+              {
+                theme.palette.mode == 'light' 
+                ? <img alt='image' src='/images/kermanali.png' width={150} style={{marginRight : '10px'}}/>
+                : <img  alt='image' src='/images/kermanali.png' width={150} style={{marginRight : '10px' , filter : 'invert(1)'}}/>
+              }
 
               </Box>
               <div style={{display : 'flex' , justifyContent : 'center' , justifyItems : 'center'}}>
@@ -217,7 +241,7 @@ const Iran = () => {
               <Box sx={{ mt: 25 , mb : 8}} dir="rtl">
                 <span style={{fontSize : '12px'}}>اتباع</span>
                 <TypographyStyled variant='h5'>{`تکمیل اطلاعات`}</TypographyStyled>
-                <Typography variant='body2'>سامانه مدیریت هویت افراد</Typography>
+                <Typography variant='body2'>سامانه هوشمند صدور کارت شناسایی شاغلین واحدین صنفی</Typography>
               </Box>
               <form onSubmit={handleSubmit(sendReq)}>
                 <Autocomplete

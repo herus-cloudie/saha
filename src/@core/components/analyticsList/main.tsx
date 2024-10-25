@@ -19,7 +19,7 @@ const MainCharts = ({children} : {children ?: any}) => {
   return (
     <>
         <Grid item xs={12} sm={6} xl={2.4}>
-            <ApexDonutChart title='Trade win' colors={['#72E128', '#2c2cff', '#C95427']} labels={['win', 'break even', 'loss']} series={[+total_win_count, +break_even, +total_loss_count]} avrgNumb={`${((+total_win_count / +total_trades) * 100).toFixed(1).toString()} %`} />
+            <ApexDonutChart title='Trade win' colors={['#387671', '#2c2cff', '#CB5527']} labels={['win', 'break even', 'loss']} series={[+total_win_count, +break_even, +total_loss_count]} avrgNumb={`${((+total_win_count / +total_trades) * 100).toFixed(1).toString()} %`} />
         </Grid>
         <Grid item xs={12} sm={6} xl={2.4}>
             <Card dir='ltr'>
@@ -37,7 +37,7 @@ const MainCharts = ({children} : {children ?: any}) => {
             <CardStatisticsVertical trend={+total_net_profit >= 0 ? 'positive' : 'negative'} stats={total_net_profit} trendNumber={+((+total_net_profit / +balance) * 100).toFixed(1)} title='Net P&L' chipText='یک ماه گذشته' icon={<Icon icon="solar:dollar-bold" />} />
         </Grid>
         <Grid item xs={12} sm={6} xl={2.4}>
-            <ApexDonutChart title='Profit Factor' colors={[ '#2c2cff', '#C95427','#72E128']} labels={['break even', 'loss','win' ]} series={[+break_even, +total_loss_count , +total_win_count ]} avrgNumb={(+profit_trades_percent / +loss_trades_percent).toFixed(2)} />
+            <ApexDonutChart title='Profit Factor' colors={[ '#2c2cff', '#CB5527','#387671']} labels={['break even', 'loss','win' ]} series={[+break_even, +total_loss_count , +total_win_count ]} avrgNumb={(+profit_trades_percent / +loss_trades_percent).toFixed(2)} />
         </Grid>
     </>
   )

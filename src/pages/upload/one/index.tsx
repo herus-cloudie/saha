@@ -65,7 +65,9 @@ const OneUpload = () => {
     matched : 1,
     alive : 1,
     role : "user",
-    jwt : ""
+    jwt : "",
+    senfCode : '',
+    position : ''
   });
 
   const {
