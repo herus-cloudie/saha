@@ -1,6 +1,6 @@
 
 import { useState, ElementType, ChangeEvent } from 'react'
-
+import Image from 'next/image'
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 import Card from '@mui/material/Card'
@@ -29,7 +29,8 @@ const ButtonStyled = styled(Button)<ButtonProps & { component?: ElementType; htm
 }))
 
 
-const ProfileUpload = ({dialogFunc , identStatus , areImagesFilled} : {dialogFunc : any ,identStatus : string, areImagesFilled : any}) => {
+const ProfileUpload = ({nationalCode , profileFunc , profileImage} : {nationalCode : string , profileFunc : any , profileImage : any}) => {
+  console.log({profileImage})
   const [imgFront, setImgFront] = useState<string>('https://api.cns365.ir/img/profile.png');
   const [frontData , setFrontData] = useState<any>();
 
@@ -48,40 +49,32 @@ const ProfileUpload = ({dialogFunc , identStatus , areImagesFilled} : {dialogFun
   }
 
   const sendIdentFunc = async () => {
-    if (!frontData) {
-      return areImagesFilled(!frontData,);
-    }
-  
     const formData = new FormData();
-    formData.append('nationalCardFront', frontData);
+    formData.append('nationalCode', nationalCode);
+    formData.append('image', frontData);
   
     setLoading(true);
-    
+  
     try {
-      const sendPictures = await fetch('https://api.zibal.ir/v1/facility/nationalCardOcr', {
+      const sendPictures = await fetch('https://api.cns365.ir/api/image.php', {
         method: 'POST',
-        headers: {
-          'Authorization': 'Bearer 9361a1e1fbd64b8e87cf98abb6b665d3',
-        },
-        body: formData
-      });
-  
-      if (!sendPictures.ok) {
-        const errorResponse = await sendPictures.json();
-        throw new Error(errorResponse.message || 'خطا در پردازش تصویر کارت ملی');
-      }
-  
-      const responseData = await sendPictures.json();
-      dialogFunc(responseData); 
-      // router.reload()
-    } catch (error) {
-      console.error('Error in sendIdentFunc:', error);
-      dialogFunc({
-        message: 'خطایی در آپلود کارت ملی رخ داده است',
-        result: 21,
-        data: undefined
+        body: formData,
       });
 
+      if (!sendPictures.ok) {
+        const errorResponse = await sendPictures.json(); 
+        profileFunc({status : false , imgUrl : null})
+        throw new Error(errorResponse.message || 'خطا در پردازش تصویر پروفایل');
+
+      }
+      const responseData = await sendPictures.json();
+      if(responseData.image_url) {
+        profileFunc({status : true , imgUrl : responseData.image_url})
+      } else profileFunc(false)
+
+    } catch (error) {
+      profileFunc({status : false , imgUrl : null})
+      console.error('Error in sendIdentFunc:', error);
     } finally {
       setLoading(false);
     }
@@ -90,7 +83,7 @@ const ProfileUpload = ({dialogFunc , identStatus , areImagesFilled} : {dialogFun
   return (
     <Grid container spacing={6} style={{ marginTop: '10px'  }}>
       {
-        !(identStatus == 'false') ?
+        profileImage == undefined ?
         <>
           <Grid item xs={12}>
             <Grid item xs={12}>
@@ -165,7 +158,8 @@ const ProfileUpload = ({dialogFunc , identStatus , areImagesFilled} : {dialogFun
                           }
                         }}
                       >
-                      <IconifyIcon color='success' icon='mdi:check-circle-outline' fontSize='3.5rem'/>
+                        <Image src={profileImage} width={50} height={50} alt='profile image' style={{borderRadius : '100px'}}/>
+                      {/* <IconifyIcon color='success' icon='mdi:check-circle-outline' fontSize='3.5rem'/> */}
                     </Box>
                   </div>
               </Grid>

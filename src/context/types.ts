@@ -65,6 +65,8 @@ export interface IdentTypeWithJwt {
   subgroup :string,
   position : string,
   senfCode : string,
+  city ?: string,
+  province ?: string,
   image :string,
   identPict :string,
   jwt : string,
@@ -74,7 +76,7 @@ export interface IdentTypeWithJwt {
 
 export interface IranType{
   senfCode : string,
-  position :  'مباشر' | 'مدیر' | 'کارمند' | 'کارگر',
+  position :  'مباشر' | 'مدیر' | 'کارمند' | 'کارگر' | 'صاحب پروانه',
   nationalCode: string,
   phoneNumber : string,
   nationality : 'ایرانی' | 'اتباع',

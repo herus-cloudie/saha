@@ -50,6 +50,8 @@ const Profile = () => {
     birthDate : "",
     officiality : "دارای شناسه اتباع",
     nationality : "ایرانی",
+    city : '',
+    province : '',
     workPlace : "",
     category : "اصناف",
     subgroup : "",
@@ -67,13 +69,22 @@ const Profile = () => {
   });
 
   const [open , setOpen ] = useState<boolean>(false);
-  const [postalError , setPostalError ] = useState<''>('');
-  const [postalCode , setPostalCode] = useState<string | number>();
-  const [loading , setLoading] = useState<boolean>(false);
-  const [userData, setUserData] = useState<IdentTypeWithJwt | null>(null)
+  const [profileDialogOpen, setProfileDialogOpen] = useState<boolean>(false);
+
+  const [loading , setLoading] = useState<boolean>(false); 
   const [mainLoader , setMainLoader] = useState(false);
-  const [isMounted, setIsMounted] = useState(false)
-  const [identStatus, setIdentState] = useState<string>('false')
+
+  const [isMounted, setIsMounted] = useState(false)  
+  
+  const [postalCode , setPostalCode] = useState<string | number>();
+
+  const [identStatus, setIdentState] = useState<string>('false');
+  const [profileImage, setProfileImage] = useState<any>();
+
+  const [profileError, setProfileError] = useState<string>();
+  const [postalError , setPostalError ] = useState<''>('');
+
+  const [userData, setUserData] = useState<IdentTypeWithJwt | null>(null);
   const [OCRData , setOCRData] = useState<OCRDataType>({
     message : '',
     result : 1,
@@ -92,18 +103,17 @@ const Profile = () => {
     },
   });
 
-  useEffect(() => {
-    setIsMounted(true)
-  }, [])
 
   useEffect(() => {
+    setIsMounted(true)
     const fillJwt = async () => {
-      const { jwt , identStatus } = parseCookieString(document.cookie)
+      const { jwt , identStatus , profileImage} = parseCookieString(document.cookie)
       if (jwt) {
         const parsedData = ParseJwt(jwt)
         setUserData(parsedData)
         setCookieData(parsedData)
         setIdentState(identStatus)
+        setProfileImage(profileImage)
       }
       setMainLoader(false) 
     }
@@ -139,26 +149,6 @@ const Profile = () => {
           });
         }
   
-        const updateImgInJwt = await fetch('https://api.cns365.ir/api/api.php', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ 
-            image: `data:image/png;base64,${data.data?.front?.facePhoto}`,
-            nationalCode: cookieData.nationalCode,
-            category : cookieData.category,
-            subgroup : cookieData.subgroup,
-            workPlace : cookieData.workPlace,
-          })
-        });
-  
-        const updatedResponse = await updateImgInJwt.json();
-
-        if (!updateImgInJwt.ok) {
-          throw new Error(updatedResponse.message || 'خطا در به روزرسانی تصویر');
-        }
-
-        setCookieData({...cookieData , jwt : updatedResponse.token})
-        document.cookie = `jwt = ${updatedResponse.token}; SameSite=None; Secure; Path=/; SameSite=None; Secure; Max-Age=${7 * 24 * 60 * 60}`;
         document.cookie = `identStatus = true; SameSite=None; Secure; Path=/; SameSite=None; Secure; Max-Age=${7 * 24 * 60 * 60}`;
       
       } else {
@@ -174,13 +164,23 @@ const Profile = () => {
     }
   };
 
+  const profileFunc = async ({status , imgUrl } : {status : boolean , imgUrl : string}) => {
+
+    if(status) {
+      setProfileError('')
+      document.cookie = `profileImage = ${imgUrl}; SameSite=None; Secure; Path=/; Max-Age=${7 * 24 * 60 * 60}`;
+
+    } else setProfileError('بارگذاری عکس با خطا مواجه شد')
+
+    setProfileDialogOpen(true); 
+  }
+
   const areImagesFilled = (front : any, back : any) => {
     if(!front || !back) {
       setOpen(true);
       setOCRData({...OCRData , message : 'لطفا پشت و روی عکس خود را بارگذاری کنید' , result : 21})
     } 
   }
-
 
   const sendPostalCode = async () => {
     setLoading(true)
@@ -204,17 +204,18 @@ const Profile = () => {
     const updateAddress = await fetch('https://api.cns365.ir/api/api.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ 
+      body: JSON.stringify({ ...cookieData,
         address : `${Data.data.address.town}, ${Data.data.address.district}, ${Data.data.address.street}, ${Data.data.address.street2}, پلاک ${Data.data.address.number}, طبقه ${Data.data.address.floor}, واحد ${Data.data.address.sideFloor}`,
         category : cookieData.category,
         subgroup : cookieData.subgroup,
         workPlace : cookieData.workPlace,
         postal_code : postalCode,
-        nationalCode : cookieData.nationalCode
+        nationalCode : cookieData.nationalCode,
       })
     });
     
     const updatedResponse = await updateAddress.json();
+    console.log(updatedResponse , cookieData , Data)
     setLoading(false)
     document.cookie = `jwt = ${updatedResponse.token}; SameSite=None; Secure; Path=/; SameSite=None; Secure; Max-Age=${7 * 24 * 60 * 60}`;
       
@@ -246,7 +247,7 @@ const Profile = () => {
             شماره تماس : <span>{cookieData.phoneNumber}</span>
             </Grid>
             <Grid item xs={12} xl={6}>
-              <ProfileUpload identStatus={identStatus} areImagesFilled={areImagesFilled} dialogFunc={dialogFunc}/>
+              <ProfileUpload profileImage={profileImage} profileFunc={profileFunc} nationalCode={cookieData.nationalCode}/>
             </Grid>
             <Grid item xs={12} xl={6}>
               <PictUpload identStatus={identStatus} areImagesFilled={areImagesFilled} dialogFunc={dialogFunc}/>
@@ -352,12 +353,56 @@ const Profile = () => {
                   pb: theme => [`${theme.spacing(8)} !important`, `${theme.spacing(12.5)} !important`]
                 }}
               >
-                <Button variant='contained' sx={{ mr: 2 }} onClick={() => setOpen(false)}>
+                <Button variant='contained' sx={{ mr: 2 }} onClick={() => {
+                  setOpen(false)
+                  router.reload()
+                }
+                  }>
+                  بستن
+                </Button>
+              </DialogActions>
+            </Dialog>      
+            <Dialog fullWidth maxWidth='xs' open={profileDialogOpen} onClose={() => setProfileDialogOpen(false)}>
+              <DialogContent
+                sx={{
+                  pb: theme => `${theme.spacing(6)} !important`,
+                  px: theme => [`${theme.spacing(5)} !important`, `${theme.spacing(15)} !important`],
+                  pt: theme => [`${theme.spacing(8)} !important`, `${theme.spacing(12.5)} !important`]
+                }}
+              >
+                <Box
+                  sx={{
+                    display: 'flex',
+                    textAlign: 'center',
+                    alignItems: 'center',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    '& svg': {
+                      mb: 8,
+                      color: !profileError  ? 'success.main' : 'postalError.main'
+                    }
+                  }}
+                >
+                  <Icon icon={!profileError ? 'mdi:check-circle-outline' : 'mdi:close-circle-outline' }fontSize='5.5rem' />
+                  <Typography>{!profileError ? 'بارگذاری عکس با موفقیت انجام شد' : profileError }</Typography>
+                </Box>
+              </DialogContent>
+              <DialogActions
+                sx={{
+                  justifyContent: 'center',
+                  px: theme => [`${theme.spacing(5)} !important`, `${theme.spacing(15)} !important`],
+                  pb: theme => [`${theme.spacing(8)} !important`, `${theme.spacing(12.5)} !important`]
+                }}
+              >
+                <Button variant='contained' sx={{ mr: 2 }} onClick={() => {
+                  setProfileDialogOpen(false)
+                  router.reload()
+                  }}>
                   بستن
                 </Button>
               </DialogActions>
             </Dialog>
-        </Grid>
+          </Grid>
       </Card>
     </div>
   )

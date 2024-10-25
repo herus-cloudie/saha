@@ -28,10 +28,11 @@ import { loginCredentialSchema } from 'src/constant'
 import DatePickerFunc from 'src/components/datePicker'
 import convertPersianDateToLatin from 'src/utils/dateConverter'
 import { IdentTypeWithJwt, IranType } from 'src/context/types'
-import { Autocomplete, CircularProgress } from '@mui/material'
+import { Autocomplete, Checkbox, CircularProgress } from '@mui/material'
 import parseCookieString from 'src/utils/parseCookieString'
 import ParseJwt from 'src/utils/ParseJwt'
 import Loader from 'src/@core/components/spinner/loader'
+import CustomCheckbox from 'src/@core/components/custom-checkbox/basic'
 
 // ** Styled Components
 const LoginIllustrationWrapper = styled(Box)<BoxProps>(({ theme }) => ({
@@ -171,43 +172,56 @@ const Iran = () => {
 
         console.log(Data2)
 
-        if(Data2.result == 6) {
+        if(Data2.result == 6 || !Data2.data.matched) {
           setLoading(false)
           return setError('اطلاعات وارد شده همخوانی ندارند')
 
         } else {
-          const result3 = await fetch('https://api.cns365.ir/api/api.php' , {
+
+          const isSahebParvane = await fetch('https://api.cns365.ir/api/prvn.php' , {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({...formData , 
-              firstName : Data2.data.firstName,
-              lastName : Data2.data.lastName,
-              isDead : Data2.data.isDead,
-              alive : Data2.data.alive,
-              fatherName : Data2.data.fatherName,
-              matched : Data2.data.matched,
-              nationalCode : Data2.data.nationalCode,
-              senfCode : Data.senf_code,
-              city : Data.city,
-              province : Data.province,
-              subgroup : Data.subgroup,
-              position : formData.position,
-              category : Data.category,
-              role : 'user'
+            body: JSON.stringify({
+              nationalCode : formData.nationalCode,
             })
           })
           setLoading(false)
-          const Data3 = await result3.json();
-
-          if(Data3.message == 'Registration successful' || Data3.message == "Login successful" || Data3.message == 'Profile updated successfully'){
-            setError('')
-            document.cookie = `jwt = ${Data3.token}; SameSite=None; Secure; Path=/; Max-Age=${7 * 24 * 60 * 60}`;
-            router.push('/second-step');
-          } else {
-            setError('اطلاعات نادرست میباشد')
-            return setLoading(false)
+          const {isValid} = await isSahebParvane.json();
+          if((isValid && formData.position == 'صاحب پروانه') || (!isValid && formData.position != 'صاحب پروانه')){
+            const result3 = await fetch('https://api.cns365.ir/api/api.php' , {
+              method: 'POST',
+              headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify({...formData , 
+                officiality : formData.officiality,
+                firstName : Data2.data.firstName,
+                lastName : Data2.data.lastName,
+                isDead : Data2.data.isDead,
+                alive : Data2.data.alive,
+                fatherName : Data2.data.fatherName,
+                matched : Data2.data.matched,
+                nationalCode : Data2.data.nationalCode,
+                senfCode : Data.senf_code,
+                city : Data.city,
+                province : Data.province,
+                subgroup : Data.subgroup,
+                position : formData.position,
+                category : Data.category,
+                role : 'user'
+              })
+            })
+            setLoading(false)
+            const Data3 = await result3.json();
+            if(Data3.message == 'Registration successful' || Data3.message == "Login successful" || Data3.message == 'Profile updated successfully'){
+              setError('')
+              document.cookie = `jwt = ${Data3.token}; SameSite=None; Secure; Path=/; Max-Age=${7 * 24 * 60 * 60}`;
+              router.push('/second-step');
+            } else {
+              setError('اطلاعات نادرست میباشد')
+              return setLoading(false)
+            }
+          }else {
+            setError('اطلاعات کسب و کار شما مغایرت دارد')
           }
-
         } 
       }else{
         setLoading(false)
@@ -270,14 +284,22 @@ const Iran = () => {
             }
             </Box>
 
-            {/* <div style={{display : 'flex' , justifyContent : 'center' , justifyItems : 'center' , marginBottom : '10px'}}>
-              <img alt='image' src='/images/step2.png' width={330} className='step'/>
-            </div> */}
-
-            <Box sx={{ mb: 6 , mt : 15 }} dir="rtl">
-              <span style={{fontSize : '12px'}}>شهروند ایران</span>
-              <TypographyStyled variant='h5'>{`تکمیل اطلاعات`}</TypographyStyled>
-              <Typography variant='body2'>سامانه هوشمند صدور کارت شناسایی شاغلین واحدین صنفی</Typography>
+            <Box sx={{ mb: 6 , mt : 15}} dir="rtl">
+              <div>
+                <span style={{fontSize : '12px'}}>شهروند ایران</span>
+                <TypographyStyled variant='h5'>{`تکمیل اطلاعات`}</TypographyStyled>
+                <Typography variant='body2'>سامانه هوشمند صدور کارت شناسایی شاغلین واحدین صنفی</Typography>
+              </div>
+              <div style={{marginTop : '15px'}}>
+                <span style={{fontSize : '20px'}}>صاحب پروانه هستم</span>
+                <Checkbox onChange={() => {
+                  if(formData.position == 'مباشر' || formData.position == 'کارگر' || formData.position == 'کارمند' || formData.position == 'مدیر')
+                    setFormData({...formData , position : 'صاحب پروانه'})
+                  else setFormData({...formData , position : 'کارگر'})
+                  
+                  console.log(formData)
+                  }}/>
+              </div>
             </Box>
             <form onSubmit={handleSubmit(sendReq)}>
               <FormControl fullWidth sx={{ mb: 4 }}>
@@ -296,14 +318,18 @@ const Iran = () => {
                   )}
                 />
               </FormControl>
-              <Autocomplete
-                options={['مباشر' , 'مدیر' , 'کارمند' , 'کارگر']}
-                getOptionLabel={(option: any) => option}
-                value={formData.position}
-                style={{marginBottom : "20px"}}
-                onChange={(e, newValue) => setFormData({...formData , position : newValue as any})}
-                renderInput={(params) => <TextField dir='rtl' {...params} label={'گروه بندی'} variant="filled" />}
-              />
+              {
+                formData.position != 'صاحب پروانه' 
+                ? <Autocomplete
+                  options={['مباشر' , 'مدیر' , 'کارمند' , 'کارگر']}
+                  getOptionLabel={(option: any) => option}
+                  value={formData.position}
+                  style={{marginBottom : "20px"}}
+                  onChange={(e, newValue) => setFormData({...formData , position : newValue as any})}
+                  renderInput={(params) => <TextField dir='rtl' {...params} label={'گروه بندی'} variant="filled" />}
+                />
+                : null
+              }
               <FormControl fullWidth sx={{ mb: 4 }}>
                 <Controller
                   name='nationalCode'

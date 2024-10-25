@@ -98,7 +98,7 @@ const PictUpload = ({dialogFunc , identStatus , areImagesFilled} : {dialogFunc :
   
       const responseData = await sendPictures.json();
       dialogFunc(responseData); 
-      // router.reload()
+
     } catch (error) {
       console.error('Error in sendIdentFunc:', error);
       dialogFunc({

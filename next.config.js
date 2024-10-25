@@ -8,6 +8,9 @@ const path = require('path')
 module.exports = {
   trailingSlash: true,
   reactStrictMode: false,
+  images: {
+    domains: ['api.cns365.ir'],
+  },
   webpack: config => {
     config.resolve.alias = {
       ...config.resolve.alias,
@@ -17,3 +20,4 @@ module.exports = {
     return config
   }
 }
+
