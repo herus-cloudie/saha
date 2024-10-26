@@ -30,7 +30,7 @@ const ButtonStyled = styled(Button)<ButtonProps & { component?: ElementType; htm
 
 
 const ProfileUpload = ({nationalCode , profileFunc , profileImage} : {nationalCode : string , profileFunc : any , profileImage : any}) => {
-  console.log({profileImage})
+
   const [imgFront, setImgFront] = useState<string>('https://api.cns365.ir/img/profile.png');
   const [frontData , setFrontData] = useState<any>();
 
@@ -158,7 +158,7 @@ const ProfileUpload = ({nationalCode , profileFunc , profileImage} : {nationalCo
                           }
                         }}
                       >
-                        <Image src={profileImage} width={50} height={50} alt='profile image' style={{borderRadius : '100px'}}/>
+                        <Image src={profileImage} width={150} height={150} alt='profile image' style={{borderRadius : '100px'}}/>
                       {/* <IconifyIcon color='success' icon='mdi:check-circle-outline' fontSize='3.5rem'/> */}
                     </Box>
                   </div>

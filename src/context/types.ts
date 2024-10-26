@@ -70,6 +70,7 @@ export interface IdentTypeWithJwt {
   image :string,
   identPict :string,
   jwt : string,
+  status ?: 'pending' | 'accepted' | 'declined' | '',
   id ?: number | string
 }
 

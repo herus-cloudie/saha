@@ -198,7 +198,7 @@ const PictUpload = ({dialogFunc , identStatus , areImagesFilled} : {dialogFunc :
         </>
         
        : <Grid item xs={12}>
-          <Card style={{padding : '20px' , backgroundColor: '#15d10021'}}>
+          <Card style={{padding : '20px' , height : '342px' , backgroundColor: '#15d10021'}}>
             <Grid item xs={12}>
                   <div style={{display : 'flex' , justifyContent : 'space-between' , alignItems : 'center'}}>
                     <h3>بارگذاری عکس کارت ملی</h3>

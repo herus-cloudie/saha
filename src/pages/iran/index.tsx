@@ -80,9 +80,10 @@ const TypographyStyled = styled(Typography)<TypographyProps>(({ theme }) => ({
 
 const Iran = () => {
   
-  const [loading, setLoading] = useState<boolean>(false);
-  const [mainLoader , setMainLoader] = useState(false)
+  const [loading, setLoading] = useState<boolean>(false);  
   const [error, setError] = useState('');
+  const [mainLoader , setMainLoader] = useState(false)
+
 
   const router = useRouter()
   const theme = useTheme()
@@ -169,8 +170,6 @@ const Iran = () => {
           body: new URLSearchParams({birthDate : formData.birthDate as any , nationalCode : formData.nationalCode})
         })
         const Data2 = await result2.json();
-
-        console.log(Data2)
 
         if(Data2.result == 6 || !Data2.data.matched) {
           setLoading(false)
@@ -326,7 +325,7 @@ const Iran = () => {
                   value={formData.position}
                   style={{marginBottom : "20px"}}
                   onChange={(e, newValue) => setFormData({...formData , position : newValue as any})}
-                  renderInput={(params) => <TextField dir='rtl' {...params} label={'گروه بندی'} variant="filled" />}
+                  renderInput={(params) => <TextField dir='rtl' {...params} label={'سمت'} variant="filled" />}
                 />
                 : null
               }

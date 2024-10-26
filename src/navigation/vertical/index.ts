@@ -15,6 +15,16 @@ const navigation = (): VerticalNavItemsType => {
       path: '/work'
     },
     {
+      title: 'وضعیت پیشرفت',
+      icon: 'mdi:progress-check',
+      path: '/overview'
+    },
+    {
+      title: 'صدور کارت',
+      icon: 'ic:baseline-credit-card',
+      path: '/cart'
+    },
+    {
       title: 'پشتیبانی',
       icon: 'mdi:headset',
       path: '/support'

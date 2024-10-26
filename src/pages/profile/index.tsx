@@ -215,7 +215,6 @@ const Profile = () => {
     });
     
     const updatedResponse = await updateAddress.json();
-    console.log(updatedResponse , cookieData , Data)
     setLoading(false)
     document.cookie = `jwt = ${updatedResponse.token}; SameSite=None; Secure; Path=/; SameSite=None; Secure; Max-Age=${7 * 24 * 60 * 60}`;
       

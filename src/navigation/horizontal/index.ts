@@ -3,7 +3,7 @@
 import { HorizontalNavItemsType } from 'src/@core/layouts/types'
 
 const navigation = (): HorizontalNavItemsType => {
-  return[
+  return [
     {
       title: 'اطلاعات شخصی',
       icon: 'mdi:account-circle-outline',
@@ -15,42 +15,56 @@ const navigation = (): HorizontalNavItemsType => {
       path: '/work'
     },
     {
+      title: 'وضعیت پیشرفت',
+      icon: 'mdi:progress-check',
+      path: '/overview'
+    },
+    {
+      title: 'صدور کارت',
+      icon: 'ic:baseline-credit-card',
+      path: '/cart'
+    },
+    {
       title: 'پشتیبانی',
       icon: 'mdi:headset',
-      path: '/dashboards/trades'
+      path: '/support'
     },
     {
       title: 'راهنمایی',
       icon: 'mdi:help-circle-outline',
-      path: '/dashboards/dailyJournal'
+      path: '/guide'
     },
     {
       title: 'سوالات متداول',
       icon: 'mdi:frequently-asked-questions',
-      path: '/dashboards/trades'
+      path: '/FandQ'
     },
     {
       title: 'آپلود دستی',
       icon: 'mdi:file-upload-outline',
-      path: '/dashboards/trades'
+      path: '/upload/one'
     },
     {
       title: 'آپلود گروهی',
       icon: 'mdi:folder-upload-outline',
-      path: '/dashboards/dailyJournal'
+      path: '/upload/group'
     },
     {
       title: 'تایید شده‌ها',
       icon: 'mdi:check-circle-outline',
-      path: '/dashboards/trades'
+      path: '/accepted'
     },
     {
       title: 'در انتظار تایید',
       icon: 'mdi:clock-outline',
-      path: '/dashboards/trades'
+      path: '/waiting'
+    },
+    {
+      title: 'رد شده',
+      icon: 'hugeicons:multiplication-sign',
+      path: '/declined'
     }
   ]
-  
 }
 
 export default navigation

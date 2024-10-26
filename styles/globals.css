@@ -2,19 +2,78 @@
   font-family: peyda;
   src: url('../public/font/PEYDAFANUM-REGULAR.TTF');
 }
-
+/* @/src/public/images/1403.08.05 asnaf cart - Copy.png' */
 html,
 body {
   min-height: 100%;
   font-family: peyda !important;
 }
+.senfff{
+  position: relative;
+    top: -130px;
+    left: -190px;
+    font-size: 12px;
+}
+.codeee{
+  position: relative;
+  top: 196px;
+  font-size: 12px;
+  right: 119px;
+}
+.nameee{
+  position: relative;
+  font-size: 12px;
+  top: 117px;
+  right: 120px;
+}
+ .lastnameee{
+  position: relative;
+  top: 124px;
+  right: 158px;
+  font-size: 12px;
+}
+.positionnn{
+  position: relative;
+  font-size: 12px;
+  top: -82px;
+  right: 126px;
+}
+.provinceee{
+  position: relative;
+  font-size: 12px;
+  top: -138px;
+  right: 130px;
+}
+.cityyy{
+  position: relative;
+  font-size: 12px;
+  top: -157px;
+  right: 234px;
+}
+/*
+.senfff{
+  position: relative;
+    top: -130px;
+    left: -190px;
+    font-size: 12px;
+} */
 
+/* .cartbg{
+  background-image: ('/')
+  width: 500px;
+} */
 #__next {
   height: 100%;
 }
 @media (min-width : 1440px) {
   .profilePadding{
     padding-bottom: 213px !important;
+  }
+}
+
+@media (min-width : 640px) {
+  .margintopCard{
+    margin-top: 85px;
   }
 }
 code {
