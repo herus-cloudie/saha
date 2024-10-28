@@ -177,13 +177,13 @@ const LoginPage = () => {
               <Typography variant='body2'>سامانه هوشمند صدور کارت شناسایی شاغلین واحدین صنفی</Typography>
             </Box>
             {
-              signMethod ? 
+              !signMethod ? 
               <>
               
                 <div>
                   <h3 style={{textAlign : 'end' , marginTop : '50px'}}>روش ورود به سامانه را انتخاب کنید</h3>
                   <div style={{display: 'flex' , justifyContent : 'space-around'}}>
-                    <Button onClick={sendReq} size='large' variant='contained'>
+                    <Button onClick={() => showSignMethod(true)} size='large' variant='contained'>
                       ثبت نام
                     </Button>
                     <Button onClick={sendReq2} size='large' variant='contained'>
@@ -203,7 +203,7 @@ const LoginPage = () => {
                     onChange={(e, newValue : any) => setNationality(newValue)}
                     renderInput={(params) => <TextField {...params} label={'ملیت'} variant="standard" />}
                 />
-                <Button onClick={() => showSignMethod(true)} fullWidth size='large' type='submit' variant='contained' sx={{ mb: 7 }}>
+                <Button onClick={sendReq} fullWidth size='large' type='submit' variant='contained' sx={{ mb: 7 }}>
                     تکمیل اطلاعات
                 </Button>
               </>
