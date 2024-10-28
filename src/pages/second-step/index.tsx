@@ -272,7 +272,7 @@ const SecondStep = () => {
                           value={OTP}
                           onBlur={onBlur}
                           onChange={(e) => setOTP(e.target.value)}
-                          placeholder='شش زقم'
+                          placeholder='شش رقم'
                         />
                       )}
                     />

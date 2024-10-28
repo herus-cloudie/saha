@@ -44,14 +44,14 @@ const OneUpload = () => {
 
   const [subgroupOptions , setSubgroupOptions] = useState<string[]>(['کشور' , 'استان' , 'شهر' , 'اتحادیه' , 'واحد صنفی']);
 
-  const [userData , setUserData ] = useState<IdentTypeWithJwt>({
+  const [cookieData , setCookieData ] = useState<IdentTypeWithJwt>({
     id : 0,
     nationalCode : "",
     firstName : "",
     fatherName : "",
     lastName : "",
     phoneNumber : "",
-    birthDate : convertPersianDateToLatin(new Date().toLocaleDateString("fa-IR")),
+    birthDate : "",
     officiality : "دارای شناسه اتباع",
     nationality : "ایرانی",
     workPlace : "",
@@ -65,9 +65,11 @@ const OneUpload = () => {
     matched : 1,
     alive : 1,
     role : "user",
-    jwt : "",
-    senfCode : '',
-    position : ''
+    province : '',
+    city : '',
+    senfCode : "",
+    position : '',
+    jwt : ""
   });
 
   const {
@@ -81,27 +83,49 @@ const OneUpload = () => {
   const ChangeDateHandler = (e : any) => {
     const date = new Date(e);
     const stringBirthDate = convertPersianDateToLatin(new Date(date).toLocaleDateString("fa-IR"))
-    setUserData({...userData , birthDate : stringBirthDate as string})
+    setCookieData({...cookieData , birthDate : stringBirthDate as string})
   }
 
   const FirstReq = async () => { 
-    if(!userData.firstName || !userData.lastName || !userData.fatherName || !userData.nationalCode || !userData.phoneNumber || !userData.workPlace || !userData.subgroup || !userData.category || !userData.postal_code || !userData.birthDate) return setError('تمامی بخش ها را کامل کنید')
+    console.log(cookieData)
+    if(!cookieData.firstName || !cookieData.lastName || !cookieData.fatherName || !cookieData.nationalCode || !cookieData.phoneNumber || !cookieData.senfCode || !cookieData.postal_code || !cookieData.birthDate) return setError('تمامی بخش ها را کامل کنید')
     setLoading(true)
     const sendPostal = await fetch('https://api.zibal.ir/v1/facility/postalCodeInquiry', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json',
         'Authorization': 'Bearer 9361a1e1fbd64b8e87cf98abb6b665d3'
        },
-      body: JSON.stringify({"postalCode": userData.postal_code})
+      body: JSON.stringify({"postalCode": cookieData.postal_code})
     });
 
     const Data = await sendPostal.json();
+    console.log(Data)
     if(Data.result == 6) {
       setError(Data.message)
       setLoading(false)
+    }else { 
+      const senf = await fetch('https://api.cns365.ir/api/senf.php' , {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({"senfCode": cookieData.senfCode})
+    })
+    const Datasenf = await senf.json();
+    console.log(Datasenf)
+    if(Datasenf.error){
+      setLoading(false)
+      
+      return setError('کد صنفی وارد شده نامعتیر است')
     }else {
+      setCookieData({...cookieData ,
+        city : Datasenf.city,
+        province : Datasenf.province,
+        subgroup : Datasenf.subgroup,
+        category : Datasenf.category,
+        senfCode : Datasenf.senf_code,
+        workPlace : Datasenf.workPlace,})
+    }
       setError('')
-      setUserData({...userData , address : `${Data.data.address.town}, ${Data.data.address.district}, ${Data.data.address.street}, ${Data.data.address.street2}, پلاک ${Data.data.address.number}, طبقه ${Data.data.address.floor}, واحد ${Data.data.address.sideFloor}`})
+      setCookieData({...cookieData , address : `${Data.data.address.town}, ${Data.data.address.district}, ${Data.data.address.street}, ${Data.data.address.street2}, پلاک ${Data.data.address.number}, طبقه ${Data.data.address.floor}, واحد ${Data.data.address.sideFloor}`})
       FinalReq() 
       setLoading(false);
     }
@@ -110,7 +134,7 @@ const OneUpload = () => {
   const FinalReq = async () => {
     const result = await fetch('https://api.cns365.ir/api/manual.php' , {
       method: 'POST',
-      body: JSON.stringify(userData),
+      body: JSON.stringify(cookieData),
       headers: {'Content-Type': 'application/json'}
     })
     const Data = await result.json();
@@ -130,13 +154,13 @@ const OneUpload = () => {
         <Autocomplete
           options={['ایرانی' , 'اتباع']}
           getOptionLabel={(option: any) => option}
-          value={userData.nationality}
+          value={cookieData.nationality}
           style={{marginBottom: '40px'}}
-          onChange={(e, newValue : any) => setUserData({...userData , nationality : newValue})}
+          onChange={(e, newValue : any) => setCookieData({...cookieData , nationality : newValue})}
           renderInput={(params) => <TextField {...params} label={'ملیت'} variant="standard" />}
         />
         {
-          userData.nationality == 'ایرانی' ?
+          cookieData.nationality == 'ایرانی' ?
             <>                       
                 <FormControl fullWidth sx={{ mb: 4 }}>
                     <Controller
@@ -146,9 +170,9 @@ const OneUpload = () => {
                         <TextField
                         autoFocus
                         label='نام'
-                        value={userData.firstName}
+                        value={cookieData.firstName}
                         onBlur={onBlur}
-                        onChange={(e) => setUserData({...userData , firstName : e.target.value})}
+                        onChange={(e) => setCookieData({...cookieData , firstName : e.target.value})}
                         placeholder=''
                         />
                     )}
@@ -162,9 +186,9 @@ const OneUpload = () => {
                         <TextField
                         autoFocus
                         label='نام خانوادگی'
-                        value={userData.lastName}
+                        value={cookieData.lastName}
                         onBlur={onBlur}
-                        onChange={(e) => setUserData({...userData , lastName : e.target.value})}
+                        onChange={(e) => setCookieData({...cookieData , lastName : e.target.value})}
                         placeholder=''
                         />
                     )}
@@ -178,9 +202,9 @@ const OneUpload = () => {
                         <TextField
                         autoFocus
                         label='نام پدر'
-                        value={userData.fatherName}
+                        value={cookieData.fatherName}
                         onBlur={onBlur}
-                        onChange={(e) => setUserData({...userData , fatherName : e.target.value})}
+                        onChange={(e) => setCookieData({...cookieData , fatherName : e.target.value})}
                         placeholder=''
                         />
                     )}
@@ -194,9 +218,9 @@ const OneUpload = () => {
                         <TextField
                         autoFocus
                         label='کد ملی'
-                        value={userData.nationalCode}
+                        value={cookieData.nationalCode}
                         onBlur={onBlur}
-                        onChange={(e) => setUserData({...userData , nationalCode : e.target.value})}
+                        onChange={(e) => setCookieData({...cookieData , nationalCode : e.target.value})}
                         placeholder=''
                         />
                     )}
@@ -210,9 +234,9 @@ const OneUpload = () => {
                         <TextField
                         autoFocus
                         label='شماره موبایل'
-                        value={userData.phoneNumber}
+                        value={cookieData.phoneNumber}
                         onBlur={onBlur}
-                        onChange={(e) => setUserData({...userData , phoneNumber : e.target.value})}
+                        onChange={(e) => setCookieData({...cookieData , phoneNumber : e.target.value})}
                         placeholder=''
                         />
                     )}
@@ -220,42 +244,28 @@ const OneUpload = () => {
                 </FormControl>
                 <FormControl fullWidth sx={{ mb: 4 }}>
                     <Controller
-                    name='address'
+                    name='image'
                     control={control}
                     render={({ field: { onBlur } }) => (
                         <TextField
                         autoFocus
-                        label='محل کار'
-                        value={userData.workPlace}
+                        label='کد صنفی'
+                        value={cookieData.senfCode}
                         onBlur={onBlur}
-                        onChange={(e) => setUserData({...userData , workPlace : e.target.value})}
+                        onChange={(e) => setCookieData({...cookieData , senfCode : e.target.value})}
                         placeholder=''
                         />
                     )}
                     />
                 </FormControl>
                 <Autocomplete
-                  options={['حمل و نقل' , 'اصناف' , 'وزارت کشور']}
+                  options={['مباشر' , 'مدیر' , 'کارمند' , 'کارگر']}
                   getOptionLabel={(option: any) => option}
-                  value={userData.category}
-                  style={{margin : '5px 0 15px' }}
-                  onChange={(e, newValue) => {
-                    setUserData({...userData , category : newValue as "اصناف" | "حمل و نقل" | "گردشگری"})
-                    if(newValue == 'اصناف') setSubgroupOptions(['کشور' , 'استان' , 'شهر' , 'اتحادیه' , 'واحد صنفی'])
-                    if(newValue == 'وزارت کشور') setSubgroupOptions([ 'واحد صنفی'])
-                    if(newValue == 'حمل و نقل') setSubgroupOptions(['کشور' , 'واحد صنفی'])
-                  }}
-                  renderInput={(params) => <TextField {...params} label={'دسته بندی'} variant="filled" />}
+                  value={cookieData.position}
+                  style={{marginBottom : "20px"}}
+                  onChange={(e, newValue) => setCookieData({...cookieData , position : newValue as any})}
+                  renderInput={(params) => <TextField dir='rtl' {...params} label={'سمت'} variant="filled" />}
                 />
-                <Autocomplete
-                  options={subgroupOptions}
-                  getOptionLabel={(option: any) => option}
-                  value={userData.subgroup}
-                  style={{margin : '15px 0' }}
-                  onChange={(e, newValue) => setUserData({...userData , subgroup : newValue as string})}
-                  renderInput={(params) => <TextField {...params} label={'گروه بندی'} variant="filled" />}
-                />
-
                 <FormControl fullWidth sx={{ mb: 4 }}>
                     <Controller
                     name='address'
@@ -264,15 +274,15 @@ const OneUpload = () => {
                         <TextField
                         autoFocus
                         label='کد پستی'
-                        value={userData.postal_code}
+                        value={cookieData.postal_code}
                         onBlur={onBlur}
-                        onChange={(e) => setUserData({...userData , postal_code : e.target.value})}
+                        onChange={(e) => setCookieData({...cookieData , postal_code : e.target.value})}
                         placeholder=''
                         />
                     )}
                     />
                 </FormControl>  
-                <DatePickerFunc value={userData.birthDate} ChangeDateHandler={ChangeDateHandler}/>
+                <DatePickerFunc value={cookieData.birthDate} ChangeDateHandler={ChangeDateHandler}/>
             </>
             : null             
         }

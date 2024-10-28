@@ -198,9 +198,10 @@ const Iran = () => {
                 city : Data.city,
                 province : Data.province,
                 subgroup : Data.subgroup,
-                position : formData.position,
                 category : Data.category,
                 workPlace : Data.workPlace,
+                position : formData.position,
+                
                 role : 'user'
               })
             })

@@ -30,7 +30,7 @@ const Work = () => {
     setIsMounted(true)
   }, [])
 
-  const [cookieData, setCookieData] = useState<IdentTypeWithJwt>({
+  const [cookieData, setCookieData] = useState({
     id: 0,
     nationalCode: "",
     firstName: "",
@@ -160,7 +160,7 @@ const Work = () => {
       setLoading(false);
     }
   };
-  
+  console.log({a : cookieData , allAdditional})
   const submitMainJob = async () => {
     const response = await fetch('https://api.cns365.ir/api/prime.php', {
       method: 'POST',
@@ -198,7 +198,8 @@ const Work = () => {
           </Grid>
           {allJobs.map((item, index) => {
             const selectedJob = index == mainWorkIndex;
-            
+          
+            // console.log(item.category)
               return (
               <Grid item xs={6} key={index}>
                 <Card style={selectedJob ? {backgroundColor : '#cde8ffd9'} :  {backgroundColor : 'white'}} sx={{ padding: '0 20px 10px 20px', display: 'flex', gap: '10px', flexDirection: "column" }}>
@@ -206,7 +207,7 @@ const Work = () => {
                   <div>شناسه صنفی : <span>{item.senf_code}</span></div>
                   <div>سمت جاری : <span>{item.position}</span></div>
                   <div>محل کار : <span>{item.workplace}</span></div>
-                  <div>اتحادیه : <span>{item.category}</span></div>
+                  <div>اتحادیه : <span>{item?.category}</span></div>
                   <div>رسته : <span>{item.subgroup}</span></div>
                 </Card>
               </Grid>

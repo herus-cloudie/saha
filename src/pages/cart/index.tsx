@@ -24,6 +24,8 @@ const Overview = () => {
   const router = useRouter();
   
   const [allAdditional, setAllAdditional] = useState<WorksType[]>([]);
+  const [identPict, setIdentPict] = useState<boolean>(false);
+  const [status , setStatus] = useState<'pending' | 'accepted' | 'declined'>();
   const [cookieData , setCookieData ] = useState<IdentTypeWithJwt>({
     id : 0,
     nationalCode : "",
@@ -52,6 +54,11 @@ const Overview = () => {
     jwt : ""
   });
 
+  // city : Data.city,
+  // province : Data.province,
+  // subgroup : Data.subgroup,
+  // category : Data.category,
+  // workPlace : Data.workPlace,
   const getSecondJob = async () => {
     try {
       const response = await fetch('https://api.cns365.ir/api/secondw.php', {
@@ -76,19 +83,33 @@ const Overview = () => {
   const [mainWorkIndex, setMainWorkIndex] = useState(0);
   const [profileUrl, setProfileUrl] = useState();
 
+  async function getStatus(){
+    const sendReq = await fetch('https://api.cns365.ir/api/stus.php' , {
+      method : 'POST',
+      headers: { 'Content-Type': 'application/json'},
+      body: JSON.stringify({ nationalCode: cookieData.nationalCode})
+    })
+    const Data = await sendReq.json();
+    setStatus(Data.status)
+    console.log(Data)
+  }
   useEffect(() => {
     setIsMounted(true)
+
     const fillJwt = async () => {
-      const { jwt , mainWork, profileImage} = parseCookieString(document.cookie)
+      const { jwt , mainWork, profileImage , identStatus} = parseCookieString(document.cookie)
       console.log(profileImage)
       if (jwt) {
+        console.log(!identStatus)
         const parsedData = ParseJwt(jwt);
         mainWork ? setMainWorkIndex(mainWork) : setMainWorkIndex(0); 
+        identStatus ? setIdentPict(true) : setIdentPict(false)
         
         setCookieData(parsedData);
         setProfileUrl(profileImage);
       }
       setMainLoader(false) 
+      
     }
     fillJwt()
   }, []);
@@ -97,6 +118,7 @@ const Overview = () => {
   useEffect(() => {
     if (isMounted) {
       getSecondJob()
+      getStatus()
       if(!cookieData?.nationalCode) router.push('/nationality')
       
       async function getQr(){
@@ -125,13 +147,42 @@ const Overview = () => {
    console.log(allJobs[+mainWorkIndex])
 
   const selectedData = allJobs[+mainWorkIndex]
-  console.log(selectedData)
+  console.log(status)
 
   return (
     <div>
       {
-        profileUrl != undefined ?  
-      <Card style={{padding : '0 30px 30px'}}>
+        profileUrl == undefined || !identPict?  
+        <Card style={{padding : '0 30px 30px'}}>
+        <Grid container spacing={6} className='match-height'>
+            <Grid item xs={12}>
+              <h1>صدور کارت</h1>
+            </Grid>
+            <Grid item xs={12}>
+              <Card sx={{padding : '100px' , display : 'flex' , gap : '10px' , justifyContent : 'space-between'}}>
+                <Grid style={{display : 'flex' , justifyContent : 'center' , alignItems : 'center' , flexDirection : 'column'}} container spacing={6}>
+                  <h3>لطفا برای صدور کارت ابتدا پروفایل خود را آپدیت کنید</h3>
+                  <Button onClick={() => router.push('/profile')} variant='contained' size='large'>برو به اطلاعات کاربری</Button>
+                </Grid>
+              </Card>
+            </Grid>
+        </Grid>
+      </Card>
+      : status != 'accepted' ? <Card style={{padding : '0 30px 30px'}}>
+      <Grid container spacing={6} className='match-height'>
+          <Grid item xs={12}>
+            <h1>صدور کارت</h1>
+          </Grid>
+          <Grid item xs={12}>
+            <Card sx={{padding : '100px' , display : 'flex' , gap : '10px' , justifyContent : 'space-between'}}>
+              <Grid style={{display : 'flex' , justifyContent : 'center' , alignItems : 'center' , flexDirection : 'column'}} container spacing={6}>
+                <h3>حساب شما هنوز توسط صاحب پروانه تایید نشده است</h3>
+              </Grid>
+            </Card>
+          </Grid>
+      </Grid>
+    </Card>:
+        <Card style={{padding : '0 30px 30px'}}>
         <Grid container spacing={6} className='match-height'>
             <Grid item xs={12}>
               <h1>صدور کارت</h1>
@@ -184,21 +235,6 @@ const Overview = () => {
             </Grid>
         </Grid>
       </Card>
-      : <Card style={{padding : '0 30px 30px'}}>
-      <Grid container spacing={6} className='match-height'>
-          <Grid item xs={12}>
-            <h1>صدور کارت</h1>
-          </Grid>
-          <Grid item xs={12}>
-            <Card sx={{padding : '100px' , display : 'flex' , gap : '10px' , justifyContent : 'space-between'}}>
-              <Grid style={{display : 'flex' , justifyContent : 'center' , alignItems : 'center' , flexDirection : 'column'}} container spacing={6}>
-                <h3>لطفا برای صدور کارت ابتدا عکس پروفایل خود را بارگذاری کنید</h3>
-                <Button onClick={() => router.push('/profile')} variant='contained' size='large'>برو به اطلاعات کاربری</Button>
-              </Grid>
-            </Card>
-          </Grid>
-      </Grid>
-    </Card>
       }
 
     </div>

@@ -100,7 +100,7 @@ const ShortcutsDropdown = (props: Props) => {
 
   return (
     <Fragment>
-      <IconButton color='inherit' aria-haspopup='true' onClick={handleDropdownOpen} aria-controls='customized-menu'>
+      {/* <IconButton color='inherit' aria-haspopup='true' onClick={handleDropdownOpen} aria-controls='customized-menu'>
         <Icon icon='mdi:view-grid-outline' />
       </IconButton>
       <Menu
@@ -169,7 +169,7 @@ const ShortcutsDropdown = (props: Props) => {
             ))}
           </Grid>
         </ScrollWrapper>
-      </Menu>
+      </Menu> */}
     </Fragment>
   )
 }

@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, ReactNode } from 'react'
+import { useState, ReactNode, useEffect } from 'react'
 
 // ** MUI Components
 import Button from '@mui/material/Button'
@@ -27,6 +27,7 @@ import { useRouter } from 'next/router'
 import { loginCredentialSchema } from 'src/constant'
 import { CircularProgress } from '@mui/material'
 import ParseJwt from 'src/utils/ParseJwt'
+import parseCookieString from 'src/utils/parseCookieString'
 
 // ** Styled Components
 const LoginIllustrationWrapper = styled(Box)<BoxProps>(({ theme }) => ({
@@ -75,6 +76,7 @@ const TypographyStyled = styled(Typography)<TypographyProps>(({ theme }) => ({
 const Iran2 = () => {
   
   const [loading, setLoading] = useState<boolean>(false);  
+  const [isMounted, setIsMounted] = useState<boolean>(false);  
   const [error, setError] = useState('');
 
 
@@ -97,6 +99,16 @@ const Iran2 = () => {
     nationalCode: '',
     phoneNumber : '',
   });
+  useEffect(() => {
+    const fillJwt = async () => {
+      const {mainWork} = parseCookieString(document.cookie)
+      console.log(mainWork)
+      if (!mainWork) {
+        document.cookie = `mainWork = ${0}; SameSite=None; Secure; Path=/; Max-Age=${7 * 24 * 60 * 60}`;
+      }
+    }
+    fillJwt()
+  }, []);
 
   const sendReq = async () => {
     if(!formData.nationalCode || !formData.phoneNumber) return setError('لطفا تمامی موارد را پر کنید')
@@ -110,13 +122,16 @@ const Iran2 = () => {
       })
     })
     const Data = await sendLoginReq.json();
+    console.log(Data , Data.token)
     if(Data.success) {
 
       const JWTInObject = ParseJwt(Data.token);
+      console.log(!JWTInObject.image)
       if(JWTInObject.phoneNumber == formData.phoneNumber){
         document.cookie = `jwt = ${Data.token}; SameSite=None; Secure; Path=/; Max-Age=${7 * 24 * 60 * 60}`;
-        document.cookie = `profileImage = ${JWTInObject.image}; SameSite=None; Secure; Path=/; Max-Age=${7 * 24 * 60 * 60}`;
-        console.log(JWTInObject)
+        !JWTInObject.image ? document.cookie = "profileImage= ; expires=Thu, 18 Dec 2013 12:00:00 UTC; path=/"
+        :  document.cookie = `profileImage = ${JWTInObject.image}; SameSite=None; Secure; Path=/; Max-Age=${7 * 24 * 60 * 60}`;
+
         router.push('/second-step')
       }
       else {
