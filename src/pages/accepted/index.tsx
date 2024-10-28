@@ -55,7 +55,11 @@ const Accepted = () => {
     matched : 1,
     alive : 1,
     role : "user",
-    jwt : ""
+    senfCode : '',
+    status : '',
+    jwt : "",
+    position : '',
+    province : ''
   });
 
   const [acceptedList , setAcceptedList] = useState<UserProfile[]>([])
@@ -97,7 +101,7 @@ const Accepted = () => {
     const newData = acceptedList.filter(item => item.national_code != targetNationalCode)
     setAcceptedList(newData)
   }
-
+  
   return (
     <div>
       {
@@ -115,7 +119,9 @@ const Accepted = () => {
                 <Grid item xs={12} md={6} key={index}>
                   <Card sx={{ padding: '20px' }}>
                     <Grid container spacing={2}>
-                      {/* <img width={50} style={{borderRadius : '50px'}} src={item?.image as string}/> */}
+                      <Grid item xs={12}>
+                        <img src={item?.image as string} width={60} style={{borderRadius : '100px'}} />
+                      </Grid>
                       <Grid item xs={12} sm={6}>
                         <Typography marginTop={'2px'} variant="body1"><strong>نام:</strong> {item.first_name}</Typography>
                       </Grid>

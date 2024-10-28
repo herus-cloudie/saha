@@ -28,15 +28,6 @@ const ButtonStyled = styled(Button)<ButtonProps & { component?: ElementType; htm
   }
 }))
 
-const ResetButtonStyled = styled(Button)<ButtonProps>(({ theme }) => ({
-  marginLeft: theme.spacing(4),
-  [theme.breakpoints.down('sm')]: {
-    width: '100%',
-    marginLeft: 0,
-    textAlign: 'center',
-    marginTop: theme.spacing(4)
-  }
-}))
 
 const PictUpload = ({dialogFunc , identStatus , areImagesFilled} : {dialogFunc : any ,identStatus : string, areImagesFilled : any}) => {
   const [imgFront, setImgFront] = useState<string>('/images/ncard.png');

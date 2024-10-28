@@ -123,11 +123,7 @@ const Profile = () => {
 
   useEffect(() => {
     if (isMounted) {
-      // if(userData?.nationalCode){
-      //   // if(!userData?.workPlace){
-      //   //   router.push('/second-step')
-      //   // } else return;
-      // } else router.push('/nationality')
+      if(!userData?.nationalCode) router.push('/nationality')
     }
   }, [isMounted, userData , cookieData , router])
 
@@ -197,6 +193,7 @@ const Profile = () => {
     if(Data.result == 6){
       setPostalError(Data.message)
       setLoading(false);
+      
       return 
     } 
     setCookieData({...cookieData , address : `${Data.data.address.town}, ${Data.data.address.district}, ${Data.data.address.street}, ${Data.data.address.street2}, پلاک ${Data.data.address.number}, طبقه ${Data.data.address.floor}, واحد ${Data.data.address.sideFloor}`})

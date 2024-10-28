@@ -77,10 +77,10 @@ const LoginPage = () => {
 
   const { skin } = settings;
 
-
   const [nationality, setNationality] = useState<'ایران' | 'اتباع'>('ایران')
   const [userData, setUserData] = useState<IdentTypeWithJwt | null>(null)
-  const [loading, setLoading] = useState(true) 
+  const [loading, setLoading] = useState(true);
+  const [signMethod, showSignMethod] = useState(false);
 
   useEffect(() => {
     const fillJwt = async () => {
@@ -101,14 +101,21 @@ const LoginPage = () => {
       router.push('/foreign')
     }
   }
+  const sendReq2 = () => {
+    if (nationality === 'ایران') {
+      router.push('/iran2')
+    } else {
+      router.push('/foreign')
+    }
+  }
 
   if (loading) {
     return <Loader />
   }
 
   if(userData?.nationalCode){
-    if(userData?.workPlace){
-      router.push('/profile')
+    if(userData?.senfCode){
+      router.push('/overview')
     }else router.push('/second-step')
   }
 
@@ -152,8 +159,8 @@ const LoginPage = () => {
               
               {
                 theme.palette.mode == 'light' 
-                ? <img alt='image' src='/images/kermanali.png' width={150} style={{marginRight : '10px'}}/>
-                : <img  alt='image' src='/images/kermanali.png' width={150} style={{marginRight : '10px' , filter : 'invert(1)'}}/>
+                ? <img alt='image' src='/images/kop.png' width={150} style={{marginRight : '10px'}}/>
+                : <img  alt='image' src='/images/kop.png' width={150} style={{marginRight : '10px' , filter : 'invert(1)'}}/>
               }
 
             </Box>
@@ -166,20 +173,43 @@ const LoginPage = () => {
             </div>
 
             <Box sx={{ mb: 6 }} dir="rtl">
-              <TypographyStyled variant='h5'>{`به اتاق اصناف کرمانشاه خوش آمدید`}</TypographyStyled>
+              <TypographyStyled variant='h5'>{`به اتاق اصناف ایران خوش آمدید`}</TypographyStyled>
               <Typography variant='body2'>سامانه هوشمند صدور کارت شناسایی شاغلین واحدین صنفی</Typography>
             </Box>
-            <Autocomplete
-                options={['ایران' , 'اتباع']}
-                getOptionLabel={(option: any) => option}
-                value={nationality}
-                className='comboAcc'
-                onChange={(e, newValue : any) => setNationality(newValue)}
-                renderInput={(params) => <TextField {...params} label={'ملیت'} variant="standard" />}
-            />
-            <Button onClick={sendReq} fullWidth size='large' type='submit' variant='contained' sx={{ mb: 7 }}>
-                تکمیل اطلاعات
-            </Button>
+            {
+              signMethod ? 
+              <>
+              
+                <div>
+                  <h3 style={{textAlign : 'end' , marginTop : '50px'}}>روش ورود به سامانه را انتخاب کنید</h3>
+                  <div style={{display: 'flex' , justifyContent : 'space-around'}}>
+                    <Button onClick={sendReq} size='large' variant='contained'>
+                      ثبت نام
+                    </Button>
+                    <Button onClick={sendReq2} size='large' variant='contained'>
+                      ورود
+                    </Button>
+                  </div>
+                </div>
+              </>
+
+              :
+              <>
+                <Autocomplete
+                    options={['ایران' , 'اتباع']}
+                    getOptionLabel={(option: any) => option}
+                    value={nationality}
+                    className='comboAcc'
+                    onChange={(e, newValue : any) => setNationality(newValue)}
+                    renderInput={(params) => <TextField {...params} label={'ملیت'} variant="standard" />}
+                />
+                <Button onClick={() => showSignMethod(true)} fullWidth size='large' type='submit' variant='contained' sx={{ mb: 7 }}>
+                    تکمیل اطلاعات
+                </Button>
+              </>
+            }
+            
+
               
           </BoxWrapper>
         </Box>

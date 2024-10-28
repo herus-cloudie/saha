@@ -32,7 +32,7 @@ const AuthGuard = (props: AuthGuardProps) => {
     if (status === 'authenticated') {
       setState(false)
       if (!isProtectedRoute) {
-        router.replace('/profile')
+        router.replace('/overview')
       }
     } else {
       if (isProtectedRoute) {

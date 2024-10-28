@@ -55,7 +55,11 @@ const Declined = () => {
     matched : 1,
     alive : 1,
     role : "user",
-    jwt : ""
+    senfCode : '',
+    status : '',
+    jwt : "",
+    position : '',
+    province : ''
   });
 
   const [declinedList , setDeclinedList] = useState<UserProfile[]>([])
@@ -124,6 +128,9 @@ const Declined = () => {
                 <Grid item xs={12} md={6} key={index}>
                   <Card sx={{ padding: '20px' }}>
                     <Grid container spacing={2}>
+                      <Grid item xs={12}>
+                        <img src={item?.image as string} width={60} style={{borderRadius : '100px'}} />
+                      </Grid>
                       <Grid item xs={12} sm={6}>
                         <Typography variant="body1"><strong>نام:</strong> {item.first_name}</Typography>
                       </Grid>

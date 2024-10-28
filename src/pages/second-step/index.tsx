@@ -23,12 +23,11 @@ import BlankLayout from 'src/@core/layouts/BlankLayout'
 // ** Demo Imports
 import FooterIllustrationsV2 from 'src/views/pages/auth/FooterIllustrationsV2'
 
-import { defaultBase64, loginCredentialSchema } from 'src/constant'
-import { Autocomplete, Card, CircularProgress, FormControl } from '@mui/material'
+import {loginCredentialSchema } from 'src/constant'
+import {Card, CircularProgress, FormControl } from '@mui/material'
 import parseCookieString from 'src/utils/parseCookieString'
 import ParseJwt from 'src/utils/ParseJwt'
 import { useRouter } from 'next/router'
-import { IdentTypeWithJwt } from 'src/context/types'
 import Loader from 'src/@core/components/spinner/loader'
 
 // ** Styled Components
@@ -85,6 +84,7 @@ const SecondStep = () => {
   })
 
   const [isMounted, setIsMounted] = useState(false);
+  
   useEffect(() => {
     setIsMounted(true)
   }, [])
@@ -120,7 +120,6 @@ const SecondStep = () => {
   });
   const [OTP , setOTP] = useState<any>();
 
-  const [userData, setUserData] = useState<IdentTypeWithJwt | null>(null)
   const [mainLoader , setMainLoader] = useState(false);
   const [loading , setLoading] = useState(false);
   const [isOTPVerified , setIsOTPVerified] = useState(false);
@@ -128,28 +127,28 @@ const SecondStep = () => {
 
   useEffect(() => {
     if (isMounted) {
-      if(userData?.nationalCode){
-        if(userData?.workPlace){
-          router.push('/profile')
-        } else return
+      console.log(cookieData)
+      if(cookieData?.nationalCode){
+        async function sendOTP() {
+          const sendReq = await fetch('https://api.cns365.ir/api/send_otp.php' , {
+          method : 'POST',
+          body : JSON.stringify({phone_number: cookieData.phoneNumber}),
+          headers: {'Content-Type': 'application/json'},
+        })
+        const result = await sendReq.json();
+        console.log(result)
+        }
+        sendOTP()
       } else router.push('/nationality')
     }
-  }, [isMounted, userData , router])
+  }, [isMounted, cookieData , router])
 
   useEffect(() => {
     const fillJwt = async () => {
       const { jwt } = parseCookieString(document.cookie)
       if (jwt) {
         const parsedData = ParseJwt(jwt)
-        setUserData(parsedData)
         setCookieData(parsedData)
-        const sendReq = await fetch('https://api.cns365.ir/api/send_otp.php' , {
-          method : 'POST',
-          body : JSON.stringify({phone_number: parsedData.phoneNumber}),
-          headers: {'Content-Type': 'application/json'},
-        })
-        const result = await sendReq.json();
-        console.log(result)
       }
       setMainLoader(false) 
     }
@@ -218,8 +217,8 @@ const SecondStep = () => {
             
             {
               theme.palette.mode == 'light' 
-              ? <img alt='image' src='/images/kermanali.png' width={150} style={{marginRight : '10px'}}/>
-              : <img  alt='image' src='/images/kermanali.png' width={150} style={{marginRight : '10px' , filter : 'invert(1)'}}/>
+              ? <img alt='image' src='/images/kop.png' width={150} style={{marginRight : '10px'}}/>
+              : <img  alt='image' src='/images/kop.png' width={150} style={{marginRight : '10px' , filter : 'invert(1)'}}/>
             }
             
           </Box>
@@ -253,7 +252,7 @@ const SecondStep = () => {
                   <p>کدصنفی : <span>{cookieData.senfCode}</span></p>
                 </Card>
                 <div style={{display : 'flex' , justifyContent : 'center'}}>
-                  <Button onClick={() => router.push('/profile')} color='primary' size='large' variant='contained' style={{ marginTop : '20px'}}>تایید</Button>
+                  <Button onClick={() => router.push('/overview')} color='primary' size='large' variant='contained' style={{ marginTop : '20px'}}>تایید</Button>
                 </div>
               </>
               : <Card style={{padding : '20px' , marginTop : '20px'}}>

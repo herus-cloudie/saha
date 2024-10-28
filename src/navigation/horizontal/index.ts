@@ -3,7 +3,12 @@
 import { HorizontalNavItemsType } from 'src/@core/layouts/types'
 
 const navigation = (): HorizontalNavItemsType => {
-  return [
+  return [ 
+    {
+      title: 'وضعیت پیشرفت',
+      icon: 'mdi:progress-check',
+      path: '/overview'
+    },
     {
       title: 'اطلاعات شخصی',
       icon: 'mdi:account-circle-outline',
@@ -14,11 +19,7 @@ const navigation = (): HorizontalNavItemsType => {
       icon: 'ic:outline-work',
       path: '/work'
     },
-    {
-      title: 'وضعیت پیشرفت',
-      icon: 'mdi:progress-check',
-      path: '/overview'
-    },
+
     {
       title: 'صدور کارت',
       icon: 'ic:baseline-credit-card',

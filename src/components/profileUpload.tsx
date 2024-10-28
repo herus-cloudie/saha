@@ -12,7 +12,6 @@ import CardHeader from '@mui/material/CardHeader'
 import CardContent from '@mui/material/CardContent'
 
 import { CircularProgress } from '@mui/material'
-import IconifyIcon from 'src/@core/components/icon'
 
 const ImgStyled = styled('img')(({ theme }) => ({
   width: 120,
@@ -80,6 +79,7 @@ const ProfileUpload = ({nationalCode , profileFunc , profileImage} : {nationalCo
     }
   };
   
+
   return (
     <Grid container spacing={6} style={{ marginTop: '10px'  }}>
       {

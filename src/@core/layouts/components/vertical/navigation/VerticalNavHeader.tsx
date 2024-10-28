@@ -1,5 +1,4 @@
-// ** Next Import
-import Link from 'next/link'
+
 
 // ** MUI Imports
 import IconButton from '@mui/material/IconButton'
@@ -37,12 +36,6 @@ const MenuHeaderWrapper = styled(Box)<BoxProps>(({ theme }) => ({
 }))
 
 
-
-const LinkStyled = styled(Link)({
-  display: 'flex',
-  alignItems: 'center',
-  textDecoration: 'none'
-})
 
 const VerticalNavHeader = (props: Props) => {
   // ** Props
@@ -121,13 +114,13 @@ const VerticalNavHeader = (props: Props) => {
       {userNavMenuBranding ? (
         userNavMenuBranding(props)
       ) : (
-        <LinkStyled href='/'>
+        <>
           {
             theme.palette.mode == 'light' 
-            ? <img alt='image' src='/images/kermanali.png' width={150} style={{marginRight : '10px'}}/>
-            : <img  alt='image' src='/images/kermanali.png' width={150} style={{marginRight : '10px' , filter : 'invert(1)'}}/>
+            ? <img alt='image' src='/images/kop.png' width={150} style={{marginRight : '10px'}}/>
+            : <img  alt='image' src='/images/kop.png' width={150} style={{marginRight : '10px' , filter : 'invert(1)'}}/>
           }
-        </LinkStyled>
+        </>
       )}
 
       {hidden ? (

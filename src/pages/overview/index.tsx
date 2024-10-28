@@ -51,6 +51,7 @@ const Overview = () => {
   
   const [identStatus, setIdentState] = useState<string>('false');
   const [profileImage, setProfileImage] = useState<any>();
+  const [status , setStatus] = useState<'pending' | 'accepted' | 'declined'>();
 
   useEffect(() => {
     setIsMounted(true)
@@ -72,10 +73,20 @@ const Overview = () => {
   
   useEffect(() => {
     if (isMounted) { 
+        async function getStatus(){
+            const sendReq = await fetch('https://api.cns365.ir/api/stus.php' , {
+              method : 'POST',
+              headers: { 'Content-Type': 'application/json'},
+              body: JSON.stringify({ nationalCode: cookieData.nationalCode})
+            })
+            const Data = await sendReq.json();
+            setStatus(Data.status)
+            console.log(Data)
+        }
+        getStatus()
         setIsAdditionalProfileComplete(!(!identStatus) && !(!profileImage) && !(!cookieData.address))
         setIsAdditionalWorkComplete(!(!cookieData.workPlace))
-      if(cookieData?.nationalCode){
-      } else router.push('/nationality')
+      if(!cookieData?.nationalCode) router.push('/nationality')
     }
   }, [isMounted, cookieData  , router])
   
@@ -92,10 +103,10 @@ const Overview = () => {
             </Grid>
             <Grid item xs={12} md={4} style={{cursor : 'pointer'}}>
                 <Link style={{textDecoration : 'none !important'}}  href={'/profile'}>
-                <Card style={{backgroundColor : '#00ff072e'}} sx={{padding : '0 20px 10px 20px' , display : 'flex' , gap : '10px' , flexDirection : "column"}}>
+                <Card style={!isAdditionalProfileComplete ? {backgroundColor : '#ffdfa4'} : {backgroundColor : '#00ff072e'}} sx={{padding : '0 20px 10px 20px' , display : 'flex' , gap : '10px' , flexDirection : "column"}}>
                         <Grid style={{display : 'flex' , justifyContent : "space-around" , alignItems : 'center'  }} item xs={12}>
                             <h2>1</h2>
-                            <IconifyIcon icon={'mdi:check-circle-outline'} color='green' fontSize='2.5rem' />
+                            <IconifyIcon icon={'mdi:check-circle-outline'} color={isAdditionalProfileComplete ?'green' : 'orange'} fontSize='2.5rem' />
                         </Grid>
                         <Grid style={{display : 'flex' , justifyContent : "center" }} item xs={12}>
                             <h5>وضعیت : {isAdditionalProfileComplete ? 'تکمیل' : 'نیاز به تکمیل'}</h5>
@@ -123,16 +134,16 @@ const Overview = () => {
                 </Link>
             </Grid>
             <Grid item xs={12} md={4}>
-                <Card sx={{padding : '0 20px 10px 20px' , display : 'flex' , gap : '10px' , flexDirection : "column"}}>
+            <Card  style={status == 'accepted' ? {filter : 'none' , backgroundColor : '#00ff072e'}  : {filter : 'none'}} sx={{padding : '0 20px 10px 20px' , display : 'flex' , gap : '10px' , flexDirection : "column" }}>
                     <Grid style={{display : 'flex' , justifyContent : "space-around" , alignItems : 'center'  }} item xs={12}>
                         <h2>3</h2>
-                        {cookieData.status == 'pending' ? 
+                        {status == 'accepted' ? 
                         <IconifyIcon icon={'mdi:check-circle-outline'} color='green' fontSize='2.5rem' /> 
-                        : cookieData.status == 'accepted' ? <IconifyIcon icon={'mdi:clock-outline'} fontSize='2.5rem' /> 
+                        : status == 'pending' ? <IconifyIcon icon={'mdi:clock-outline'} fontSize='2.5rem' /> 
                         : <IconifyIcon color='red' icon={'hugeicons:multiplication-sign'} fontSize='2.5rem' /> }
                     </Grid>
                     <Grid style={{display : 'flex' , justifyContent : "center" }} item xs={12}>
-                            <h5>وضعیت : {cookieData.status == 'pending' ? 'تایید شده' : cookieData.status == 'declined' ?  'درحال بررسی' : 'رد شده'}</h5>
+                            <h5>وضعیت : {status == 'accepted' ? 'تایید شده' : status == 'pending' ?  'درحال بررسی' : 'رد شده'}</h5>
                         </Grid>
                     <Grid style={{display : 'flex' , justifyContent : "center" }} item xs={12}>
                         <h3>تایید صاحب پروانه</h3>
@@ -140,13 +151,13 @@ const Overview = () => {
                 </Card>
             </Grid>
             <Grid item xs={12} md={4}>
-                <Card  style={cookieData.status == 'pending' ? {filter : 'none' , backgroundColor : '#00ff072e'}  : {filter : 'blur(1px)'}} sx={{padding : '0 20px 10px 20px' , display : 'flex' , gap : '10px' , flexDirection : "column" }}>
+                <Card  style={status == 'accepted' ? {filter : 'none' , backgroundColor : '#00ff072e'}  : {filter : 'blur(1px)'}} sx={{padding : '0 20px 10px 20px' , display : 'flex' , gap : '10px' , flexDirection : "column" }}>
                     <Grid style={{display : 'flex' , justifyContent : "space-around" , alignItems : 'center'  }} item xs={12}>
                         <h2>4</h2>
-                        {cookieData.status == 'pending' ? <IconifyIcon icon={'mdi:check-circle-outline'} color='green' fontSize='2.5rem' /> : null} 
+                        {status == 'accepted' ? <IconifyIcon icon={'mdi:check-circle-outline'} color='green' fontSize='2.5rem' /> : null} 
                     </Grid> 
                     <Grid style={{display : 'flex' , justifyContent : "center" }} item xs={12}>
-                        <h5>وضعیت : درانتظار تایید</h5>
+                        <h5>وضعیت : {status == 'pending' ? 'درانتظار تایید' : 'تایید شده'}</h5>
                     </Grid>
                     <Grid style={{display : 'flex' , justifyContent : "center" }} item xs={12}>
                         <h3>بررسی اطلاعات توسط پلیس</h3>
@@ -154,15 +165,15 @@ const Overview = () => {
                 </Card>
             </Grid>
             <Grid item xs={12} md={4}>
-              <Card style={cookieData.status == 'pending' ? {filter : 'none' , backgroundColor : '#00ff072e'}  : {filter : 'blur(1px)'}} sx={{padding : '0 20px 10px 20px' , display : 'flex' , gap : '10px' , flexDirection : "column" }}>
+              <Card style={status == 'accepted' ? {filter : 'none' , backgroundColor : '#00ff072e'}  : {filter : 'blur(1px)'}} sx={{padding : '0 20px 10px 20px' , display : 'flex' , gap : '10px' , flexDirection : "column" }}>
                     <Grid style={{display : 'flex' , justifyContent : "space-around" , alignItems : 'center'  }} item xs={12}>
                         <h2>5</h2>
-                        {cookieData.status == 'pending' ? 
+                        {status == 'accepted' ? 
                         <IconifyIcon icon={'mdi:check-circle-outline'} color='green' fontSize='2.5rem' /> 
                         : null}
                     </Grid> 
                     <Grid style={{display : 'flex' , justifyContent : "center" }} item xs={12}>
-                        <h5>وضعیت : درانتظار تایید</h5>
+                        <h5>وضعیت : {status == 'pending' ? 'درانتظار تایید' : 'افتتاح شده'}</h5>
                     </Grid>
                     <Grid style={{display : 'flex' , justifyContent : "center" }} item xs={12}>
                         <h3>افتتاح حساب بانکی</h3>
@@ -170,12 +181,15 @@ const Overview = () => {
                 </Card>
             </Grid>
             <Grid item xs={12} md={4}>
-                <Card style={cookieData.status != 'accepted' ? { filter : 'blur(1px)'} : { filter : 'none'}} sx={{padding : '0 20px 10px 20px'  , display : 'flex' , gap : '10px' , flexDirection : "column"}}>
-                    <Grid style={{display : 'flex' , justifyContent : "center" }} item xs={12}>
+                 <Card style={status == 'accepted' ? {filter : 'none' , backgroundColor : '#00ff072e'}  : {filter : 'blur(1px)'}} sx={{padding : '0 20px 10px 20px' , display : 'flex' , gap : '10px' , flexDirection : "column" }}>
+                 <Grid style={{display : 'flex' , justifyContent : "space-around" , alignItems : 'center'  }} item xs={12}>
                         <h2>6</h2>
+                        {status == 'accepted' ? 
+                        <IconifyIcon icon={'mdi:check-circle-outline'} color='green' fontSize='2.5rem' /> 
+                        : null}
                     </Grid> 
                     <Grid style={{display : 'flex' , justifyContent : "center" }} item xs={12}>
-                        <h5>وضعیت : درانتظار تایید</h5> 
+                        <h5>وضعیت : {status == 'pending' ? 'درانتظار تایید' : 'صادر شده'}</h5>
                     </Grid>
                     <Grid style={{display : 'flex' , justifyContent : "center" }} item xs={12}>
                         <h3>صدور کارت جامع</h3>

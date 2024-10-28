@@ -138,7 +138,10 @@ const Iran = () => {
     subgroup : '',
     postal_code : '',
     address : '',
-    jwt : ''
+    jwt : '',
+    province : '',
+    position : '',
+    senfCode : ''
   });
   const [userData, setUserData] = useState<IdentTypeWithJwt | null>(null)
   const [mainLoader , setMainLoader] = useState(false);
@@ -177,7 +180,7 @@ const Iran = () => {
     })
     const Data = await result.json();
     if(Data.token) {
-      document.cookie = `jwt = ${Data.token}; SameSite=None; Secure; Path=/; SameSite=None; Secure; Max-Age=${7 * 24 * 60 * 60}`;
+      document.cookie = `jwt = ${Data.token}; SameSite=None; Secure; Path=/; Max-Age=${7 * 24 * 60 * 60}`;
       router.push('/second-step')
     }
    
@@ -223,8 +226,8 @@ const Iran = () => {
                 
               {
                 theme.palette.mode == 'light' 
-                ? <img alt='image' src='/images/kermanali.png' width={150} style={{marginRight : '10px'}}/>
-                : <img  alt='image' src='/images/kermanali.png' width={150} style={{marginRight : '10px' , filter : 'invert(1)'}}/>
+                ? <img alt='image' src='/images/kop.png' width={150} style={{marginRight : '10px'}}/>
+                : <img  alt='image' src='/images/kop.png' width={150} style={{marginRight : '10px' , filter : 'invert(1)'}}/>
               }
 
               </Box>

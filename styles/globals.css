@@ -10,33 +10,33 @@ body {
 }
 .senfff{
   position: relative;
-    top: -130px;
-    left: -190px;
-    font-size: 12px;
+  top: -114px;
+  left: -171px;
+  font-size: 12px;
 }
 .codeee{
   position: relative;
-  top: 196px;
+  top: 191px;
   font-size: 12px;
-  right: 119px;
+  right: 145px;
 }
 .nameee{
   position: relative;
   font-size: 12px;
-  top: 117px;
-  right: 120px;
+  top: 122px;
+  right: 130px;
 }
  .lastnameee{
   position: relative;
-  top: 124px;
-  right: 158px;
-  font-size: 12px;
-}
+  top: 128px;
+  right: 165px;
+  font-size: 12px
+ }
 .positionnn{
   position: relative;
   font-size: 12px;
-  top: -82px;
-  right: 126px;
+  top: -108px;
+  right: 139px;
 }
 .provinceee{
   position: relative;
@@ -47,8 +47,21 @@ body {
 .cityyy{
   position: relative;
   font-size: 12px;
-  top: -157px;
-  right: 234px;
+  top: -258px;
+  right: 135px;
+}
+.timeee{
+  position: relative;
+  font-size: 12px;
+  top: -118px;
+  right: 164px;
+}
+.profileee{
+  position: relative;
+  top: 289px;
+  right: 19px;
+  width: 81px;
+  border-radius: 10px;
 }
 /*
 .senfff{

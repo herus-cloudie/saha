@@ -32,7 +32,6 @@ import { Autocomplete, Checkbox, CircularProgress } from '@mui/material'
 import parseCookieString from 'src/utils/parseCookieString'
 import ParseJwt from 'src/utils/ParseJwt'
 import Loader from 'src/@core/components/spinner/loader'
-import CustomCheckbox from 'src/@core/components/custom-checkbox/basic'
 
 // ** Styled Components
 const LoginIllustrationWrapper = styled(Box)<BoxProps>(({ theme }) => ({
@@ -82,7 +81,7 @@ const Iran = () => {
   
   const [loading, setLoading] = useState<boolean>(false);  
   const [error, setError] = useState('');
-  const [mainLoader , setMainLoader] = useState(false)
+  const [mainLoader , setMainLoader] = useState(true)
 
 
   const router = useRouter()
@@ -127,11 +126,7 @@ const Iran = () => {
     return <Loader />
   }
 
-  if(userData?.nationalCode){
-    if(userData?.workPlace){
-      router.push('/profile')
-    }else router.push('/second-step')
-  }
+  if(userData?.nationalCode) router.push('/overview')
 
   const sendReq = async () => {
     if(!formData.senfCode) return setError('کد صنفی را وارد کنید')
@@ -173,8 +168,8 @@ const Iran = () => {
 
         if(Data2.result == 6 || !Data2.data.matched) {
           setLoading(false)
-          return setError('اطلاعات وارد شده همخوانی ندارند')
 
+          return setError('اطلاعات وارد شده همخوانی ندارند')
         } else {
 
           const isSahebParvane = await fetch('https://api.cns365.ir/api/prvn.php' , {
@@ -205,6 +200,7 @@ const Iran = () => {
                 subgroup : Data.subgroup,
                 position : formData.position,
                 category : Data.category,
+                workPlace : Data.workPlace,
                 role : 'user'
               })
             })
@@ -216,6 +212,7 @@ const Iran = () => {
               router.push('/second-step');
             } else {
               setError('اطلاعات نادرست میباشد')
+
               return setLoading(false)
             }
           }else {
@@ -229,6 +226,7 @@ const Iran = () => {
       }
     } else {
       setLoading(false)
+      
       return setError('کد صنفی وارد شده نامعتیر است')
     } 
   }
@@ -278,8 +276,8 @@ const Iran = () => {
             >
             {
               theme.palette.mode == 'light' 
-              ? <img alt='image' src='/images/kermanali.png' width={150} style={{marginRight : '10px'}}/>
-              : <img  alt='image' src='/images/kermanali.png' width={150} style={{marginRight : '10px' , filter : 'invert(1)'}}/>
+              ? <img alt='image' src='/images/kop.png' width={150} style={{marginRight : '10px'}}/>
+              : <img  alt='image' src='/images/kop.png' width={150} style={{marginRight : '10px' , filter : 'invert(1)'}}/>
             }
             </Box>
 
