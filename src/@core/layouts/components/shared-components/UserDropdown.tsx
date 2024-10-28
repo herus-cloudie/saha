@@ -5,14 +5,14 @@ import { useState, SyntheticEvent, Fragment } from 'react'
 import { useRouter } from 'next/router'
 
 // ** MUI Imports
-import Box from '@mui/material/Box'
+// import Box from '@mui/material/Box'
+
 import Menu from '@mui/material/Menu'
 import Badge from '@mui/material/Badge'
 import Avatar from '@mui/material/Avatar'
 import Divider from '@mui/material/Divider'
 import MenuItem from '@mui/material/MenuItem'
 import { styled } from '@mui/material/styles'
-import Typography from '@mui/material/Typography'
 
 // ** Icon Imports
 import Icon from 'src/@core/components/icon'
@@ -21,7 +21,6 @@ import Icon from 'src/@core/components/icon'
 
 // ** Type Imports
 import { Settings } from 'src/@core/context/settingsContext'
-import { signOut } from 'next-auth/react'
 
 interface Props {
   settings: Settings
@@ -60,20 +59,7 @@ const UserDropdown = (props: Props) => {
     setAnchorEl(null)
   }
 
-  const styles = {
-    py: 2,
-    px: 4,
-    width: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    color: 'text.primary',
-    textDecoration: 'none',
-    '& svg': {
-      mr: 2,
-      fontSize: '1.375rem',
-      color: 'text.primary'
-    }
-  }
+
 
   const handleLogout = async () => {
     document.cookie = "jwt= ; expires=Thu, 18 Dec 2013 12:00:00 UTC; path=/";
@@ -108,6 +94,9 @@ const UserDropdown = (props: Props) => {
         anchorOrigin={{ vertical: 'bottom', horizontal: direction === 'rtl' ? 'right' : 'left' }}
         transformOrigin={{ vertical: 'top', horizontal: direction === 'rtl' ? 'right' : 'left' }}
       >
+
+
+        <Divider />
         <MenuItem
           onClick={handleLogout}
           sx={{ py: 2, '& svg': { mr: 2, fontSize: '1.375rem', color: 'text.primary' } }}

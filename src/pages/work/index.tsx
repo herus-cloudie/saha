@@ -7,7 +7,6 @@ import { Controller, useForm } from 'react-hook-form';
 import IconifyIcon from 'src/@core/components/icon';
 import Loader from 'src/@core/components/spinner/loader';
 
-import { IdentTypeWithJwt } from 'src/context/types';
 import parseCookieString from 'src/utils/parseCookieString';
 import ParseJwt from 'src/utils/ParseJwt';
 
@@ -178,7 +177,7 @@ const Work = () => {
     if (isMounted) { 
       getSecondJob();
     }
-  }, [isMounted, cookieData , router])
+  }, [isMounted , cookieData , router])
 
   if (mainLoader) {
     return <Loader />;

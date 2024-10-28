@@ -42,7 +42,6 @@ const OneUpload = () => {
   const [loading , setLoading] = useState<boolean>(false);
   const [error, setError] = useState('');
 
-  const [subgroupOptions , setSubgroupOptions] = useState<string[]>(['کشور' , 'استان' , 'شهر' , 'اتحادیه' , 'واحد صنفی']);
 
   const [cookieData , setCookieData ] = useState<IdentTypeWithJwt>({
     id : 0,

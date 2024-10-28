@@ -451,140 +451,140 @@ const AutocompleteComponent = ({ hidden, settings }: Props) => {
     return null
   } else {
     return (
-      <></>
-      // <Box
-      //   ref={wrapper}
-      //   onClick={() => !openDialog && setOpenDialog(true)}
-      //   sx={{ display: 'flex', cursor: 'pointer', alignItems: 'center' }}
-      // >
-      //   <IconButton color='inherit' sx={!hidden && layout === 'vertical' ? { mr: 1, ml: -2.75 } : {}}>
-      //     <Icon icon='mdi:magnify' />
-      //   </IconButton>
-      //   {!hidden && layout === 'vertical' ? (
-      //     <Typography sx={{ userSelect: 'none', color: 'text.disabled' }}>Search (Ctrl+/)</Typography>
-      //   ) : null}
-      //   {openDialog && (
-      //     <Dialog fullWidth open={openDialog} fullScreen={fullScreenDialog} onClose={() => setOpenDialog(false)}>
-      //       <Box sx={{ top: 0, width: '100%', position: 'sticky' }}>
-      //         <Autocomplete
-      //           autoHighlight
-      //           disablePortal
-      //           options={options}
-      //           id='appBar-search'
-      //           isOptionEqualToValue={() => true}
-      //           onInputChange={(event, value: string) => setSearchValue(value)}
-      //           onChange={(event, obj) => handleOptionClick(obj as AppBarSearchType)}
-      //           noOptionsText={<NoResult value={searchValue} setOpenDialog={setOpenDialog} />}
-      //           getOptionLabel={(option: AppBarSearchType | unknown) => (option as AppBarSearchType).title || ''}
-      //           groupBy={(option: AppBarSearchType | unknown) =>
-      //             searchValue.length ? categoryTitle[(option as AppBarSearchType).category] : ''
-      //           }
-      //           sx={{
-      //             '& + .MuiAutocomplete-popper': {
-      //               ...(searchValue.length
-      //                 ? {
-      //                     overflow: 'auto',
-      //                     maxHeight: 'calc(100vh - 69px)',
-      //                     borderTop: `1px solid ${theme.palette.divider}`,
-      //                     height: fullScreenDialog ? 'calc(100vh - 69px)' : 481,
-      //                     '& .MuiListSubheader-root': { p: theme.spacing(3.75, 6, 0.75) }
-      //                   }
-      //                 : {
-      //                     '& .MuiAutocomplete-listbox': { pb: 0 }
-      //                   })
-      //             }
-      //           }}
-      //           renderInput={(params: AutocompleteRenderInputParams) => {
-      //             return (
-      //               <TextField
-      //                 {...params}
-      //                 value={searchValue}
-      //                 onChange={(event: ChangeEvent<HTMLInputElement>) => setSearchValue(event.target.value)}
-      //                 inputRef={input => {
-      //                   if (input) {
-      //                     if (openDialog) {
-      //                       input.focus()
-      //                     } else {
-      //                       input.blur()
-      //                     }
-      //                   }
-      //                 }}
-      //                 InputProps={{
-      //                   ...params.InputProps,
-      //                   sx: { p: `${theme.spacing(3.75, 6)} !important` },
-      //                   startAdornment: (
-      //                     <InputAdornment position='start' sx={{ color: 'text.primary' }}>
-      //                       <Icon icon='mdi:magnify' />
-      //                     </InputAdornment>
-      //                   ),
-      //                   endAdornment: (
-      //                     <InputAdornment
-      //                       position='end'
-      //                       onClick={() => setOpenDialog(false)}
-      //                       sx={{ display: 'flex', cursor: 'pointer', alignItems: 'center' }}
-      //                     >
-      //                       {!hidden ? <Typography sx={{ mr: 2.5, color: 'text.disabled' }}>[esc]</Typography> : null}
-      //                       <IconButton size='small' sx={{ p: 1 }}>
-      //                         <Icon icon='mdi:close' fontSize={20} />
-      //                       </IconButton>
-      //                     </InputAdornment>
-      //                   )
-      //                 }}
-      //               />
-      //             )
-      //           }}
-      //           renderOption={(props, option: AppBarSearchType | unknown) => {
-      //             return searchValue.length ? (
-      //               <ListItem
-      //                 {...props}
-      //                 key={(option as AppBarSearchType).title}
-      //                 className={`suggestion ${props.className}`}
-      //                 onClick={() => handleOptionClick(option as AppBarSearchType)}
-      //                 secondaryAction={<Icon icon='mdi:subdirectory-arrow-left' fontSize={20} />}
-      //                 sx={{
-      //                   '& .MuiListItemSecondaryAction-root': {
-      //                     '& svg': {
-      //                       cursor: 'pointer',
-      //                       color: 'text.disabled'
-      //                     }
-      //                   }
-      //                 }}
-      //               >
-      //                 <ListItemButton
-      //                   sx={{
-      //                     py: 2.5,
-      //                     px: `${theme.spacing(6)} !important`,
-      //                     '& svg': { mr: 2.5, color: 'text.primary' }
-      //                   }}
-      //                 >
-      //                   <Icon fontSize={20} icon={(option as AppBarSearchType).icon || themeConfig.navSubItemIcon} />
-      //                   <Typography variant='body2' sx={{ color: 'text.primary' }}>
-      //                     {(option as AppBarSearchType).title}
-      //                   </Typography>
-      //                 </ListItemButton>
-      //               </ListItem>
-      //             ) : null
-      //           }}
-      //         />
-      //       </Box>
-      //       {searchValue.length === 0 ? (
-      //         <Box
-      //           sx={{
-      //             p: 10,
-      //             display: 'grid',
-      //             overflow: 'auto',
-      //             alignItems: 'center',
-      //             justifyContent: 'center',
-      //             borderTop: `1px solid ${theme.palette.divider}`,
-      //             height: fullScreenDialog ? 'calc(100vh - 69px)' : '100%'
-      //           }}
-      //         >
-      //           <DefaultSuggestions setOpenDialog={setOpenDialog} />
-      //         </Box>
-      //       ) : null}
-      //     </Dialog>
-      //   )}
-      // </Box>
+      
+      <Box
+        ref={wrapper}
+        onClick={() => !openDialog && setOpenDialog(true)}
+        sx={{ display: 'flex', cursor: 'pointer', alignItems: 'center' }}
+      >
+        <IconButton color='inherit' sx={!hidden && layout === 'vertical' ? { mr: 1, ml: -2.75 } : {}}>
+          <Icon icon='mdi:magnify' />
+        </IconButton>
+        {!hidden && layout === 'vertical' ? (
+          <Typography sx={{ userSelect: 'none', color: 'text.disabled' }}>Search (Ctrl+/)</Typography>
+        ) : null}
+        {openDialog && (
+          <Dialog fullWidth open={openDialog} fullScreen={fullScreenDialog} onClose={() => setOpenDialog(false)}>
+            <Box sx={{ top: 0, width: '100%', position: 'sticky' }}>
+              <Autocomplete
+                autoHighlight
+                disablePortal
+                options={options}
+                id='appBar-search'
+                isOptionEqualToValue={() => true}
+                onInputChange={(event, value: string) => setSearchValue(value)}
+                onChange={(event, obj) => handleOptionClick(obj as AppBarSearchType)}
+                noOptionsText={<NoResult value={searchValue} setOpenDialog={setOpenDialog} />}
+                getOptionLabel={(option: AppBarSearchType | unknown) => (option as AppBarSearchType).title || ''}
+                groupBy={(option: AppBarSearchType | unknown) =>
+                  searchValue.length ? categoryTitle[(option as AppBarSearchType).category] : ''
+                }
+                sx={{
+                  '& + .MuiAutocomplete-popper': {
+                    ...(searchValue.length
+                      ? {
+                          overflow: 'auto',
+                          maxHeight: 'calc(100vh - 69px)',
+                          borderTop: `1px solid ${theme.palette.divider}`,
+                          height: fullScreenDialog ? 'calc(100vh - 69px)' : 481,
+                          '& .MuiListSubheader-root': { p: theme.spacing(3.75, 6, 0.75) }
+                        }
+                      : {
+                          '& .MuiAutocomplete-listbox': { pb: 0 }
+                        })
+                  }
+                }}
+                renderInput={(params: AutocompleteRenderInputParams) => {
+                  return (
+                    <TextField
+                      {...params}
+                      value={searchValue}
+                      onChange={(event: ChangeEvent<HTMLInputElement>) => setSearchValue(event.target.value)}
+                      inputRef={input => {
+                        if (input) {
+                          if (openDialog) {
+                            input.focus()
+                          } else {
+                            input.blur()
+                          }
+                        }
+                      }}
+                      InputProps={{
+                        ...params.InputProps,
+                        sx: { p: `${theme.spacing(3.75, 6)} !important` },
+                        startAdornment: (
+                          <InputAdornment position='start' sx={{ color: 'text.primary' }}>
+                            <Icon icon='mdi:magnify' />
+                          </InputAdornment>
+                        ),
+                        endAdornment: (
+                          <InputAdornment
+                            position='end'
+                            onClick={() => setOpenDialog(false)}
+                            sx={{ display: 'flex', cursor: 'pointer', alignItems: 'center' }}
+                          >
+                            {!hidden ? <Typography sx={{ mr: 2.5, color: 'text.disabled' }}>[esc]</Typography> : null}
+                            <IconButton size='small' sx={{ p: 1 }}>
+                              <Icon icon='mdi:close' fontSize={20} />
+                            </IconButton>
+                          </InputAdornment>
+                        )
+                      }}
+                    />
+                  )
+                }}
+                renderOption={(props, option: AppBarSearchType | unknown) => {
+                  return searchValue.length ? (
+                    <ListItem
+                      {...props}
+                      key={(option as AppBarSearchType).title}
+                      className={`suggestion ${props.className}`}
+                      onClick={() => handleOptionClick(option as AppBarSearchType)}
+                      secondaryAction={<Icon icon='mdi:subdirectory-arrow-left' fontSize={20} />}
+                      sx={{
+                        '& .MuiListItemSecondaryAction-root': {
+                          '& svg': {
+                            cursor: 'pointer',
+                            color: 'text.disabled'
+                          }
+                        }
+                      }}
+                    >
+                      <ListItemButton
+                        sx={{
+                          py: 2.5,
+                          px: `${theme.spacing(6)} !important`,
+                          '& svg': { mr: 2.5, color: 'text.primary' }
+                        }}
+                      >
+                        <Icon fontSize={20} icon={(option as AppBarSearchType).icon || themeConfig.navSubItemIcon} />
+                        <Typography variant='body2' sx={{ color: 'text.primary' }}>
+                          {(option as AppBarSearchType).title}
+                        </Typography>
+                      </ListItemButton>
+                    </ListItem>
+                  ) : null
+                }}
+              />
+            </Box>
+            {searchValue.length === 0 ? (
+              <Box
+                sx={{
+                  p: 10,
+                  display: 'grid',
+                  overflow: 'auto',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderTop: `1px solid ${theme.palette.divider}`,
+                  height: fullScreenDialog ? 'calc(100vh - 69px)' : '100%'
+                }}
+              >
+                <DefaultSuggestions setOpenDialog={setOpenDialog} />
+              </Box>
+            ) : null}
+          </Dialog>
+        )}
+      </Box>
     )
   }
 }

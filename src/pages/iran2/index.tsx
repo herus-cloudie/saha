@@ -76,7 +76,6 @@ const TypographyStyled = styled(Typography)<TypographyProps>(({ theme }) => ({
 const Iran2 = () => {
   
   const [loading, setLoading] = useState<boolean>(false);  
-  const [isMounted, setIsMounted] = useState<boolean>(false);  
   const [error, setError] = useState('');
 
 
